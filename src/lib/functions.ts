@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-const USE_FUNCS = (import.meta as any).env?.VITE_USE_FUNCTIONS !== "false";
+const USE_FUNCS = String((import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_USE_FUNCTIONS) !== "false";
 
 function mockKpis() {
   return {
@@ -111,7 +111,7 @@ export async function runPrediction(type: "churn" | "forecast", params: Record<s
 
 export async function manageDataSource(payload: { type: string; display_name: string; credentials: unknown }) {
   if (!USE_FUNCS) {
-    return { success: true, id: typeof crypto !== "undefined" && "randomUUID" in crypto ? (crypto as any).randomUUID() : String(Date.now()) };
+    return { success: true, id: typeof globalThis.crypto !== "undefined" && "randomUUID" in globalThis.crypto ? globalThis.crypto.randomUUID() : String(Date.now()) };
   }
   try {
     const { data, error } = await supabase.functions.invoke("manage-data-source", {
@@ -121,6 +121,6 @@ export async function manageDataSource(payload: { type: string; display_name: st
     return data;
   } catch (e) {
     console.warn("[functions] manage-data-source failed, returning mock success");
-    return { success: true, id: typeof crypto !== "undefined" && "randomUUID" in crypto ? (crypto as any).randomUUID() : String(Date.now()) };
+    return { success: true, id: typeof globalThis.crypto !== "undefined" && "randomUUID" in globalThis.crypto ? globalThis.crypto.randomUUID() : String(Date.now()) };
   }
 }
