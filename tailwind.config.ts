@@ -20,21 +20,34 @@ export default {
 		extend: {
 			colors: {
 				border: 'hsl(var(--border))',
+				'border-light': 'hsl(var(--border-light))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
+					light: 'hsl(var(--secondary-light))',
+					dark: 'hsl(var(--secondary-dark))',
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -42,6 +55,8 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
+					light: 'hsl(var(--accent-light))',
+					dark: 'hsl(var(--accent-dark))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
@@ -62,6 +77,23 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
+				mono: ['JetBrains Mono', 'monospace']
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-secondary': 'var(--gradient-secondary)',
+				'gradient-bg': 'var(--gradient-bg)'
+			},
+			backdropBlur: {
+				xs: '2px',
+				sm: '4px',
+				md: '8px',
+				lg: '16px',
+				xl: '24px',
+				'2xl': '40px'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +116,29 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				glow: {
+					'0%, 100%': {
+						boxShadow: '0 0 20px hsl(var(--primary) / 0.3)'
+					},
+					'50%': {
+						boxShadow: '0 0 30px hsl(var(--primary) / 0.6)'
+					}
+				},
+				float: {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				glow: 'glow 2s ease-in-out infinite alternate',
+				float: 'float 6s ease-in-out infinite'
 			}
 		}
 	},
