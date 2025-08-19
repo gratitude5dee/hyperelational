@@ -8,6 +8,9 @@ import { AppLayout } from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import DataSources from "./pages/DataSources";
+import Predictions from "./pages/Predictions";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -46,17 +49,17 @@ const App = () => (
             } />
             <Route path="/sources" element={
               <ProtectedRoute>
-                <div className="text-center text-muted-foreground">Data Sources - Coming Soon</div>
+                <DataSources />
               </ProtectedRoute>
             } />
             <Route path="/predict" element={
               <ProtectedRoute>
-                <div className="text-center text-muted-foreground">Predictions - Coming Soon</div>
+                <Predictions />
               </ProtectedRoute>
             } />
             <Route path="/settings" element={
               <ProtectedRoute>
-                <div className="text-center text-muted-foreground">Settings - Coming Soon</div>
+                <Settings />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

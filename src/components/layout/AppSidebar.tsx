@@ -136,7 +136,14 @@ export function AppSidebar() {
               </div>
             )}
           </div>
-          
+          {!collapsed && (
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-4 w-auto" />
+                <span className="text-xs text-muted-foreground">Powered by KumoRFM</span>
+              </div>
+            </div>
+          )}
           {!collapsed && (
             <Button
               variant="ghost"
