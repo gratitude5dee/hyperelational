@@ -11,7 +11,7 @@ interface Project {
   id: string;
   workspace_id: string;
   name: string;
-  type: 'fashion_ecommerce' | 'music_touring';
+  type: 'fashion_ecommerce' | 'creative_hub';
   created_at: string;
 }
 
