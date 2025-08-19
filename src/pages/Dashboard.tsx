@@ -52,7 +52,7 @@ const widgetConfig = {
       funnel: { id: 'table-1', type: 'table' }
     }
   },
-  music: {
+  creative: {
     kpis: [
       { id: 'kpi-1m', icon: DollarSign, color: 'text-success' },
       { id: 'kpi-2m', icon: Users, color: 'text-primary' },
@@ -69,7 +69,7 @@ const widgetConfig = {
 } as const;
 
 const Dashboard = () => {
-  const [selectedProject, setSelectedProject] = useState<'fashion' | 'music'>('fashion');
+  const [selectedProject, setSelectedProject] = useState<'fashion' | 'creative'>('fashion');
 
   const kpis = widgetConfig[selectedProject].kpis;
   const charts = widgetConfig[selectedProject].charts;
@@ -125,12 +125,12 @@ const Dashboard = () => {
               Fashion
             </Button>
             <Button
-              variant={selectedProject === 'music' ? 'default' : 'outline'}
+              variant={selectedProject === 'creative' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setSelectedProject('music')}
+              onClick={() => setSelectedProject('creative')}
               className="transition-smooth"
             >
-              Music
+              Creative
             </Button>
           </div>
           

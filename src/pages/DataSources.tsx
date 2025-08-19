@@ -24,7 +24,9 @@ export default function DataSources() {
 
   async function onSubmit() {
     const res = await manageDataSource({ type, display_name: displayName || type, credentials });
-    const next = [{ id: res.id, type, display_name: displayName || type, status: res.status, created_at: res.created_at }, ...(data || [])];
+    const created_at = (res as any)?.created_at || new Date().toISOString();
+    const status = (res as any)?.status || "connected";
+    const next = [{ id: (res as any)?.id || String(Date.now()), type, display_name: displayName || type, status, created_at }, ...(data || [])];
     qc.setQueryData(["sources"], next);
     setOpen(false);
     setDisplayName("");
@@ -95,7 +97,7 @@ export default function DataSources() {
                   <TableCell>{s.type}</TableCell>
                   <TableCell>{s.display_name}</TableCell>
                   <TableCell>{s.status}</TableCell>
-                  <TableCell className="text-right">{new Date(s.created_at).toLocaleString()}</TableCell>
+                  <TableCell className="text-right">{s.created_at ? new Date(s.created_at).toLocaleString() : "-"}</TableCell>
                 </TableRow>
               ))
             )}

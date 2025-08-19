@@ -13,7 +13,7 @@ function mockKpis() {
   };
 }
 
-function mockSeries(projectType: "fashion" | "music") {
+function mockSeries(projectType: "fashion" | "creative") {
   const base = [
     { month: "Jan", sales: 12000, users: 400, conversion: 3.2 },
     { month: "Feb", sales: 19000, users: 450, conversion: 3.8 },
@@ -22,7 +22,7 @@ function mockSeries(projectType: "fashion" | "music") {
     { month: "May", sales: 22000, users: 750, conversion: 3.5 },
     { month: "Jun", sales: 30000, users: 890, conversion: 4.8 },
   ];
-  const adj = projectType === "music" ? base.map((r) => ({ ...r, sales: Math.round(r.sales * 0.85), users: r.users + 120 })) : base;
+  const adj = projectType === "creative" ? base.map((r) => ({ ...r, sales: Math.round(r.sales * 0.85), users: r.users + 120 })) : base;
   return { data: adj };
 }
 
@@ -53,7 +53,7 @@ function mockFunnel() {
   };
 }
 
-export async function fetchWidgetData(widgetId: string, widgetType: string, projectType: "fashion" | "music") {
+export async function fetchWidgetData(widgetId: string, widgetType: string, projectType: "fashion" | "creative") {
   if (!USE_FUNCS) {
     if (widgetType === "kpi") return mockKpis();
     if (widgetType === "pie") return mockDemographics();
