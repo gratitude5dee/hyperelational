@@ -24,7 +24,7 @@ serve(async (req) => {
         { month: "May", sales: 22000, users: 750, conversion: 3.5 },
         { month: "Jun", sales: 30000, users: 890, conversion: 4.8 },
       ];
-      data = project_type === "music" ? base.map((r) => ({ ...r, sales: Math.round(r.sales * 0.85), users: r.users + 120 })) : base;
+      data = project_type === "creative" ? base.map((r) => ({ ...r, sales: Math.round(r.sales * 0.85), users: r.users + 120 })) : base;
     } else if (widget_type === "pie") {
       data = [
         { name: "18-24", value: 25, color: "#3b82f6" },

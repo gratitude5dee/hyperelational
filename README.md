@@ -71,3 +71,15 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Dev flags and modes
+
+- VITE_USE_FUNCTIONS
+  - Controls whether the frontend calls Supabase Edge Functions or uses local mock data.
+  - Default behavior: if not set, functions are considered enabled. Set `VITE_USE_FUNCTIONS=false` in `.env` to force mock mode.
+  - In mock mode, the UI loads dashboard widget data and predictions using in-app mock generators with the same response shapes as the functions.
+
+- Modes
+  - The application supports two modes: `fashion` and `creative` (formerly "music").
+  - The Dashboard toggles mode and refetches data for widgets using the selected `project_type`.
+  - If your backend or data uses the older `"music"` value, plan to migrate to `"creative"`. The UI has been updated to use `"creative"`.
