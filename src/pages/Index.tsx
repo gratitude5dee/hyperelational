@@ -11,13 +11,11 @@ import { RelationalUniverse } from '@/components/RelationalUniverse';
 import { TypewriterText } from '@/components/TypewriterText';
 import { FeatureCard } from '@/components/FeatureCard';
 import { RelationalLoadingAnimation } from '@/components/RelationalLoadingAnimation';
-
 const Index = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
     setMounted(true);
     // Check for first visit only after component mounts (client-side only)
@@ -30,7 +28,6 @@ const Index = () => {
       setShowContent(true);
     }
   }, []);
-
   const handleLoadingComplete = () => {
     setIsLoading(false);
     setTimeout(() => setShowContent(true), 300);
@@ -40,30 +37,24 @@ const Index = () => {
   if (!mounted) {
     return <div className="min-h-screen bg-black" />;
   }
-
   if (isLoading) {
     return <RelationalLoadingAnimation onComplete={handleLoadingComplete} />;
   }
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: showContent ? 1 : 0 }}
-      transition={{ duration: 0.8 }}
-      className="min-h-screen bg-black overflow-x-hidden"
-    >
+  return <motion.div initial={{
+    opacity: 0
+  }} animate={{
+    opacity: showContent ? 1 : 0
+  }} transition={{
+    duration: 0.8
+  }} className="min-h-screen bg-black overflow-x-hidden">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" alt="Hyperelational" className="h-8 w-auto" />
-            <span className="text-xl font-bold text-white">Hyperelational</span>
+            <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-8 w-auto" />
+            <span className="text-xl font-bold text-white">hyperelational</span>
           </div>
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/auth')}
-            className="border-white/20 text-white hover:bg-white/10 backdrop-blur-sm"
-          >
+          <Button variant="outline" onClick={() => navigate('/auth')} className="border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
             Sign In
           </Button>
         </div>
@@ -74,7 +65,10 @@ const Index = () => {
         {/* Three.js Background */}
         <div className="absolute inset-0">
           <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20" />}>
-            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+            <Canvas camera={{
+            position: [0, 0, 5],
+            fov: 75
+          }}>
               <RelationalUniverse />
               <Stars radius={300} depth={60} count={1000} factor={7} saturation={0} />
               <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
@@ -87,20 +81,25 @@ const Index = () => {
         
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-6">
-          <motion.div 
-            className="text-center space-y-8 max-w-4xl"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
+          <motion.div className="text-center space-y-8 max-w-4xl" initial={{
+          opacity: 0,
+          y: 30
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 1,
+          delay: 0.5
+        }}>
             {/* KumoRFM Partnership Badge */}
-            <motion.div 
-              className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-xl rounded-full border border-white/10"
-              whileHover={{ scale: 1.05, borderColor: "rgba(99, 102, 241, 0.5)" }}
-              transition={{ duration: 0.3 }}
-            >
+            <motion.div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-xl rounded-full border border-white/10" whileHover={{
+            scale: 1.05,
+            borderColor: "rgba(99, 102, 241, 0.5)"
+          }} transition={{
+            duration: 0.3
+          }}>
               <div className="flex items-center gap-2">
-                <img src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" alt="Hyperelational" className="h-6 w-auto" />
+                <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-6 w-auto" />
                 <span className="text-white/60">×</span>
                 <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-6 w-auto" />
               </div>
@@ -110,44 +109,38 @@ const Index = () => {
             </motion.div>
             
             {/* Main Heading */}
-            <motion.h1 
-              className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.8 }}
-            >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient-x">
-                Hyperelational
-              </span>
+            <motion.h1 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight" initial={{
+            opacity: 0,
+            scale: 0.9
+          }} animate={{
+            opacity: 1,
+            scale: 1
+          }} transition={{
+            duration: 1,
+            delay: 0.8
+          }}>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient-x">hyperelational</span>
             </motion.h1>
             
             {/* Subtitle with Typewriter */}
-            <TypewriterText 
-              phrases={[
-                "See the hidden connections in your data",
-                "Predict with relationship intelligence", 
-                "Powered by KumoRFM's foundation model",
-                "The future of analytics is relational"
-              ]}
-              className="text-xl md:text-2xl text-white/80 font-light"
-            />
+            <TypewriterText phrases={["See the hidden connections in your data", "Predict with relationship intelligence", "Powered by KumoRFM's foundation model", "The future of analytics is relational"]} className="text-xl md:text-2xl text-white/80 font-light" />
             
             {/* CTA Buttons */}
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-            >
-              <Button 
-                size="lg"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  navigate('/auth');
-                }}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-10"
-              >
+            <motion.div className="flex flex-col sm:flex-row gap-4 justify-center mt-8" initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.8,
+            delay: 1.2
+          }}>
+              <Button size="lg" onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate('/auth');
+            }} className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-10">
                 <span className="relative flex items-center gap-2">
                   Start Free Trial
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -155,22 +148,19 @@ const Index = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
               
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="border-white/20 text-white hover:bg-white/10 backdrop-blur px-8 py-4 text-lg"
-              >
+              <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10 backdrop-blur px-8 py-4 text-lg">
                 Watch Demo
               </Button>
             </motion.div>
           </motion.div>
           
           {/* Scroll Indicator */}
-          <motion.div 
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
+          <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2" animate={{
+          y: [0, 10, 0]
+        }} transition={{
+          repeat: Infinity,
+          duration: 2
+        }}>
             <ChevronDown className="w-6 h-6 text-white/40" />
           </motion.div>
         </div>
@@ -180,12 +170,15 @@ const Index = () => {
       <section className="py-24 bg-gradient-to-b from-black to-gray-900 relative">
         <div className="container mx-auto px-6">
           {/* Partnership Showcase */}
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div className="text-center mb-16" initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }}>
             <Badge className="mb-4 bg-indigo-500/20 text-indigo-400 border-indigo-500/30">
               Exclusive Partnership
             </Badge>
@@ -199,27 +192,9 @@ const Index = () => {
           
           {/* Feature Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <FeatureCard
-              icon={<BrainCircuit />}
-              title="Zero-Shot Predictions"
-              description="Get instant predictions without training models. KumoRFM understands your data relationships from day one."
-              gradient="from-indigo-500 to-blue-600"
-              delay={0.1}
-            />
-            <FeatureCard
-              icon={<Network />}
-              title="Temporal Intelligence"
-              description="Understand how relationships evolve over time with temporal graph analysis powered by advanced AI."
-              gradient="from-purple-500 to-pink-600"
-              delay={0.2}
-            />
-            <FeatureCard
-              icon={<Sparkles />}
-              title="Natural Language Queries"
-              description="Ask questions in plain English and get PQL queries with visual insights instantly."
-              gradient="from-cyan-500 to-teal-600"
-              delay={0.3}
-            />
+            <FeatureCard icon={<BrainCircuit />} title="Zero-Shot Predictions" description="Get instant predictions without training models. KumoRFM understands your data relationships from day one." gradient="from-indigo-500 to-blue-600" delay={0.1} />
+            <FeatureCard icon={<Network />} title="Temporal Intelligence" description="Understand how relationships evolve over time with temporal graph analysis powered by advanced AI." gradient="from-purple-500 to-pink-600" delay={0.2} />
+            <FeatureCard icon={<Sparkles />} title="Natural Language Queries" description="Ask questions in plain English and get PQL queries with visual insights instantly." gradient="from-cyan-500 to-teal-600" delay={0.3} />
           </div>
         </div>
       </section>
@@ -232,12 +207,15 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto px-6 relative">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div className="text-center mb-16" initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Experience the power of{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
@@ -263,12 +241,13 @@ const Index = () => {
             </TabsList>
             
             <TabsContent value="ecommerce">
-              <motion.div 
-                className="grid lg:grid-cols-2 gap-12 items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
+              <motion.div className="grid lg:grid-cols-2 gap-12 items-center" initial={{
+              opacity: 0
+            }} animate={{
+              opacity: 1
+            }} transition={{
+              duration: 0.6
+            }}>
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-white">E-commerce Intelligence</h3>
                   <div className="space-y-4">
@@ -309,12 +288,13 @@ const Index = () => {
             </TabsContent>
             
             <TabsContent value="artist">
-              <motion.div 
-                className="grid lg:grid-cols-2 gap-12 items-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
+              <motion.div className="grid lg:grid-cols-2 gap-12 items-center" initial={{
+              opacity: 0
+            }} animate={{
+              opacity: 1
+            }} transition={{
+              duration: 0.6
+            }}>
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-white">Artist Intelligence</h3>
                   <div className="space-y-4">
@@ -361,12 +341,15 @@ const Index = () => {
       <section className="py-24 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/40" />
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div 
-            className="text-center max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <motion.div className="text-center max-w-3xl mx-auto" initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to see your data's hidden relationships?
             </h2>
@@ -375,25 +358,16 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg"
-                className="bg-white text-black hover:bg-white/90 px-8 py-4 text-lg font-medium"
-              >
+              <Button size="lg" className="bg-white text-black hover:bg-white/90 px-8 py-4 text-lg font-medium">
                 Start Your Free Trial
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg"
-              >
+              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg">
                 Book a Demo
               </Button>
             </div>
           </motion.div>
         </div>
       </section>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default Index;
