@@ -6,10 +6,10 @@ import { GraphControlPanel, LayoutMode } from '@/components/GraphControlPanel';
 import { AIInsightsPanel } from '@/components/AIInsightsPanel';
 import { DualModeToggle } from '@/components/DualModeToggle';
 import { useAppStore } from '@/stores/useAppStore';
-import { Activity, Network, Brain, Sparkles, Zap } from 'lucide-react';
+import { Activity, Network, Brain, Sparkles, Zap, Palette, Music, TrendingUp, Users } from 'lucide-react';
 
 export function GraphPage() {
-  const { currentProject } = useAppStore();
+  const { industryMode } = useAppStore();
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('3d-force');
   const [animationSpeed, setAnimationSpeed] = useState(1);
@@ -17,12 +17,36 @@ export function GraphPage() {
   const [filterTypes, setFilterTypes] = useState<Set<string>>(new Set());
   const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
 
-  // Generate comprehensive mock data based on project type
+  // Mode configuration
+  const modeConfig = {
+    fashion: {
+      title: 'Fashion Retail Network',
+      subtitle: 'Customer-product relationship mapping with predictive analytics',
+      icon: Palette,
+      projectType: 'fashion_ecommerce',
+      modeLabel: 'Fashion Retail',
+      gradient: 'var(--fashion-gradient)',
+      cardBg: 'var(--fashion-card-bg)'
+    },
+    artist: {
+      title: 'Artist Network Universe',
+      subtitle: 'Superfan connections, streaming patterns & tour optimization insights',
+      icon: Music,
+      projectType: 'creative_hub',
+      modeLabel: 'Artist Management',
+      gradient: 'var(--artist-gradient)',
+      cardBg: 'var(--artist-card-bg)'
+    }
+  };
+
+  const config = modeConfig[industryMode];
+
+  // Generate comprehensive mock data based on industry mode
   React.useEffect(() => {
-    const mockData = generateComprehensiveMockData(currentProject?.type || 'fashion_ecommerce');
+    const mockData = generateComprehensiveMockData(config.projectType);
     setGraphData(mockData);
     setFilterTypes(new Set(mockData.nodes.map(n => n.type)));
-  }, [currentProject?.type]);
+  }, [industryMode, config.projectType]);
 
   const generateComprehensiveMockData = (projectType: string) => {
     const nodes: any[] = [];
@@ -424,26 +448,32 @@ export function GraphPage() {
         className="flex items-center justify-between mb-6"
       >
         <div className="flex items-center gap-4">
-          <div className="glass-card p-3 rounded-xl">
-            <Network className="h-8 w-8 text-primary animate-glow" />
+          <div 
+            className="glass-card p-3 rounded-xl"
+            style={{ background: config.cardBg }}
+          >
+            <config.icon className="h-8 w-8 animate-glow" style={{ color: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6' }} />
           </div>
           <div>
             <h1 className="text-3xl font-bold gradient-text flex items-center gap-3">
-              3D Relationship Explorer
-              <Sparkles className="h-6 w-6 text-secondary" />
+              {config.title}
+              <Sparkles className="h-6 w-6" style={{ color: industryMode === 'fashion' ? '#fbbf24' : '#06b6d4' }} />
             </h1>
             <p className="text-muted-foreground mt-1 flex items-center gap-2">
               <Brain className="h-4 w-4" />
-              AI-powered network visualization with real-time insights
+              {config.subtitle}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="glass-card px-3 py-2 rounded-lg">
+          <div 
+            className="glass-card px-3 py-2 rounded-lg"
+            style={{ background: config.cardBg }}
+          >
             <div className="flex items-center gap-2 text-sm">
-              <Zap className="h-4 w-4 text-accent" />
+              <Network className="h-4 w-4" style={{ color: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6' }} />
               <span className="text-muted-foreground">
-                {currentProject?.type === 'fashion_ecommerce' ? 'E-Commerce' : 'Creative Hub'} Mode
+                {config.modeLabel} Network
               </span>
             </div>
           </div>
@@ -460,21 +490,23 @@ export function GraphPage() {
           transition={{ delay: 0.1 }}
           className="col-span-3 space-y-4 overflow-y-auto scrollbar-thin"
         >
-          <GraphControlPanel
-            isPlaying={isPlaying}
-            onPlayPause={handlePlayPause}
-            layoutMode={layoutMode}
-            onLayoutChange={handleLayoutChange}
-            animationSpeed={animationSpeed}
-            onAnimationSpeedChange={handleAnimationSpeedChange}
-            nodeTypes={Array.from(filterTypes)}
-            visibleNodeTypes={filterTypes}
-            onToggleNodeType={handleToggleNodeType}
-            onReset={handleReset}
-            onExport={handleExport}
-            totalNodes={graphData.nodes.length}
-            totalEdges={graphData.edges.length}
-          />
+          <div style={{ background: config.cardBg }} className="glass-card rounded-xl p-1">
+            <GraphControlPanel
+              isPlaying={isPlaying}
+              onPlayPause={handlePlayPause}
+              layoutMode={layoutMode}
+              onLayoutChange={handleLayoutChange}
+              animationSpeed={animationSpeed}
+              onAnimationSpeedChange={handleAnimationSpeedChange}
+              nodeTypes={Array.from(filterTypes)}
+              visibleNodeTypes={filterTypes}
+              onToggleNodeType={handleToggleNodeType}
+              onReset={handleReset}
+              onExport={handleExport}
+              totalNodes={graphData.nodes.length}
+              totalEdges={graphData.edges.length}
+            />
+          </div>
         </motion.div>
 
         {/* Center Column with Visualization and AI */}
@@ -525,18 +557,21 @@ export function GraphPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="glass-card rounded-xl p-6"
+            style={{ background: config.cardBg }}
           >
             <div className="flex items-center gap-2 mb-4">
-              <Brain className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">AI Insights</h3>
-              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+              <Brain className="h-5 w-5" style={{ color: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6' }} />
+              <h3 className="font-semibold">
+                {industryMode === 'fashion' ? 'Fashion Intelligence' : 'Artist Insights'}
+              </h3>
+              <Sparkles className="h-4 w-4 animate-pulse" style={{ color: industryMode === 'fashion' ? '#fbbf24' : '#06b6d4' }} />
             </div>
             
             <AIInsightsPanel
               nodes={graphData.nodes}
               edges={graphData.edges}
               selectedNode={selectedNode}
-              projectType={currentProject?.type || 'fashion_ecommerce'}
+              projectType={config.projectType}
             />
           </motion.div>
         </div>
@@ -549,12 +584,14 @@ export function GraphPage() {
           className="col-span-3 space-y-4 overflow-y-auto scrollbar-thin"
         >
           {/* Metrics Dashboard */}
-          <GraphMetricsDashboard
-            nodes={graphData.nodes}
-            edges={graphData.edges}
-            selectedNode={selectedNode}
-            filterTypes={filterTypes}
-          />
+          <div style={{ background: config.cardBg }} className="glass-card rounded-xl p-1">
+            <GraphMetricsDashboard
+              nodes={graphData.nodes}
+              edges={graphData.edges}
+              selectedNode={selectedNode}
+              filterTypes={filterTypes}
+            />
+          </div>
         </motion.div>
       </div>
     </div>
