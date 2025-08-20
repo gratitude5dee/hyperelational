@@ -23,6 +23,7 @@ interface ProductPerformance {
   profitMargin: number;
   inventoryStatus: 'low' | 'good' | 'overstocked';
   demandScore: number;
+  imageUrl?: string;
 }
 
 interface VenueInsights {
@@ -83,7 +84,8 @@ serve(async (req) => {
         avgPrice: 25,
         profitMargin: 68.0,
         inventoryStatus: 'good',
-        demandScore: 94
+        demandScore: 94,
+        imageUrl: '/src/assets/products/tshirt-black.jpg'
       },
       {
         id: '2',
@@ -94,7 +96,8 @@ serve(async (req) => {
         avgPrice: 60,
         profitMargin: 72.5,
         inventoryStatus: 'low',
-        demandScore: 91
+        demandScore: 91,
+        imageUrl: '/src/assets/products/hoodie-navy.jpg'
       },
       {
         id: '3',
@@ -105,29 +108,44 @@ serve(async (req) => {
         avgPrice: 30,
         profitMargin: 65.0,
         inventoryStatus: 'good',
-        demandScore: 88
+        demandScore: 88,
+        imageUrl: '/src/assets/products/vinyl-record.jpg'
       },
       {
         id: '4',
-        name: 'Phone Case Set',
-        category: 'Accessories',
+        name: 'Concert Poster',
+        category: 'Collectibles',
         totalSold: 450,
-        revenue: 6750,
-        avgPrice: 15,
+        revenue: 18000,
+        avgPrice: 40,
         profitMargin: 80.0,
         inventoryStatus: 'overstocked',
-        demandScore: 42
+        demandScore: 42,
+        imageUrl: '/src/assets/products/poster-vintage.jpg'
       },
       {
         id: '5',
-        name: 'Signed Poster',
-        category: 'Collectibles',
+        name: 'Baseball Cap',
+        category: 'Accessories',
         totalSold: 320,
-        revenue: 12800,
-        avgPrice: 40,
+        revenue: 6400,
+        avgPrice: 20,
         profitMargin: 85.0,
         inventoryStatus: 'low',
-        demandScore: 96
+        demandScore: 96,
+        imageUrl: '/src/assets/products/cap-white.jpg'
+      },
+      {
+        id: '6',
+        name: 'Enamel Pin Set',
+        category: 'Accessories',
+        totalSold: 1450,
+        revenue: 14500,
+        avgPrice: 10,
+        profitMargin: 80.0,
+        inventoryStatus: 'good',
+        demandScore: 82,
+        imageUrl: '/src/assets/products/pin-enamel.jpg'
       }
     ];
 

@@ -10,6 +10,7 @@ import { ShoppingBag, TrendingUp, AlertTriangle, DollarSign, Package, MapPin } f
 import { supabase } from '@/integrations/supabase/client';
 import { useAppStore } from '@/stores/useAppStore';
 import { useToast } from '@/hooks/use-toast';
+import { ProductGallery } from './ProductGallery';
 
 interface MerchInsightsData {
   productPerformance: Array<{
@@ -22,6 +23,7 @@ interface MerchInsightsData {
     profitMargin: number;
     inventoryStatus: 'low' | 'good' | 'overstocked';
     demandScore: number;
+    imageUrl?: string;
   }>;
   venueInsights: Array<{
     venueId: string;
@@ -200,13 +202,18 @@ export function MerchInsightsDashboard() {
         </Card>
       </div>
 
-      <Tabs defaultValue="performance" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="performance">Product Performance</TabsTrigger>
-          <TabsTrigger value="venues">Venue Insights</TabsTrigger>
+      <Tabs defaultValue="gallery" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="gallery">Product Gallery</TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="venues">Venues</TabsTrigger>
           <TabsTrigger value="recommendations">AI Recommendations</TabsTrigger>
-          <TabsTrigger value="inventory">Inventory Alerts</TabsTrigger>
+          <TabsTrigger value="inventory">Inventory</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="gallery" className="space-y-6">
+          <ProductGallery />
+        </TabsContent>
 
         <TabsContent value="performance" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -275,7 +282,15 @@ export function MerchInsightsDashboard() {
                 {data.productPerformance.map((product) => (
                   <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <Package className="h-5 w-5 text-primary" />
+                      {product.imageUrl ? (
+                        <img 
+                          src={product.imageUrl} 
+                          alt={product.name}
+                          className="h-12 w-12 object-cover rounded-md"
+                        />
+                      ) : (
+                        <Package className="h-5 w-5 text-primary" />
+                      )}
                       <div>
                         <div className="font-medium">{product.name}</div>
                         <div className="text-sm text-muted-foreground">
