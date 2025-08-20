@@ -44,10 +44,14 @@ interface PerformanceMetrics {
 }
 
 export function PerformanceAnalyticsWidget({ size = 'full' }: PerformanceAnalyticsWidgetProps) {
+  console.log('🔧 DEBUG: PerformanceAnalyticsWidget rendering with size:', size);
+  
   const [chartType, setChartType] = useState<'composed' | 'area' | 'line' | 'bar'>('composed');
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
   const [isRealTime, setIsRealTime] = useState(true);
   const { industryMode } = useAppStore();
+
+  console.log('🔧 DEBUG: PerformanceWidget - industryMode:', industryMode);
 
   const [performanceData, setPerformanceData] = useState<MetricData[]>([]);
   const [metrics, setMetrics] = useState<PerformanceMetrics>({

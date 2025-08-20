@@ -26,6 +26,8 @@ interface NetworkStats {
 }
 
 export function NetworkVisualizationWidget({ size = 'full' }: NetworkVisualizationWidgetProps) {
+  console.log('🔧 DEBUG: NetworkVisualizationWidget rendering with size:', size);
+  
   const [view3D, setView3D] = useState(true);
   const [selectedNode, setSelectedNode] = useState<NetworkNode | null>(null);
   const [networkStats, setNetworkStats] = useState<NetworkStats>({
@@ -35,6 +37,8 @@ export function NetworkVisualizationWidget({ size = 'full' }: NetworkVisualizati
     networkHealth: 98
   });
   const { industryMode } = useAppStore();
+
+  console.log('🔧 DEBUG: NetworkWidget - industryMode:', industryMode);
 
   const generateNetworkNodes = (): NetworkNode[] => {
     const nodeTypes = industryMode === 'fashion' ? 
