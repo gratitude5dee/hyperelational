@@ -125,12 +125,9 @@ export function AppSidebar() {
         ) : (
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="glass-card p-2 rounded-xl flex-shrink-0">
-                <span className="text-xs text-muted-foreground">by 5-Dee Studos</span>
-              </div>
               <div className="animate-fade-in">
                 <h1 className="font-bold text-xl gradient-text">hyperelational</h1>
-                <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
+                <p className="text-xs text-muted-foreground">by 5-Dee Studos</p>
               </div>
             </div>
             <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift flex-shrink-0">
