@@ -3,6 +3,7 @@ import { WidgetContainer } from '../WidgetContainer';
 import { Activity, Calendar, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/stores/useAppStore';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ActivityHeatmapWidgetProps {
   size?: 'mini' | 'medium' | 'large' | 'full';
@@ -10,7 +11,9 @@ interface ActivityHeatmapWidgetProps {
 
 export function ActivityHeatmapWidget({ size = 'full' }: ActivityHeatmapWidgetProps) {
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month'>('week');
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const { industryMode } = useAppStore();
+  const isMobile = useIsMobile();
 
   const generateHeatmapData = () => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -26,13 +29,39 @@ export function ActivityHeatmapWidget({ size = 'full' }: ActivityHeatmapWidgetPr
     );
   };
 
-  const heatmapData = generateHeatmapData();
-  const maxValue = Math.max(...heatmapData.map(d => d.value));
+  const generateCalendarData = () => {
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return days.map(day => {
+      const dayData = heatmapData.filter(d => d.day === day);
+      const totalActivity = dayData.reduce((sum, d) => sum + d.value, 0);
+      const peakHour = dayData.reduce((max, current) => 
+        current.value > max.value ? current : max
+      );
+      return {
+        day,
+        totalActivity,
+        peakHour: peakHour.hour,
+        peakValue: peakHour.value,
+        hourlyData: dayData
+      };
+    });
+  };
 
-  const getColor = (value: number) => {
-    const intensity = value / maxValue;
+  const heatmapData = generateHeatmapData();
+  const calendarData = generateCalendarData();
+  const maxValue = Math.max(...heatmapData.map(d => d.value));
+  const maxDayValue = Math.max(...calendarData.map(d => d.totalActivity));
+
+  const getColor = (value: number, maxVal = maxValue) => {
+    const intensity = Math.max(0.1, value / maxVal);
     const hue = industryMode === 'fashion' ? '262' : '200'; // Purple for fashion, Blue for music
     return `hsla(${hue}, 80%, 60%, ${intensity})`;
+  };
+
+  const getDayColor = (totalActivity: number) => {
+    const intensity = Math.max(0.1, totalActivity / maxDayValue);
+    const hue = industryMode === 'fashion' ? '262' : '200';
+    return `hsla(${hue}, 70%, 50%, ${intensity})`;
   };
 
   const getTooltipContent = (dataPoint: any) => {
@@ -88,6 +117,96 @@ export function ActivityHeatmapWidget({ size = 'full' }: ActivityHeatmapWidgetPr
       </div>
     );
   };
+
+  const renderMobileCalendarView = () => (
+    <div className="space-y-4 h-full">
+      <div className="flex items-center justify-between">
+        <div>
+          <h4 className="font-semibold text-foreground">Activity Calendar</h4>
+          <p className="text-sm text-muted-foreground">
+            {industryMode === 'fashion' ? 'Customer activity by day' : 'Fan engagement by day'}
+          </p>
+        </div>
+      </div>
+
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-7 gap-2">
+        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((dayAbbr, index) => (
+          <div key={index} className="text-center text-xs text-muted-foreground font-medium p-2">
+            {dayAbbr}
+          </div>
+        ))}
+        
+        {calendarData.map((dayData, index) => (
+          <button
+            key={dayData.day}
+            className="aspect-square rounded-lg border border-border/20 p-2 transition-all duration-200 
+              hover:scale-105 hover:shadow-md active:scale-95 relative group"
+            style={{ backgroundColor: getDayColor(dayData.totalActivity) }}
+            onClick={() => setSelectedDay(selectedDay === dayData.day ? null : dayData.day)}
+          >
+            <div className="flex flex-col items-center justify-center h-full text-white">
+              <div className="text-xs font-medium">{index + 1}</div>
+              <div className="text-[10px] opacity-80">{Math.round(dayData.totalActivity / 10)}</div>
+            </div>
+            
+            {/* Tooltip */}
+            <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 
+              bg-card border border-border rounded px-2 py-1 text-xs whitespace-nowrap
+              opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none text-foreground">
+              {dayData.day}: {dayData.totalActivity} {industryMode === 'fashion' ? 'purchases' : 'streams'}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Day Detail */}
+      {selectedDay && (
+        <div className="mt-4 p-4 bg-card/50 border border-border rounded-lg">
+          <h5 className="font-medium text-foreground mb-2">{selectedDay} Activity</h5>
+          <div className="grid grid-cols-8 gap-1">
+            {Array.from({ length: 24 }, (_, hour) => {
+              const hourData = heatmapData.find(d => d.day === selectedDay && d.hour === hour);
+              return (
+                <div
+                  key={hour}
+                  className="aspect-square rounded text-[10px] flex items-center justify-center text-white font-medium"
+                  style={{ backgroundColor: getColor(hourData?.value || 0) }}
+                  title={`${hour}:00 - ${hourData?.value || 0} ${hourData?.label || ''}`}
+                >
+                  {hour}
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex items-center justify-between mt-3 text-sm">
+            <span className="text-muted-foreground">Peak: {calendarData.find(d => d.day === selectedDay)?.peakHour}:00</span>
+            <button 
+              onClick={() => setSelectedDay(null)}
+              className="text-primary hover:text-primary/80"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Legend */}
+      <div className="flex items-center justify-center gap-2 pt-4 border-t border-border/50">
+        <span className="text-xs text-muted-foreground">Less</span>
+        <div className="flex gap-1">
+          {[0.2, 0.4, 0.6, 0.8, 1].map(intensity => (
+            <div
+              key={intensity}
+              className="w-3 h-3 rounded-sm"
+              style={{ backgroundColor: getDayColor(maxDayValue * intensity) }}
+            />
+          ))}
+        </div>
+        <span className="text-xs text-muted-foreground">More</span>
+      </div>
+    </div>
+  );
 
   const renderFullVersion = () => (
     <div className="space-y-4 h-full">
@@ -194,7 +313,7 @@ export function ActivityHeatmapWidget({ size = 'full' }: ActivityHeatmapWidgetPr
         </div>
       }
     >
-      {size === 'mini' ? renderMiniVersion() : renderFullVersion()}
+      {size === 'mini' ? renderMiniVersion() : isMobile ? renderMobileCalendarView() : renderFullVersion()}
     </WidgetContainer>
   );
 }
