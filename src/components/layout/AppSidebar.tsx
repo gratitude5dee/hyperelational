@@ -98,7 +98,8 @@ export function AppSidebar() {
   return (
     <Sidebar 
       className="glass-nav border-r border-border-light transition-all duration-300" 
-      style={{ width: collapsed ? '4rem' : '16rem' }}
+      style={{ width: collapsed ? '4rem' : '16rem', minWidth: collapsed ? '4rem' : '16rem' }}
+      collapsible="icon"
     >
       <SidebarHeader className={collapsed ? "p-2" : "p-6 pb-4"}>
         <div className="flex items-center justify-between gap-3">
@@ -135,10 +136,10 @@ export function AppSidebar() {
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink 
+                     <NavLink 
                       to={item.url} 
                       className={`${getNavClassName(item.url)} border transition-all duration-200 rounded-lg ${
-                        collapsed ? 'px-2 py-2.5 justify-center' : 'px-3 py-2.5'
+                        collapsed ? 'px-2 py-2.5 justify-center min-w-[2.5rem] min-h-[2.5rem]' : 'px-3 py-2.5'
                       } flex items-center gap-3 w-full group relative`}
                       title={collapsed ? item.title : undefined}
                     >
@@ -150,7 +151,7 @@ export function AppSidebar() {
                         </div>
                       )}
                       {collapsed && (
-                        <div className="absolute left-full ml-2 px-2 py-1 bg-popover border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 whitespace-nowrap">
+                        <div className="absolute left-full ml-2 px-3 py-2 bg-popover/95 backdrop-blur-sm border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 whitespace-nowrap pointer-events-none">
                           <div className="font-medium text-sm">{item.title}</div>
                           <div className="text-xs opacity-75">{item.description}</div>
                         </div>
@@ -181,7 +182,7 @@ export function AppSidebar() {
               </div>
             )}
             {collapsed && (
-              <div className="absolute left-full ml-2 px-2 py-1 bg-popover border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 whitespace-nowrap">
+              <div className="absolute left-full ml-2 px-3 py-2 bg-popover/95 backdrop-blur-sm border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 whitespace-nowrap pointer-events-none">
                 <p className="text-sm font-medium">
                   {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'}
                 </p>
@@ -199,7 +200,20 @@ export function AppSidebar() {
               </div>
             </div>
           )}
-          {!collapsed && (
+          {collapsed ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={signOut}
+              className="w-full justify-center text-muted-foreground hover:text-destructive hover:bg-destructive/10 p-2 group relative"
+              title="Sign Out"
+            >
+              <LogOut className="h-4 w-4" />
+              <div className="absolute left-full ml-2 px-3 py-2 bg-popover/95 backdrop-blur-sm border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 whitespace-nowrap pointer-events-none">
+                Sign Out
+              </div>
+            </Button>
+          ) : (
             <Button
               variant="ghost"
               size="sm"
