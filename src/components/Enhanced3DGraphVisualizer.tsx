@@ -90,12 +90,82 @@ function Node3D({
       </Sphere>
       
       {(isSelected || hovered) && (
-        <Html distanceFactor={10}>
-          <div className="glass-card p-2 pointer-events-none whitespace-nowrap">
-            <div className="text-xs font-medium text-foreground">{node.label}</div>
-            <div className="text-xs text-muted-foreground">{node.type}</div>
-            <div className="text-xs text-muted-foreground">{node.connections} connections</div>
-          </div>
+        <Html distanceFactor={15} position={[0, node.size * 0.03, 0]}>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="pointer-events-none"
+          >
+            <div className="relative">
+              {/* Tooltip Arrow */}
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-background/95 rotate-45 border border-border/20" />
+              
+              {/* Tooltip Content */}
+              <div className="glass-card bg-background/95 backdrop-blur-md border border-border/30 rounded-xl p-4 shadow-2xl min-w-[280px] max-w-[320px]">
+                {/* Header */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div 
+                    className="w-4 h-4 rounded-full shadow-lg ring-2 ring-background/50" 
+                    style={{ backgroundColor: nodeColor }}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-foreground text-sm leading-tight">{node.label}</h3>
+                    <p className="text-xs text-muted-foreground capitalize">{node.type}</p>
+                  </div>
+                </div>
+
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground">Connections</p>
+                    <p className="text-sm font-medium text-primary">{node.connections}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground">Importance</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-muted rounded-full h-1.5">
+                        <div 
+                          className="bg-gradient-to-r from-primary to-accent h-full rounded-full transition-all duration-300"
+                          style={{ width: `${node.importance * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-muted-foreground">{Math.round(node.importance * 100)}%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metadata */}
+                {node.metadata && Object.keys(node.metadata).length > 0 && (
+                  <div className="border-t border-border/20 pt-3">
+                    <p className="text-xs text-muted-foreground mb-2">Details</p>
+                    <div className="space-y-1.5">
+                      {Object.entries(node.metadata).slice(0, 3).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').toLowerCase()}:
+                          </span>
+                          <span className="text-xs font-medium text-foreground ml-2 text-right">
+                            {typeof value === 'number' && key.includes('Value') 
+                              ? `$${value.toLocaleString()}` 
+                              : String(value)
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Interactive Hint */}
+                <div className="border-t border-border/20 pt-2 mt-3">
+                  <p className="text-xs text-muted-foreground/70 text-center">
+                    Click to {isSelected ? 'deselect' : 'select'} • {node.connections} related nodes
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </Html>
       )}
     </group>
@@ -103,19 +173,72 @@ function Node3D({
 }
 
 function Edge3D({ edge }: { edge: GraphEdge3D }) {
+  const [hovered, setHovered] = useState(false);
+  
   const points = useMemo(() => [
     new THREE.Vector3(...edge.sourcePos),
     new THREE.Vector3(...edge.targetPos)
   ], [edge.sourcePos, edge.targetPos]);
 
+  const midpoint = useMemo(() => {
+    const start = new THREE.Vector3(...edge.sourcePos);
+    const end = new THREE.Vector3(...edge.targetPos);
+    return start.clone().lerp(end, 0.5);
+  }, [edge.sourcePos, edge.targetPos]);
+
   return (
-    <Line
-      points={points}
-      color="rgba(255, 255, 255, 0.2)"
-      lineWidth={edge.strength * 2}
-      transparent
-      opacity={0.6}
-    />
+    <group>
+      <Line
+        points={points}
+        color={hovered ? "rgba(96, 165, 250, 0.8)" : "rgba(255, 255, 255, 0.2)"}
+        lineWidth={hovered ? edge.strength * 4 : edge.strength * 2}
+        transparent
+        opacity={hovered ? 0.9 : 0.6}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      />
+      
+      {hovered && (
+        <Html position={[midpoint.x, midpoint.y, midpoint.z]} distanceFactor={12}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="pointer-events-none"
+          >
+            <div className="glass-card bg-background/95 backdrop-blur-md border border-border/30 rounded-lg p-3 shadow-xl min-w-[200px]">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 rounded-full bg-primary" />
+                <span className="text-xs font-medium text-foreground capitalize">
+                  {edge.type.replace('_', ' ')}
+                </span>
+              </div>
+              
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-muted-foreground">Strength:</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-12 bg-muted rounded-full h-1">
+                      <div 
+                        className="bg-gradient-to-r from-primary to-accent h-full rounded-full"
+                        style={{ width: `${edge.strength * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-medium text-foreground">
+                      {Math.round(edge.strength * 100)}%
+                    </span>
+                  </div>
+                </div>
+                
+                <div className="text-xs text-muted-foreground/70 text-center pt-1 border-t border-border/20">
+                  Connection between nodes
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </Html>
+      )}
+    </group>
   );
 }
 
