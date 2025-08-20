@@ -22,7 +22,9 @@ import {
   Sparkles,
   User,
   LogOut,
-  Menu
+  Menu,
+  Plug,
+  TrendingUp
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -31,7 +33,7 @@ import { GlassCard } from '@/components/ui/glass-card';
 const navigationItems = [
   { 
     title: 'Dashboard', 
-    url: '/', 
+    url: '/dashboard', 
     icon: LayoutDashboard,
     description: 'AI Analytics Hub'
   },
@@ -52,6 +54,18 @@ const navigationItems = [
     url: '/sources', 
     icon: Database,
     description: 'Connect Platforms'
+  },
+  { 
+    title: 'Integrations', 
+    url: '/integrations', 
+    icon: Plug,
+    description: 'Platform Connectors'
+  },
+  { 
+    title: 'Predictions', 
+    url: '/predictions', 
+    icon: TrendingUp,
+    description: 'AI Forecasting'
   },
   { 
     title: 'Settings', 
