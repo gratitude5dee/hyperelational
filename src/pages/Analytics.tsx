@@ -7,6 +7,7 @@ import { useAppStore } from '@/stores/useAppStore';
 import { ChurnRiskDashboard } from '@/components/analytics/ChurnRiskDashboard';
 import { ProductRecommendationEngine } from '@/components/analytics/ProductRecommendationEngine';
 import { TourHotspotMap } from '@/components/analytics/TourHotspotMap';
+import { DynamicAudienceBuilder } from '@/components/analytics/DynamicAudienceBuilder';
 import { DualModeToggle } from '@/components/DualModeToggle';
 
 export default function Analytics() {
@@ -114,7 +115,7 @@ export default function Analytics() {
                 <Zap className="h-4 w-4" />
                 Recommendations
               </TabsTrigger>
-              <TabsTrigger value="audience" className="flex items-center gap-2" disabled>
+              <TabsTrigger value="audience" className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 Audience Builder
               </TabsTrigger>
@@ -147,19 +148,7 @@ export default function Analytics() {
         </TabsContent>
         
         <TabsContent value="audience" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Dynamic Audience Builder</CardTitle>
-              <CardDescription>Coming Soon</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Create highly specific, predictive audiences for platforms like Meta or Google Ads.
-                This feature will allow you to build queries like: "Find all users who bought a 'dress' 
-                in the last 60 days AND have a predicted LTV &gt; $500 AND have a predicted churn risk &gt; 70%."
-              </p>
-            </CardContent>
-          </Card>
+          <DynamicAudienceBuilder />
         </TabsContent>
 
         {/* Artist Analytics */}

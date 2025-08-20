@@ -24,7 +24,8 @@ import {
   LogOut,
   Menu,
   Plug,
-  TrendingUp
+  TrendingUp,
+  Zap
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -62,9 +63,15 @@ const navigationItems = [
     description: 'Platform Connectors'
   },
   { 
+    title: 'Analytics', 
+    url: '/analytics', 
+    icon: TrendingUp,
+    description: 'AI-Powered Insights'
+  },
+  { 
     title: 'Predictions', 
     url: '/predict', 
-    icon: TrendingUp,
+    icon: Zap,
     description: 'AI Forecasting'
   },
   { 
