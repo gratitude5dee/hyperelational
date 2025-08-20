@@ -1,386 +1,347 @@
 import React, { useState } from 'react';
-import { GlassCard } from '@/components/ui/glass-card';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
-import { fetchWidgetData } from '@/lib/functions';
-import {
+import { 
+  Plus, 
+  Grid3X3, 
+  Layout, 
+  Settings, 
+  Palette,
   TrendingUp,
-  TrendingDown,
   Users,
+  ShoppingBag,
+  Music,
+  Calendar,
+  Brain,
+  Network,
+  Activity,
+  Target,
+  Bell,
+  BarChart3,
   DollarSign,
-  ShoppingCart,
-  Eye,
-  Plus,
-  Activity
+  Sparkles
 } from 'lucide-react';
-import {
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts';
+import { useAppStore } from '@/stores/useAppStore';
 
-type KPIItem = { title: string; value: string; change: string; trend: 'up' | 'down' };
-type SalesRow = { month: string; sales: number; users: number; conversion?: number };
-type Demographic = { name: string; value: number; color: string };
-type FunnelData = { columns: string[]; rows: [string, number][] };
+// Widget imports
+import { AIChatWidget } from '@/components/dashboard/widgets/AIChatWidget';
+import { Graph3DWidget } from '@/components/dashboard/widgets/Graph3DWidget';
+import { RealTimeMetricsWidget } from '@/components/dashboard/widgets/RealTimeMetricsWidget';
+import { AIInsightsWidget } from '@/components/dashboard/widgets/AIInsightsWidget';
+import { AdvancedChartWidget } from '@/components/dashboard/widgets/AdvancedChartWidget';
+import { GoalProgressWidget } from '@/components/dashboard/widgets/GoalProgressWidget';
+import { ActivityHeatmapWidget } from '@/components/dashboard/widgets/ActivityHeatmapWidget';
 
-const widgetConfig = {
-  fashion: {
-    kpis: [
-      { id: 'kpi-1', icon: DollarSign, color: 'text-success' },
-      { id: 'kpi-2', icon: Users, color: 'text-primary' },
-      { id: 'kpi-3', icon: TrendingUp, color: 'text-accent' },
-      { id: 'kpi-4', icon: Eye, color: 'text-secondary' },
-    ],
-    charts: {
-      salesTrend: { id: 'area-1', type: 'area_chart' },
-      userGrowth: { id: 'line-1', type: 'line_chart' },
-      demographics: { id: 'pie-1', type: 'pie' },
-      funnel: { id: 'table-1', type: 'table' }
-    }
-  },
-  creative: {
-    kpis: [
-      { id: 'kpi-1m', icon: DollarSign, color: 'text-success' },
-      { id: 'kpi-2m', icon: Users, color: 'text-primary' },
-      { id: 'kpi-3m', icon: TrendingUp, color: 'text-accent' },
-      { id: 'kpi-4m', icon: Eye, color: 'text-secondary' },
-    ],
-    charts: {
-      salesTrend: { id: 'area-1m', type: 'area_chart' },
-      userGrowth: { id: 'line-1m', type: 'line_chart' },
-      demographics: { id: 'pie-1m', type: 'pie' },
-      funnel: { id: 'table-1m', type: 'table' }
-    }
-  }
-} as const;
+// Import existing analytics components
+import { ProductRecommendationEngine } from '@/components/analytics/ProductRecommendationEngine';
+import { ChurnRiskDashboard } from '@/components/analytics/ChurnRiskDashboard';
+import { FanAnalyticsDashboard } from '@/components/analytics/FanAnalyticsDashboard';
+import { MerchInsightsDashboard } from '@/components/analytics/MerchInsightsDashboard';
+import { TourHotspotMap } from '@/components/analytics/TourHotspotMap';
+import { WidgetContainer } from '@/components/dashboard/WidgetContainer';
+
+type LayoutPreset = 'executive' | 'analyst' | 'creative' | 'custom';
 
 const Dashboard = () => {
-  const [selectedProject, setSelectedProject] = useState<'fashion' | 'creative'>('fashion');
+  const { currentProject, industryMode } = useAppStore();
+  const [layoutPreset, setLayoutPreset] = useState<LayoutPreset>('executive');
+  const [showSettings, setShowSettings] = useState(false);
 
-  const kpis = widgetConfig[selectedProject].kpis;
-  const charts = widgetConfig[selectedProject].charts;
+  const getIndustryIcon = () => {
+    return industryMode === 'fashion' ? ShoppingBag : Music;
+  };
 
-  const { data: kpiResp, isLoading: kpiLoading, isError: kpiError, refetch: refetchKpis } = useQuery({
-    queryKey: ['kpis', selectedProject],
-    queryFn: async () => fetchWidgetData('kpis', 'kpi', selectedProject),
-  });
+  const getIndustryLabel = () => {
+    return industryMode === 'fashion' ? 'Fashion & E-commerce' : 'Music & Touring';
+  };
 
-  const { data: salesResp, isLoading: salesLoading, isError: salesError, refetch: refetchSales } = useQuery({
-    queryKey: ['sales', selectedProject],
-    queryFn: async () => fetchWidgetData(charts.salesTrend.id, charts.salesTrend.type, selectedProject),
-  });
+  const renderExecutiveLayout = () => (
+    <div className="space-y-6">
+      {/* Top row - Key metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <RealTimeMetricsWidget size="large" />
+        <AIInsightsWidget size="medium" />
+        <GoalProgressWidget size="medium" />
+        <AIChatWidget size="mini" />
+      </div>
+      
+      {/* Second row - Main visualizations */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Graph3DWidget size="full" />
+        </div>
+        <div className="space-y-6">
+          <AdvancedChartWidget size="medium" />
+        </div>
+      </div>
+      
+      {/* Third row - Analytics */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {industryMode === 'fashion' ? (
+          <>
+            <WidgetContainer 
+              title="Product Recommendations" 
+              icon={Target}
+              size="large"
+            >
+              <ProductRecommendationEngine />
+            </WidgetContainer>
+            
+            <WidgetContainer 
+              title="Churn Risk Analysis" 
+              icon={TrendingUp}
+              size="large"
+            >
+              <ChurnRiskDashboard />
+            </WidgetContainer>
+          </>
+        ) : (
+          <>
+            <WidgetContainer 
+              title="Fan Analytics" 
+              icon={Users}
+              size="large"
+            >
+              <FanAnalyticsDashboard />
+            </WidgetContainer>
+            
+            <WidgetContainer 
+              title="Tour Hotspots" 
+              icon={Calendar}
+              size="large"
+            >
+              <TourHotspotMap />
+            </WidgetContainer>
+          </>
+        )}
+      </div>
+      
+      {/* Fourth row - Activity patterns */}
+      <ActivityHeatmapWidget size="full" />
+    </div>
+  );
 
-  const { data: userResp, isLoading: userLoading, isError: userError, refetch: refetchUsers } = useQuery({
-    queryKey: ['users', selectedProject],
-    queryFn: async () => fetchWidgetData(charts.userGrowth.id, charts.userGrowth.type, selectedProject),
-  });
+  const renderAnalystLayout = () => (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-6">
+        <Graph3DWidget size="full" />
+        {industryMode === 'fashion' ? (
+          <WidgetContainer title="Product Recommendations" icon={Target}>
+            <ProductRecommendationEngine />
+          </WidgetContainer>
+        ) : (
+          <WidgetContainer title="Fan Analytics" icon={Users}>
+            <FanAnalyticsDashboard />
+          </WidgetContainer>
+        )}
+      </div>
+      
+      <div className="space-y-6">
+        <AIInsightsWidget size="medium" />
+        <RealTimeMetricsWidget size="medium" />
+        <AIChatWidget size="medium" />
+      </div>
+    </div>
+  );
 
-  const { data: demoResp, isLoading: demoLoading, isError: demoError, refetch: refetchDemo } = useQuery({
-    queryKey: ['demo', selectedProject],
-    queryFn: async () => fetchWidgetData(charts.demographics.id, charts.demographics.type, selectedProject),
-  });
+  const renderCreativeLayout = () => (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <AIInsightsWidget size="mini" />
+        <RealTimeMetricsWidget size="mini" />
+        <AIChatWidget size="mini" />
+      </div>
+      
+      <Graph3DWidget size="full" />
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {industryMode === 'fashion' ? (
+          <>
+            <WidgetContainer title="Churn Analysis" icon={TrendingUp}>
+              <ChurnRiskDashboard />
+            </WidgetContainer>
+            <WidgetContainer title="Merch Insights" icon={BarChart3}>
+              <MerchInsightsDashboard />
+            </WidgetContainer>
+          </>
+        ) : (
+          <>
+            <WidgetContainer title="Tour Planning" icon={Calendar}>
+              <TourHotspotMap />
+            </WidgetContainer>
+            <WidgetContainer title="Fan Insights" icon={Users}>
+              <FanAnalyticsDashboard />
+            </WidgetContainer>
+          </>
+        )}
+      </div>
+    </div>
+  );
 
-  const { data: funnelResp, isLoading: funnelLoading, isError: funnelError, refetch: refetchFunnel } = useQuery({
-    queryKey: ['funnel', selectedProject],
-    queryFn: async () => fetchWidgetData(charts.funnel.id, charts.funnel.type, selectedProject),
-  });
+  const renderLayout = () => {
+    switch (layoutPreset) {
+      case 'executive':
+        return renderExecutiveLayout();
+      case 'analyst':
+        return renderAnalystLayout();
+      case 'creative':
+        return renderCreativeLayout();
+      default:
+        return renderExecutiveLayout();
+    }
+  };
 
-  const salesData = (salesResp?.data as SalesRow[]) || [];
-  const userData = (userResp?.data as SalesRow[]) || salesData;
-  const demographicData = (demoResp?.data as Demographic[]) || [];
+  const IndustryIcon = getIndustryIcon();
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold gradient-text">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
-            AI-powered insights for your business
-          </p>
+    <div className="min-h-screen space-y-6">
+      {/* Enhanced Header */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between"
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl">
+              <IndustryIcon className="h-6 w-6 text-primary animate-glow" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold gradient-text">
+                Comprehensive Dashboard
+              </h1>
+              <p className="text-muted-foreground">
+                AI-powered insights for {getIndustryLabel()}
+              </p>
+            </div>
+          </div>
+          
+          <Badge variant="secondary" className="animate-pulse">
+            <Sparkles className="h-3 w-3 mr-1" />
+            Live Data
+          </Badge>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Layout Presets */}
           <div className="flex items-center gap-2">
             <Button
-              variant={selectedProject === 'fashion' ? 'default' : 'outline'}
+              variant={layoutPreset === 'executive' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setSelectedProject('fashion')}
-              className="transition-smooth"
+              onClick={() => setLayoutPreset('executive')}
+              className="gap-2"
             >
-              Fashion
+              <TrendingUp className="h-4 w-4" />
+              Executive
             </Button>
             <Button
-              variant={selectedProject === 'creative' ? 'default' : 'outline'}
+              variant={layoutPreset === 'analyst' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setSelectedProject('creative')}
-              className="transition-smooth"
+              onClick={() => setLayoutPreset('analyst')}
+              className="gap-2"
             >
+              <BarChart3 className="h-4 w-4" />
+              Analyst
+            </Button>
+            <Button
+              variant={layoutPreset === 'creative' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setLayoutPreset('creative')}
+              className="gap-2"
+            >
+              <Palette className="h-4 w-4" />
               Creative
             </Button>
           </div>
           
-          <Button className="gradient-primary hover:opacity-90">
-            <Plus className="h-4 w-4 mr-2" />
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowSettings(!showSettings)}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Button>
+          
+          <Button className="gradient-primary hover:opacity-90 gap-2">
+            <Plus className="h-4 w-4" />
             Add Widget
           </Button>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {kpiLoading && kpis.map((kpi, idx) => (
-          <GlassCard key={idx} variant="hover" className="p-6">
+      {/* Settings Panel */}
+      <AnimatePresence>
+        {showSettings && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="glass-card p-4 border border-primary/20"
+          >
             <div className="flex items-center justify-between mb-4">
-              <Skeleton className="h-10 w-10 rounded-xl" />
-              <Skeleton className="h-6 w-16 rounded-md" />
+              <h3 className="text-lg font-semibold">Dashboard Settings</h3>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setShowSettings(false)}
+              >
+                ×
+              </Button>
             </div>
-            <Skeleton className="h-7 w-24 mb-2" />
-            <Skeleton className="h-4 w-32" />
-          </GlassCard>
-        ))}
-        {!kpiLoading && !kpiError && Array.isArray(kpiResp?.data) && kpis.map((kpi, index) => {
-          const Icon = kpi.icon;
-          const item = kpiResp.data[index % kpiResp.data.length];
-          const TrendIcon = item.trend === 'up' ? TrendingUp : TrendingDown;
-          return (
-            <GlassCard key={index} variant="hover" className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-xl bg-gradient-to-br ${
-                  kpi.color === 'text-success' ? 'from-success/20 to-success/10' :
-                  kpi.color === 'text-primary' ? 'from-primary/20 to-primary/10' :
-                  kpi.color === 'text-accent' ? 'from-accent/20 to-accent/10' :
-                  'from-secondary/20 to-secondary/10'
-                }`}>
-                  <Icon className={`h-6 w-6 ${kpi.color}`} />
-                </div>
-                <Badge variant={item.trend === 'up' ? 'default' : 'destructive'} className="gap-1">
-                  <TrendIcon className="h-3 w-3" />
-                  {item.change}
-                </Badge>
-              </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <h3 className="text-2xl font-bold text-foreground mb-1">
-                  {item.value}
-                </h3>
-                <p className="text-sm text-muted-foreground">{item.title}</p>
+                <label className="text-sm font-medium mb-2 block">Refresh Rate</label>
+                <select className="w-full p-2 bg-background border border-border rounded-lg">
+                  <option>Real-time</option>
+                  <option>5 seconds</option>
+                  <option>30 seconds</option>
+                  <option>1 minute</option>
+                </select>
               </div>
-            </GlassCard>
-          );
-        })}
-        {kpiError && (
-          <GlassCard variant="hover" className="p-6 col-span-4">
-            <div className="flex items-center justify-between">
-              <div className="text-destructive">Failed to load KPIs</div>
-              <Button variant="outline" size="sm" onClick={() => refetchKpis()}>Retry</Button>
+              
+              <div>
+                <label className="text-sm font-medium mb-2 block">Theme</label>
+                <select className="w-full p-2 bg-background border border-border rounded-lg">
+                  <option>Dark Mode</option>
+                  <option>Light Mode</option>
+                  <option>Auto</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium mb-2 block">Density</label>
+                <select className="w-full p-2 bg-background border border-border rounded-lg">
+                  <option>Comfortable</option>
+                  <option>Compact</option>
+                  <option>Spacious</option>
+                </select>
+              </div>
             </div>
-          </GlassCard>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Sales Trend Chart */}
-        <GlassCard variant="hover" className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">Sales Trend</h3>
-              <p className="text-sm text-muted-foreground">Monthly performance overview</p>
-            </div>
-            <Activity className="h-5 w-5 text-primary" />
-          </div>
-          
-          <div className="h-80">
-            {salesLoading ? (
-              <div className="h-full w-full flex flex-col justify-center gap-3">
-                <Skeleton className="h-6 w-40" />
-                <Skeleton className="h-60 w-full" />
-              </div>
-            ) : salesError ? (
-              <div className="h-full w-full flex items-center justify-between">
-                <div className="text-destructive">Failed to load Sales Trend</div>
-                <Button variant="outline" size="sm" onClick={() => refetchSales()}>Retry</Button>
-              </div>
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={salesData}>
-                  <defs>
-                    <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12}/>
-                  <YAxis stroke="#94a3b8" fontSize={12} />
-                  <Tooltip contentStyle={{ backgroundColor: 'rgba(30, 41, 59, 0.9)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', backdropFilter: 'blur(16px)' }} />
-                  <Area type="monotone" dataKey="sales" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#salesGradient)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-        </GlassCard>
+      {/* Main Dashboard Content */}
+      <motion.div
+        key={layoutPreset}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {renderLayout()}
+      </motion.div>
 
-        {/* User Growth Chart */}
-        <GlassCard variant="hover" className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">User Growth</h3>
-              <p className="text-sm text-muted-foreground">Active user acquisition</p>
-            </div>
-            <Users className="h-5 w-5 text-secondary" />
-          </div>
-          
-          <div className="h-80">
-            {userLoading ? (
-              <div className="h-full w-full flex flex-col justify-center gap-3">
-                <Skeleton className="h-6 w-40" />
-                <Skeleton className="h-60 w-full" />
-              </div>
-            ) : userError ? (
-              <div className="h-full w-full flex items-center justify-between">
-                <div className="text-destructive">Failed to load User Growth</div>
-                <Button variant="outline" size="sm" onClick={() => refetchUsers()}>Retry</Button>
-              </div>
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={userData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12}/>
-                  <YAxis stroke="#94a3b8" fontSize={12} />
-                  <Tooltip contentStyle={{ backgroundColor: 'rgba(30, 41, 59, 0.9)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', backdropFilter: 'blur(16px)' }} />
-                  <Line type="monotone" dataKey="users" stroke="#8b5cf6" strokeWidth={3} dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 6 }} activeDot={{ r: 8, fill: '#8b5cf6' }} />
-                </LineChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-        </GlassCard>
-
-        {/* Demographics Chart */}
-        <GlassCard variant="hover" className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">Demographics</h3>
-              <p className="text-sm text-muted-foreground">User age distribution</p>
-            </div>
-          </div>
-          
-          <div className="h-80">
-            {demoLoading ? (
-              <div className="h-full w-full flex flex-col justify-center gap-3">
-                <Skeleton className="h-6 w-40" />
-                <Skeleton className="h-60 w-full" />
-              </div>
-            ) : demoError ? (
-              <div className="h-full w-full flex items-center justify-between">
-                <div className="text-destructive">Failed to load Demographics</div>
-                <Button variant="outline" size="sm" onClick={() => refetchDemo()}>Retry</Button>
-              </div>
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={demographicData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
-                    {demographicData.map((entry: Demographic, index: number) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: 'rgba(30, 41, 59, 0.9)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', backdropFilter: 'blur(16px)' }} />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-          {!demoLoading && !demoError && Array.isArray(demoResp?.data) && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {demographicData.map((item: Demographic, index: number) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                  <span className="text-sm text-muted-foreground">
-                    {item.name} ({item.value}%)
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </GlassCard>
-
-        {/* Conversion Funnel */}
-        <GlassCard variant="hover" className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-lg font-semibold text-foreground">Conversion Funnel</h3>
-              <p className="text-sm text-muted-foreground">Customer journey stages</p>
-            </div>
-            <ShoppingCart className="h-5 w-5 text-accent" />
-          </div>
-          
-          {funnelLoading ? (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-sm">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-24" />
-              </div>
-              <Skeleton className="h-3 w-full rounded-full" />
-              <div className="flex items-center justify-between text-sm">
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-              <Skeleton className="h-3 w-full rounded-full" />
-              <div className="flex items-center justify-between text-sm">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-4 w-16" />
-              </div>
-              <Skeleton className="h-3 w-full rounded-full" />
-            </div>
-          ) : funnelError ? (
-            <div className="flex items-center justify-between">
-              <div className="text-destructive">Failed to load Funnel</div>
-              <Button variant="outline" size="sm" onClick={() => refetchFunnel()}>Retry</Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {(() => {
-                const rows = ((funnelResp?.data as FunnelData | undefined)?.rows ?? []) as [string, number][];
-                const first = rows[0]?.[1] || 1;
-                const colors = ['bg-primary','bg-secondary','bg-accent','bg-warning','bg-success'];
-                return rows.map((r, idx) => {
-                  const stage = r[0];
-                  const value = r[1];
-                  const percentage = Math.max(0, Math.min(100, Math.round((value / first) * 100)));
-                  const color = colors[idx % colors.length];
-                  return (
-                    <div key={stage} className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-foreground font-medium">{stage}</span>
-                        <span className="text-muted-foreground">
-                          {Number(value).toLocaleString()} ({percentage}%)
-                        </span>
-                      </div>
-                      <div className="w-full bg-muted/30 rounded-full h-3">
-                        <div
-                          className={`h-3 rounded-full ${color} transition-all duration-1000`}
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
-          )}
-        </GlassCard>
+      {/* Floating Action Button for Mobile */}
+      <div className="fixed bottom-6 right-6 md:hidden">
+        <Button 
+          size="lg"
+          className="rounded-full w-14 h-14 gradient-primary shadow-xl"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
       </div>
     </div>
   );
