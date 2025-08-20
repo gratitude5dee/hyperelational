@@ -15,20 +15,200 @@ export function GraphPage() {
   const [animationSpeed, setAnimationSpeed] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [filterTypes, setFilterTypes] = useState<Set<string>>(new Set());
-  const [mockData, setMockData] = useState({ 
-    nodes: [
-      { id: '1', type: 'customer', label: 'Customer 1', size: 10, color: '#3b82f6', position: [0, 0, 0] as [number, number, number], connections: 3, importance: 0.8, metadata: {} },
-      { id: '2', type: 'product', label: 'Product 1', size: 8, color: '#8b5cf6', position: [1, 1, 1] as [number, number, number], connections: 5, importance: 0.6, metadata: {} }
-    ], 
-    edges: [
-      { source: '1', target: '2', strength: 0.7, type: 'purchase', sourcePos: [0, 0, 0] as [number, number, number], targetPos: [1, 1, 1] as [number, number, number] }
-    ] 
-  });
+  const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
 
-  // Initialize filter types immediately with mock data
+  // Generate comprehensive mock data for demonstration
   React.useEffect(() => {
-    setFilterTypes(new Set(['customer', 'product']));
+    const mockData = generateComprehensiveMockData();
+    setGraphData(mockData);
+    setFilterTypes(new Set(mockData.nodes.map(n => n.type)));
   }, []);
+
+  const generateComprehensiveMockData = () => {
+    const nodes: any[] = [];
+    const edges: any[] = [];
+
+    // E-commerce scenario with realistic relationships
+    const customerNames = ['Alice Johnson', 'Bob Smith', 'Carol Davis', 'David Wilson', 'Eva Brown', 'Frank Miller', 'Grace Lee', 'Henry Taylor', 'Ivy Chen', 'Jack Wilson'];
+    const productNames = ['Designer Jeans', 'Silk Blouse', 'Leather Jacket', 'Summer Dress', 'Sneakers', 'Handbag', 'Sunglasses', 'Wool Sweater', 'Boots', 'Scarf'];
+    const categories = ['Clothing', 'Accessories', 'Footwear', 'Outerwear'];
+
+    // Create customers with varying characteristics
+    customerNames.forEach((name, i) => {
+      nodes.push({
+        id: `customer-${i}`,
+        label: name,
+        type: 'customer',
+        size: 15 + Math.random() * 10,
+        color: '#3b82f6',
+        position: [
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15
+        ] as [number, number, number],
+        connections: 0,
+        importance: 0.3 + Math.random() * 0.7,
+        metadata: {
+          age: 20 + Math.floor(Math.random() * 40),
+          lifetimeValue: 100 + Math.random() * 2000,
+          segment: ['VIP', 'Regular', 'New'][Math.floor(Math.random() * 3)],
+          lastPurchase: `${Math.floor(Math.random() * 30)} days ago`
+        }
+      });
+    });
+
+    // Create products
+    productNames.forEach((name, i) => {
+      nodes.push({
+        id: `product-${i}`,
+        label: name,
+        type: 'product',
+        size: 12 + Math.random() * 8,
+        color: '#8b5cf6',
+        position: [
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15
+        ] as [number, number, number],
+        connections: 0,
+        importance: 0.2 + Math.random() * 0.8,
+        metadata: {
+          price: 50 + Math.random() * 300,
+          rating: 3 + Math.random() * 2,
+          category: categories[Math.floor(Math.random() * categories.length)],
+          sales: Math.floor(Math.random() * 100)
+        }
+      });
+    });
+
+    // Create categories
+    categories.forEach((name, i) => {
+      nodes.push({
+        id: `category-${i}`,
+        label: name,
+        type: 'category',
+        size: 20 + Math.random() * 10,
+        color: '#10b981',
+        position: [
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15
+        ] as [number, number, number],
+        connections: 0,
+        importance: 0.6 + Math.random() * 0.4,
+        metadata: {
+          totalProducts: Math.floor(Math.random() * 20),
+          revenue: 1000 + Math.random() * 10000
+        }
+      });
+    });
+
+    // Create orders
+    for (let i = 0; i < 15; i++) {
+      nodes.push({
+        id: `order-${i}`,
+        label: `Order #${1000 + i}`,
+        type: 'order',
+        size: 8 + Math.random() * 6,
+        color: '#f59e0b',
+        position: [
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15,
+          (Math.random() - 0.5) * 15
+        ] as [number, number, number],
+        connections: 0,
+        importance: 0.1 + Math.random() * 0.5,
+        metadata: {
+          total: 50 + Math.random() * 500,
+          status: ['completed', 'pending', 'shipped'][Math.floor(Math.random() * 3)],
+          date: `2024-${Math.floor(Math.random() * 12) + 1}-${Math.floor(Math.random() * 28) + 1}`
+        }
+      });
+    }
+
+    // Create realistic relationships
+    const customerNodes = nodes.filter(n => n.type === 'customer');
+    const productNodes = nodes.filter(n => n.type === 'product');
+    const orderNodes = nodes.filter(n => n.type === 'order');
+    const categoryNodes = nodes.filter(n => n.type === 'category');
+
+    // Customer-Order relationships
+    customerNodes.forEach(customer => {
+      const numOrders = 1 + Math.floor(Math.random() * 3);
+      const customerOrders = orderNodes.slice(0, numOrders);
+      
+      customerOrders.forEach(order => {
+        edges.push({
+          source: customer.id,
+          target: order.id,
+          strength: 0.7 + Math.random() * 0.3,
+          type: 'placed_order',
+          sourcePos: customer.position,
+          targetPos: order.position
+        });
+        customer.connections++;
+        order.connections++;
+      });
+    });
+
+    // Order-Product relationships
+    orderNodes.forEach(order => {
+      const numProducts = 1 + Math.floor(Math.random() * 3);
+      const selectedProducts = [];
+      
+      for (let i = 0; i < numProducts; i++) {
+        const product = productNodes[Math.floor(Math.random() * productNodes.length)];
+        if (!selectedProducts.includes(product)) {
+          selectedProducts.push(product);
+          edges.push({
+            source: order.id,
+            target: product.id,
+            strength: 0.6 + Math.random() * 0.4,
+            type: 'contains_product',
+            sourcePos: order.position,
+            targetPos: product.position
+          });
+          order.connections++;
+          product.connections++;
+        }
+      }
+    });
+
+    // Product-Category relationships
+    productNodes.forEach(product => {
+      const category = categoryNodes[Math.floor(Math.random() * categoryNodes.length)];
+      edges.push({
+        source: product.id,
+        target: category.id,
+        strength: 0.8 + Math.random() * 0.2,
+        type: 'belongs_to_category',
+        sourcePos: product.position,
+        targetPos: category.position
+      });
+      product.connections++;
+      category.connections++;
+    });
+
+    // Customer-Product direct interests (browsing, wishlist)
+    customerNodes.forEach(customer => {
+      const numInterests = Math.floor(Math.random() * 5);
+      for (let i = 0; i < numInterests; i++) {
+        const product = productNodes[Math.floor(Math.random() * productNodes.length)];
+        edges.push({
+          source: customer.id,
+          target: product.id,
+          strength: 0.2 + Math.random() * 0.3,
+          type: 'interested_in',
+          sourcePos: customer.position,
+          targetPos: product.position
+        });
+        customer.connections++;
+        product.connections++;
+      }
+    });
+
+    return { nodes, edges };
+  };
 
   const handlePlayPause = () => setIsPlaying(!isPlaying);
   const handleLayoutChange = (mode: LayoutMode) => setLayoutMode(mode);
@@ -107,8 +287,8 @@ export function GraphPage() {
             onToggleNodeType={handleToggleNodeType}
             onReset={handleReset}
             onExport={handleExport}
-            totalNodes={mockData.nodes.length}
-            totalEdges={mockData.edges.length}
+            totalNodes={graphData.nodes.length}
+            totalEdges={graphData.edges.length}
           />
         </motion.div>
 
@@ -130,7 +310,15 @@ export function GraphPage() {
             </div>
           </div>
           
-          <Enhanced3DGraphVisualizer />
+          <Enhanced3DGraphVisualizer
+            nodes={graphData.nodes}
+            edges={graphData.edges}
+            selectedNode={selectedNode}
+            onNodeSelect={setSelectedNode}
+            layoutMode={layoutMode}
+            animationSpeed={animationSpeed}
+            filterTypes={filterTypes}
+          />
           
           {/* Overlay Controls */}
           <div className="absolute bottom-4 right-4 z-10">
@@ -153,16 +341,16 @@ export function GraphPage() {
         >
           {/* Metrics Dashboard */}
           <GraphMetricsDashboard
-            nodes={mockData.nodes}
-            edges={mockData.edges}
+            nodes={graphData.nodes}
+            edges={graphData.edges}
             selectedNode={selectedNode}
             filterTypes={filterTypes}
           />
           
           {/* AI Insights Panel */}
           <AIInsightsPanel
-            nodes={mockData.nodes}
-            edges={mockData.edges}
+            nodes={graphData.nodes}
+            edges={graphData.edges}
             selectedNode={selectedNode}
             projectType={currentProject?.type || 'fashion_ecommerce'}
           />

@@ -185,47 +185,45 @@ function Scene({
   );
 }
 
-export function Enhanced3DGraphVisualizer() {
-  const { currentProject } = useAppStore();
-  const [graphData, setGraphData] = useState<{ nodes: GraphNode3D[]; edges: GraphEdge3D[] }>({ nodes: [], edges: [] });
-  const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [layoutMode, setLayoutMode] = useState<'3d-force' | '3d-sphere' | '3d-hierarchical' | '2d-force'>('3d-force');
-  const [animationSpeed, setAnimationSpeed] = useState(1);
-  const [filterTypes, setFilterTypes] = useState<Set<string>>(new Set());
-  const [isLoading, setIsLoading] = useState(true);
+interface Enhanced3DGraphVisualizerProps {
+  nodes?: GraphNode3D[];
+  edges?: GraphEdge3D[];
+  selectedNode?: string | null;
+  onNodeSelect?: (nodeId: string | null) => void;
+  layoutMode?: '3d-force' | '3d-sphere' | '3d-hierarchical' | '2d-force';
+  animationSpeed?: number;
+  filterTypes?: Set<string>;
+}
 
-  // Load data from database
+export function Enhanced3DGraphVisualizer({
+  nodes: propNodes = [],
+  edges: propEdges = [],
+  selectedNode: propSelectedNode = null,
+  onNodeSelect: propOnNodeSelect = () => {},
+  layoutMode: propLayoutMode = '3d-force',
+  animationSpeed: propAnimationSpeed = 1,
+  filterTypes: propFilterTypes = new Set()
+}: Enhanced3DGraphVisualizerProps = {}) {
+  const [graphData, setGraphData] = useState<{ nodes: GraphNode3D[]; edges: GraphEdge3D[] }>({ 
+    nodes: propNodes, 
+    edges: propEdges 
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Update internal state when props change
   useEffect(() => {
-    if (!currentProject) return;
+    if (propNodes.length > 0) {
+      setGraphData({ nodes: propNodes, edges: propEdges });
+    }
+  }, [propNodes, propEdges]);
 
-    const loadGraphData = async () => {
-      setIsLoading(true);
-      try {
-        const data = await GraphDataService.fetchGraphData(currentProject.id, currentProject.type);
-        setGraphData(data);
-        
-        // Initialize filter with all available types
-        const types = new Set(data.nodes.map(n => n.type));
-        setFilterTypes(types);
-      } catch (error) {
-        console.error('Failed to load graph data:', error);
-        // Fallback to mock data
-        setGraphData(generateMockData());
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadGraphData();
-  }, [currentProject]);
-
-  // Apply layout algorithm
+  // Apply layout algorithm when layout mode changes
   useEffect(() => {
     if (graphData.nodes.length === 0) return;
 
     const layoutNodes = [...graphData.nodes];
     
-    switch (layoutMode) {
+    switch (propLayoutMode) {
       case '3d-sphere':
         applySphereLayout(layoutNodes);
         break;
@@ -250,76 +248,7 @@ export function Enhanced3DGraphVisualizer() {
     });
 
     setGraphData({ nodes: layoutNodes, edges: layoutEdges });
-  }, [layoutMode]);
-
-  const generateMockData = () => {
-    const nodes: GraphNode3D[] = [];
-    const edges: GraphEdge3D[] = [];
-
-    // Generate nodes based on project type
-    const nodeTypes = currentProject?.type === 'fashion_ecommerce' 
-      ? ['customer', 'product', 'order', 'category']
-      : ['fan', 'artist', 'song', 'venue', 'event'];
-
-    nodeTypes.forEach((type, typeIndex) => {
-      const count = type === 'customer' || type === 'fan' ? 50 : 
-                   type === 'product' || type === 'song' ? 30 : 15;
-      
-      for (let i = 0; i < count; i++) {
-        nodes.push({
-          id: `${type}-${i}`,
-          label: `${type.charAt(0).toUpperCase() + type.slice(1)} ${i + 1}`,
-          type,
-          size: Math.random() * 20 + 10,
-          color: getTypeColor(type),
-          position: [
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 20
-          ],
-          connections: 0,
-          importance: Math.random()
-        });
-      }
-    });
-
-    // Generate edges
-    nodes.forEach(node => {
-      const numConnections = Math.floor(Math.random() * 5) + 1;
-      const possibleTargets = nodes.filter(n => n.type !== node.type);
-      
-      for (let i = 0; i < numConnections && possibleTargets.length > 0; i++) {
-        const target = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
-        edges.push({
-          source: node.id,
-          target: target.id,
-          strength: Math.random(),
-          type: 'interaction',
-          sourcePos: node.position,
-          targetPos: target.position
-        });
-        node.connections++;
-        target.connections++;
-      }
-    });
-
-    return { nodes, edges };
-  };
-
-  const getTypeColor = (type: string): string => {
-    const colors: Record<string, string> = {
-      customer: '#3b82f6',
-      product: '#8b5cf6',
-      order: '#10b981',
-      category: '#f59e0b',
-      fan: '#06b6d4',
-      artist: '#ef4444',
-      song: '#10b981',
-      venue: '#f59e0b',
-      event: '#8b5cf6'
-    };
-    return colors[type] || '#6b7280';
-  };
+  }, [propLayoutMode, propNodes.length]);
 
   const applySphereLayout = (nodes: GraphNode3D[]) => {
     const radius = 8;
@@ -410,11 +339,11 @@ export function Enhanced3DGraphVisualizer() {
         <Scene
           nodes={graphData.nodes}
           edges={graphData.edges}
-          selectedNode={selectedNode}
-          onNodeSelect={setSelectedNode}
-          layoutMode={layoutMode}
-          animationSpeed={animationSpeed}
-          filterTypes={filterTypes}
+          selectedNode={propSelectedNode}
+          onNodeSelect={propOnNodeSelect}
+          layoutMode={propLayoutMode}
+          animationSpeed={propAnimationSpeed}
+          filterTypes={propFilterTypes}
         />
       </Canvas>
     </div>
