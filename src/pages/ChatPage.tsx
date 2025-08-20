@@ -3,9 +3,41 @@ import { motion } from 'framer-motion';
 import { GroqChatInterface } from '@/components/GroqChatInterface';
 import { GlassCard } from '@/components/ui/glass-card';
 import { DualModeToggle } from '@/components/DualModeToggle';
-import { Brain, Sparkles, Code2 } from 'lucide-react';
+import { useAppStore } from '@/stores/useAppStore';
+import { Brain, Sparkles, Code2, Palette, Music, TrendingUp, Users } from 'lucide-react';
 
 export function ChatPage() {
+  const { industryMode } = useAppStore();
+
+  const modeConfig = {
+    fashion: {
+      title: 'Fashion AI Assistant',
+      subtitle: 'Trend forecasting, customer insights & inventory optimization',
+      icon: Palette,
+      features: [
+        { icon: Sparkles, text: 'Trend Analysis & Forecasting' },
+        { icon: Users, text: 'Customer Segmentation' },
+        { icon: TrendingUp, text: 'Sales & Inventory Optimization' }
+      ],
+      gradient: 'var(--fashion-gradient)',
+      cardBg: 'var(--fashion-card-bg)'
+    },
+    artist: {
+      title: 'Artist AI Assistant',
+      subtitle: 'Superfan analytics, tour optimization & cross-platform insights',
+      icon: Music,
+      features: [
+        { icon: Users, text: 'Superfan Identification' },
+        { icon: TrendingUp, text: 'Tour Revenue Optimization' },
+        { icon: Sparkles, text: 'Multi-Platform Analytics' }
+      ],
+      gradient: 'var(--artist-gradient)',
+      cardBg: 'var(--artist-card-bg)'
+    }
+  };
+
+  const config = modeConfig[industryMode];
+
   return (
     <div className="h-full flex flex-col p-6">
       {/* Header */}
@@ -16,11 +48,11 @@ export function ChatPage() {
       >
         <div>
           <h1 className="text-3xl font-bold gradient-text flex items-center gap-3">
-            <Brain className="h-8 w-8" />
-            AI Chat Assistant
+            <config.icon className="h-8 w-8" />
+            {config.title}
           </h1>
           <p className="text-muted-foreground mt-1">
-            Ask questions in natural language and get PQL queries with insights
+            {config.subtitle}
           </p>
         </div>
         <DualModeToggle />
@@ -33,20 +65,17 @@ export function ChatPage() {
         transition={{ delay: 0.1 }}
         className="mb-6"
       >
-        <GlassCard className="p-4">
+        <GlassCard 
+          className="p-4"
+          style={{ background: config.cardBg }}
+        >
           <div className="flex items-center justify-center gap-8 text-sm">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span>Natural Language Processing</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Code2 className="h-4 w-4 text-secondary" />
-              <span>PQL Query Generation</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Brain className="h-4 w-4 text-accent" />
-              <span>Predictive Analytics</span>
-            </div>
+            {config.features.map((feature, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <feature.icon className="h-4 w-4" style={{ color: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6' }} />
+                <span>{feature.text}</span>
+              </div>
+            ))}
           </div>
         </GlassCard>
       </motion.div>
@@ -58,7 +87,10 @@ export function ChatPage() {
         transition={{ delay: 0.2 }}
         className="flex-1 min-h-0"
       >
-        <GlassCard className="h-full">
+        <GlassCard 
+          className="h-full"
+          style={{ background: config.cardBg }}
+        >
           <GroqChatInterface />
         </GlassCard>
       </motion.div>

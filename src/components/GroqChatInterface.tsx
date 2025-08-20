@@ -118,10 +118,10 @@ export function GroqChatInterface() {
   const [isListening, setIsListening] = useState(false);
   const [streamingResponse, setStreamingResponse] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { currentProject } = useAppStore();
+  const { currentProject, industryMode } = useAppStore();
   const { toast } = useToast();
 
-  const prompts = currentProject?.type === 'fashion_ecommerce' ? enhancedEcommercePrompts : enhancedArtistPrompts;
+  const prompts = industryMode === 'fashion' ? enhancedEcommercePrompts : enhancedArtistPrompts;
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -155,11 +155,13 @@ export function GroqChatInterface() {
     setMessages(prev => [...prev, streamingMessage]);
 
     try {
+      const projectType: 'fashion_ecommerce' | 'creative_hub' = industryMode === 'fashion' ? 'fashion_ecommerce' : 'creative_hub';
+      
       const context = {
-        tables: currentProject?.type === 'fashion_ecommerce' 
+        tables: industryMode === 'fashion' 
           ? ['customers', 'orders', 'products', 'reviews', 'inventory']
           : ['fans', 'concerts', 'songs', 'merchandise', 'social_media'],
-        schema: currentProject?.type === 'fashion_ecommerce'
+        schema: industryMode === 'fashion'
           ? {
               customers: ['id', 'email', 'lifetime_value', 'last_purchase_date', 'segment'],
               orders: ['id', 'customer_id', 'product_id', 'amount', 'date'],
@@ -170,7 +172,7 @@ export function GroqChatInterface() {
               concerts: ['id', 'venue', 'date', 'attendance', 'revenue'],
               songs: ['id', 'title', 'streams', 'social_mentions', 'chart_position']
             },
-        projectType: currentProject?.type || 'fashion_ecommerce'
+        projectType
       };
 
       // Simulate streaming response
@@ -326,8 +328,15 @@ ${message.suggestions?.map(s => `- ${s}`).join('\n')}
               <Brain className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h3 className="font-semibold">Groq-Powered AI Assistant</h3>
-              <p className="text-xs text-muted-foreground">Lightning-fast reasoning & analysis</p>
+              <h3 className="font-semibold">
+                {industryMode === 'fashion' ? 'Fashion AI Assistant' : 'Artist AI Assistant'}
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                {industryMode === 'fashion' 
+                  ? 'Trend forecasting & customer insights' 
+                  : 'Superfan analytics & tour optimization'
+                }
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -526,35 +535,52 @@ ${message.suggestions?.map(s => `- ${s}`).join('\n')}
       <div className="p-4 border-t border-border/50">
         <div className="mb-4">
           <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
-            <Zap className="h-4 w-4" />
-            Smart Prompts
-            <Badge variant="secondary" className="text-xs">AI-Curated</Badge>
+            <Sparkles className="h-4 w-4" />
+            {industryMode === 'fashion' ? 'Fashion Intelligence Prompts' : 'Artist Management Prompts'}
           </h4>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-2">
             {prompts.map((prompt, index) => (
-              <Button
+              <motion.button
                 key={index}
-                variant="ghost"
-                className="justify-start text-left h-auto p-4 group hover:bg-primary/5"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => handlePromptClick(prompt)}
+                className="text-left p-3 rounded-lg glass border border-white/10 
+                          hover:border-primary/30 transition-all duration-200 group"
+                style={{
+                  background: industryMode === 'fashion' 
+                    ? 'var(--fashion-card-bg)' 
+                    : 'var(--artist-card-bg)'
+                }}
               >
-                <div className="flex items-start gap-3 w-full">
-                  <div className="p-2 rounded-lg bg-muted/50 group-hover:bg-primary/10 transition-colors">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center 
+                                  bg-gradient-to-r from-primary/20 to-accent/20 
+                                  group-hover:from-primary/30 group-hover:to-accent/30 
+                                  transition-all duration-200">
                     <prompt.icon className="h-4 w-4" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge variant="secondary" className="text-xs">
+                  <div className="flex-1">
+                    <div className="text-sm text-white mb-1">{prompt.text}</div>
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant="outline" 
+                        className="text-xs px-2 py-0.5"
+                        style={{
+                          borderColor: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6',
+                          color: industryMode === 'fashion' ? '#ff6ab5' : '#8b5cf6'
+                        }}
+                      >
                         {prompt.category}
                       </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {prompt.confidence}% match
-                      </Badge>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <TrendingUp className="h-3 w-3" />
+                        {prompt.confidence}% confidence
+                      </div>
                     </div>
-                    <p className="text-sm leading-relaxed">{prompt.text}</p>
                   </div>
                 </div>
-              </Button>
+              </motion.button>
             ))}
           </div>
         </div>
