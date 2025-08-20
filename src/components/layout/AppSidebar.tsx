@@ -105,7 +105,7 @@ export function AppSidebar() {
           <div className="flex items-center gap-3">
             <div className="glass-card p-2 rounded-xl flex-shrink-0">
               <img 
-                src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" 
+                src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" 
                 alt="Hyperelational" 
                 className="h-6 w-6 animate-glow" 
               />

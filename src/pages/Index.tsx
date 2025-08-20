@@ -56,7 +56,7 @@ const Index = () => {
       <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-8 w-auto" />
+            <img src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" alt="Hyperelational" className="h-8 w-auto" />
             <span className="text-xl font-bold text-white">Hyperelational</span>
           </div>
           <Button 
@@ -100,7 +100,7 @@ const Index = () => {
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-center gap-2">
-                <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-6 w-auto" />
+                <img src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" alt="Hyperelational" className="h-6 w-auto" />
                 <span className="text-white/60">×</span>
                 <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-6 w-auto" />
               </div>

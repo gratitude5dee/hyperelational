@@ -110,7 +110,7 @@ const Auth = () => {
         <div className="text-center">
           <div className="flex items-center justify-center mb-4">
             <div className="glass-card p-4 rounded-2xl">
-              <Sparkles className="h-8 w-8 text-primary animate-glow" />
+              <img src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" alt="Hyperelational" className="h-8 w-8 animate-glow" />
             </div>
           </div>
           <h1 className="text-4xl font-bold gradient-text mb-2">
