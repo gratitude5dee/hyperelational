@@ -52,6 +52,23 @@ const Index = () => {
       transition={{ duration: 0.8 }}
       className="min-h-screen bg-black overflow-x-hidden"
     >
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-8 w-auto" />
+            <span className="text-xl font-bold text-white">Hyperelational</span>
+          </div>
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/auth')}
+            className="border-white/20 text-white hover:bg-white/10 backdrop-blur-sm"
+          >
+            Sign In
+          </Button>
+        </div>
+      </header>
+
       {/* Hero Section - Living Data Universe */}
       <section className="relative h-screen overflow-hidden">
         {/* Three.js Background */}
@@ -124,8 +141,12 @@ const Index = () => {
             >
               <Button 
                 size="lg"
-                onClick={() => navigate('/auth')}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/auth');
+                }}
+                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-10"
               >
                 <span className="relative flex items-center gap-2">
                   Start Free Trial
