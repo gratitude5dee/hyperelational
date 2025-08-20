@@ -14,11 +14,13 @@ import { RelationalLoadingAnimation } from '@/components/RelationalLoadingAnimat
 
 const Index = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Show loading animation on first visit
+    setMounted(true);
+    // Check for first visit only after component mounts (client-side only)
     const hasVisited = localStorage.getItem('hyperelational-visited');
     if (!hasVisited) {
       localStorage.setItem('hyperelational-visited', 'true');
@@ -33,6 +35,11 @@ const Index = () => {
     setIsLoading(false);
     setTimeout(() => setShowContent(true), 300);
   };
+
+  // Show loading during mount to avoid hydration mismatch
+  if (!mounted) {
+    return <div className="min-h-screen bg-black" />;
+  }
 
   if (isLoading) {
     return <RelationalLoadingAnimation onComplete={handleLoadingComplete} />;
@@ -117,24 +124,14 @@ const Index = () => {
             >
               <Button 
                 size="lg"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Button clicked, navigating to /auth');
-                  try {
-                    navigate('/auth');
-                  } catch (error) {
-                    console.error('Navigation error:', error);
-                    window.location.href = '/auth';
-                  }
-                }}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-20"
+                onClick={() => navigate('/auth')}
+                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
               >
-                <span className="relative z-30 flex items-center gap-2 pointer-events-none">
+                <span className="relative flex items-center gap-2">
                   Start Free Trial
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
               
               <Button 
