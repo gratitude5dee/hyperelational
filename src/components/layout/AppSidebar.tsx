@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
+  SidebarTrigger,
   useSidebar,
 } from '@/components/ui/sidebar';
 import {
@@ -20,7 +21,8 @@ import {
   Settings,
   Sparkles,
   User,
-  LogOut
+  LogOut,
+  Menu
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -82,20 +84,25 @@ export function AppSidebar() {
   return (
     <Sidebar className="glass-nav border-r border-border-light">
       <SidebarHeader className="p-6 pb-4">
-        <div className="flex items-center gap-3">
-          <div className="glass-card p-2 rounded-xl">
-            <img 
-              src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" 
-              alt="Hyperelational" 
-              className="h-6 w-6 animate-glow" 
-            />
-          </div>
-          {!collapsed && (
-            <div>
-              <h1 className="font-bold text-xl gradient-text">Hyperelational</h1>
-              <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="glass-card p-2 rounded-xl">
+              <img 
+                src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" 
+                alt="Hyperelational" 
+                className="h-6 w-6 animate-glow" 
+              />
             </div>
-          )}
+            {!collapsed && (
+              <div>
+                <h1 className="font-bold text-xl gradient-text">Hyperelational</h1>
+                <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
+              </div>
+            )}
+          </div>
+          <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift">
+            <Menu className="h-5 w-5" />
+          </SidebarTrigger>
         </div>
       </SidebarHeader>
 

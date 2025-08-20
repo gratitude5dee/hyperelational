@@ -1,8 +1,6 @@
 import React from 'react';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
-import { GlassCard } from '@/components/ui/glass-card';
-import { Menu } from 'lucide-react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -18,11 +16,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           {/* Header */}
           <header className="sticky top-0 z-40 glass-nav border-b border-border-light">
             <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift">
-                  <Menu className="h-5 w-5" />
-                </SidebarTrigger>
-              </div>
+              {/* Header content can be added here */}
             </div>
           </header>
 
