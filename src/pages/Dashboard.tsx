@@ -209,7 +209,7 @@ const Dashboard = () => {
             </div>
             <div>
               <h1 className="text-4xl font-bold gradient-text">
-                Comprehensive Dashboard
+                hyperelational Dashboard
               </h1>
               <p className="text-muted-foreground">
                 AI-powered insights for {getIndustryLabel()}
