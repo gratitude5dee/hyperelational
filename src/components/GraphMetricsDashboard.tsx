@@ -175,75 +175,12 @@ export function GraphMetricsDashboard({
         </GlassCard>
       </motion.div>
 
-      {/* Node Type Distribution */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        <GlassCard className="p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Users className="h-5 w-5 text-secondary" />
-            <h3 className="font-semibold">Node Distribution</h3>
-          </div>
-          
-          <div className="space-y-3">
-            {Object.entries(metrics.typeDistribution).map(([type, count]) => (
-              <div key={type} className="space-y-1">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm capitalize">{type}</span>
-                  <span className="text-sm font-medium">{count}</span>
-                </div>
-                <Progress 
-                  value={(count / metrics.totalNodes) * 100} 
-                  className="h-2"
-                />
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-      </motion.div>
-
-      {/* Top Connected Nodes */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <GlassCard className="p-4">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-5 w-5 text-accent" />
-            <h3 className="font-semibold">Most Connected</h3>
-          </div>
-          
-          <div className="space-y-2">
-            {metrics.topNodes.map((node, index) => (
-              <div 
-                key={node.id}
-                className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: node.color }} />
-                  <span className="text-sm font-medium">{node.label}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {node.type}
-                  </Badge>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {metrics.degreeCentrality[node.id]} connections
-                </div>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-      </motion.div>
-
       {/* Selected Node Details */}
       {selectedNodeData && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.1 }}
         >
           <GlassCard className="p-4">
             <div className="flex items-center gap-2 mb-4">
@@ -302,6 +239,69 @@ export function GraphMetricsDashboard({
           </GlassCard>
         </motion.div>
       )}
+
+      {/* Node Type Distribution */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <GlassCard className="p-4">
+          <div className="flex items-center gap-2 mb-4">
+            <Users className="h-5 w-5 text-secondary" />
+            <h3 className="font-semibold">Node Distribution</h3>
+          </div>
+          
+          <div className="space-y-3">
+            {Object.entries(metrics.typeDistribution).map(([type, count]) => (
+              <div key={type} className="space-y-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm capitalize">{type}</span>
+                  <span className="text-sm font-medium">{count}</span>
+                </div>
+                <Progress 
+                  value={(count / metrics.totalNodes) * 100} 
+                  className="h-2"
+                />
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      </motion.div>
+
+      {/* Top Connected Nodes */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <GlassCard className="p-4">
+          <div className="flex items-center gap-2 mb-4">
+            <Zap className="h-5 w-5 text-accent" />
+            <h3 className="font-semibold">Most Connected</h3>
+          </div>
+          
+          <div className="space-y-2">
+            {metrics.topNodes.map((node, index) => (
+              <div 
+                key={node.id}
+                className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: node.color }} />
+                  <span className="text-sm font-medium">{node.label}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {node.type}
+                  </Badge>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {metrics.degreeCentrality[node.id]} connections
+                </div>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      </motion.div>
 
       {/* AI Insights Placeholder */}
       <motion.div
