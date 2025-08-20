@@ -49,6 +49,18 @@ export function GraphMetricsDashboard({
     [selectedNode, nodes]
   );
 
+  const dfsVisit = (nodeId: string, visited: Set<string>, edges: GraphEdge3D[]) => {
+    visited.add(nodeId);
+    edges.forEach(edge => {
+      if (edge.source === nodeId && !visited.has(edge.target)) {
+        dfsVisit(edge.target, visited, edges);
+      }
+      if (edge.target === nodeId && !visited.has(edge.source)) {
+        dfsVisit(edge.source, visited, edges);
+      }
+    });
+  };
+
   const metrics = useMemo(() => {
     // Handle empty arrays gracefully
     if (visibleNodes.length === 0) {
@@ -110,18 +122,6 @@ export function GraphMetricsDashboard({
       typeDistribution
     };
   }, [visibleNodes, visibleEdges]);
-
-  const dfsVisit = (nodeId: string, visited: Set<string>, edges: GraphEdge3D[]) => {
-    visited.add(nodeId);
-    edges.forEach(edge => {
-      if (edge.source === nodeId && !visited.has(edge.target)) {
-        dfsVisit(edge.target, visited, edges);
-      }
-      if (edge.target === nodeId && !visited.has(edge.source)) {
-        dfsVisit(edge.source, visited, edges);
-      }
-    });
-  };
 
   return (
     <div className="space-y-4">
