@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import DataSources from "./pages/DataSources";
+import Analytics from "./pages/Analytics";
 import Predictions from "./pages/Predictions";
 import Settings from "./pages/Settings";
 import Index from "./pages/Index";
@@ -73,6 +74,11 @@ const App = () => (
             <Route path="/sources" element={
               <ProtectedRoute>
                 <DataSources />
+              </ProtectedRoute>
+            } />
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <Analytics />
               </ProtectedRoute>
             } />
             <Route path="/predict" element={

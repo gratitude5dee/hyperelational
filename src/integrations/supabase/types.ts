@@ -195,40 +195,67 @@ export type Database = {
       }
       customers: {
         Row: {
+          acquisition_channel: string | null
+          acquisition_date: string | null
+          age: number | null
           churn_risk: number | null
+          city: string | null
+          communication_preferences: Json | null
+          country: string | null
           created_at: string | null
           email: string | null
+          gender: string | null
           id: string
           last_purchase: string | null
           lifetime_value: number | null
           metadata: Json | null
           name: string | null
+          preferred_categories: Json | null
           project_id: string | null
           segment: string | null
+          zip_code: string | null
         }
         Insert: {
+          acquisition_channel?: string | null
+          acquisition_date?: string | null
+          age?: number | null
           churn_risk?: number | null
+          city?: string | null
+          communication_preferences?: Json | null
+          country?: string | null
           created_at?: string | null
           email?: string | null
+          gender?: string | null
           id?: string
           last_purchase?: string | null
           lifetime_value?: number | null
           metadata?: Json | null
           name?: string | null
+          preferred_categories?: Json | null
           project_id?: string | null
           segment?: string | null
+          zip_code?: string | null
         }
         Update: {
+          acquisition_channel?: string | null
+          acquisition_date?: string | null
+          age?: number | null
           churn_risk?: number | null
+          city?: string | null
+          communication_preferences?: Json | null
+          country?: string | null
           created_at?: string | null
           email?: string | null
+          gender?: string | null
           id?: string
           last_purchase?: string | null
           lifetime_value?: number | null
           metadata?: Json | null
           name?: string | null
+          preferred_categories?: Json | null
           project_id?: string | null
           segment?: string | null
+          zip_code?: string | null
         }
         Relationships: [
           {
@@ -321,35 +348,59 @@ export type Database = {
       }
       fans: {
         Row: {
+          acquisition_channel: string | null
+          age: number | null
+          city: string | null
+          communication_preferences: Json | null
+          country: string | null
           created_at: string | null
           email: string | null
           engagement_score: number | null
           favorite_tracks: Json | null
+          gender: string | null
           id: string
+          last_interaction: string | null
           location: Json | null
           project_id: string | null
+          social_handles: Json | null
           superfan_status: boolean | null
           username: string | null
         }
         Insert: {
+          acquisition_channel?: string | null
+          age?: number | null
+          city?: string | null
+          communication_preferences?: Json | null
+          country?: string | null
           created_at?: string | null
           email?: string | null
           engagement_score?: number | null
           favorite_tracks?: Json | null
+          gender?: string | null
           id?: string
+          last_interaction?: string | null
           location?: Json | null
           project_id?: string | null
+          social_handles?: Json | null
           superfan_status?: boolean | null
           username?: string | null
         }
         Update: {
+          acquisition_channel?: string | null
+          age?: number | null
+          city?: string | null
+          communication_preferences?: Json | null
+          country?: string | null
           created_at?: string | null
           email?: string | null
           engagement_score?: number | null
           favorite_tracks?: Json | null
+          gender?: string | null
           id?: string
+          last_interaction?: string | null
           location?: Json | null
           project_id?: string | null
+          social_handles?: Json | null
           superfan_status?: boolean | null
           username?: string | null
         }
@@ -534,6 +585,175 @@ export type Database = {
           },
         ]
       }
+      merch_items: {
+        Row: {
+          category: string | null
+          colors: Json | null
+          cost: number | null
+          created_at: string
+          description: string | null
+          id: string
+          images: Json | null
+          is_venue_exclusive: boolean | null
+          name: string
+          price: number | null
+          project_id: string | null
+          sizes: Json | null
+          stock_quantity: number | null
+          type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          colors?: Json | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: Json | null
+          is_venue_exclusive?: boolean | null
+          name: string
+          price?: number | null
+          project_id?: string | null
+          sizes?: Json | null
+          stock_quantity?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          colors?: Json | null
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          images?: Json | null
+          is_venue_exclusive?: boolean | null
+          name?: string
+          price?: number | null
+          project_id?: string | null
+          sizes?: Json | null
+          stock_quantity?: number | null
+          type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      merch_sales: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          fan_id: string | null
+          id: string
+          location: Json | null
+          merch_item_id: string | null
+          project_id: string | null
+          quantity: number
+          sale_channel: string | null
+          timestamp: string
+          total_price: number | null
+          unit_price: number | null
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          fan_id?: string | null
+          id?: string
+          location?: Json | null
+          merch_item_id?: string | null
+          project_id?: string | null
+          quantity?: number
+          sale_channel?: string | null
+          timestamp?: string
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          fan_id?: string | null
+          id?: string
+          location?: Json | null
+          merch_item_id?: string | null
+          project_id?: string | null
+          quantity?: number
+          sale_channel?: string | null
+          timestamp?: string
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merch_sales_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "concerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "merch_sales_fan_id_fkey"
+            columns: ["fan_id"]
+            isOneToOne: false
+            referencedRelation: "fans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "merch_sales_merch_item_id_fkey"
+            columns: ["merch_item_id"]
+            isOneToOne: false
+            referencedRelation: "merch_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          discount_amount: number | null
+          id: string
+          order_id: string | null
+          product_id: string | null
+          quantity: number
+          total_price: number | null
+          unit_price: number | null
+        }
+        Insert: {
+          created_at?: string
+          discount_amount?: number | null
+          id?: string
+          order_id?: string | null
+          product_id?: string | null
+          quantity?: number
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Update: {
+          created_at?: string
+          discount_amount?: number | null
+          id?: string
+          order_id?: string | null
+          product_id?: string | null
+          quantity?: number
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           amount: number | null
@@ -586,6 +806,50 @@ export type Database = {
           },
         ]
       }
+      page_views: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          product_id: string | null
+          project_id: string | null
+          session_id: string | null
+          timestamp: string
+          url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          product_id?: string | null
+          project_id?: string | null
+          session_id?: string | null
+          timestamp?: string
+          url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          product_id?: string | null
+          project_id?: string | null
+          session_id?: string | null
+          timestamp?: string
+          url?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_views_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       predictions: {
         Row: {
           created_at: string
@@ -623,32 +887,56 @@ export type Database = {
       }
       products: {
         Row: {
+          brand: string | null
           category: string | null
+          color: string | null
           created_at: string | null
           id: string
+          images: Json | null
+          material: string | null
           name: string
           price: number | null
           project_id: string | null
+          season: string | null
+          size: string | null
+          sku: string | null
+          stock_quantity: number | null
           style_attributes: Json | null
           trend_score: number | null
         }
         Insert: {
+          brand?: string | null
           category?: string | null
+          color?: string | null
           created_at?: string | null
           id?: string
+          images?: Json | null
+          material?: string | null
           name: string
           price?: number | null
           project_id?: string | null
+          season?: string | null
+          size?: string | null
+          sku?: string | null
+          stock_quantity?: number | null
           style_attributes?: Json | null
           trend_score?: number | null
         }
         Update: {
+          brand?: string | null
           category?: string | null
+          color?: string | null
           created_at?: string | null
           id?: string
+          images?: Json | null
+          material?: string | null
           name?: string
           price?: number | null
           project_id?: string | null
+          season?: string | null
+          size?: string | null
+          sku?: string | null
+          stock_quantity?: number | null
           style_attributes?: Json | null
           trend_score?: number | null
         }
@@ -805,6 +1093,119 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      streams: {
+        Row: {
+          album_name: string | null
+          artist_name: string | null
+          created_at: string
+          duration_ms: number | null
+          fan_id: string | null
+          id: string
+          location: Json | null
+          platform: string | null
+          play_count: number | null
+          project_id: string | null
+          timestamp: string
+          track_name: string | null
+        }
+        Insert: {
+          album_name?: string | null
+          artist_name?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          fan_id?: string | null
+          id?: string
+          location?: Json | null
+          platform?: string | null
+          play_count?: number | null
+          project_id?: string | null
+          timestamp?: string
+          track_name?: string | null
+        }
+        Update: {
+          album_name?: string | null
+          artist_name?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          fan_id?: string | null
+          id?: string
+          location?: Json | null
+          platform?: string | null
+          play_count?: number | null
+          project_id?: string | null
+          timestamp?: string
+          track_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "streams_fan_id_fkey"
+            columns: ["fan_id"]
+            isOneToOne: false
+            referencedRelation: "fans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_sales: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          fan_id: string | null
+          fees: number | null
+          id: string
+          project_id: string | null
+          purchase_date: string
+          quantity: number
+          sale_channel: string | null
+          ticket_type: string | null
+          total_price: number | null
+          unit_price: number | null
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          fan_id?: string | null
+          fees?: number | null
+          id?: string
+          project_id?: string | null
+          purchase_date?: string
+          quantity?: number
+          sale_channel?: string | null
+          ticket_type?: string | null
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          fan_id?: string | null
+          fees?: number | null
+          id?: string
+          project_id?: string | null
+          purchase_date?: string
+          quantity?: number
+          sale_channel?: string | null
+          ticket_type?: string | null
+          total_price?: number | null
+          unit_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_sales_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "concerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_sales_fan_id_fkey"
+            columns: ["fan_id"]
+            isOneToOne: false
+            referencedRelation: "fans"
             referencedColumns: ["id"]
           },
         ]
