@@ -335,16 +335,14 @@ export function Enhanced3DGraphVisualizer({
 
   // Update internal state when props change
   useEffect(() => {
-    if (propNodes.length > 0) {
-      setGraphData({ nodes: propNodes, edges: propEdges });
-    }
+    setGraphData({ nodes: propNodes, edges: propEdges });
   }, [propNodes, propEdges]);
 
   // Apply layout algorithm when layout mode changes
   useEffect(() => {
-    if (graphData.nodes.length === 0) return;
+    if (propNodes.length === 0) return;
 
-    const layoutNodes = [...graphData.nodes];
+    const layoutNodes = [...propNodes];
     
     switch (propLayoutMode) {
       case '3d-sphere':
@@ -360,7 +358,7 @@ export function Enhanced3DGraphVisualizer({
     }
 
     // Update edge positions
-    const layoutEdges = graphData.edges.map(edge => {
+    const layoutEdges = propEdges.map(edge => {
       const sourceNode = layoutNodes.find(n => n.id === edge.source);
       const targetNode = layoutNodes.find(n => n.id === edge.target);
       return {
@@ -371,7 +369,7 @@ export function Enhanced3DGraphVisualizer({
     });
 
     setGraphData({ nodes: layoutNodes, edges: layoutEdges });
-  }, [propLayoutMode, propNodes.length]);
+  }, [propLayoutMode, propNodes, propEdges]);
 
   const applySphereLayout = (nodes: GraphNode3D[]) => {
     const radius = 8;
