@@ -414,8 +414,10 @@ export class GraphAIService {
         return acc;
       }, {} as Record<string, string[]>);
 
-      const largestSegment = Object.entries(typeGroups)
-        .sort(([,a], [,b]) => b.length - a.length)[0];
+      const typeGroupEntries = Object.entries(typeGroups);
+      const largestSegment = typeGroupEntries.length > 0 
+        ? typeGroupEntries.sort(([,a], [,b]) => b.length - a.length)[0]
+        : null;
 
       if (largestSegment) {
         insights.push({

@@ -15,20 +15,18 @@ export function GraphPage() {
   const [animationSpeed, setAnimationSpeed] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [filterTypes, setFilterTypes] = useState<Set<string>>(new Set());
-  const [mockData, setMockData] = useState({ nodes: [], edges: [] });
+  const [mockData, setMockData] = useState({ 
+    nodes: [
+      { id: '1', type: 'customer', label: 'Customer 1', size: 10, color: '#3b82f6', position: [0, 0, 0] as [number, number, number], connections: 3, importance: 0.8, metadata: {} },
+      { id: '2', type: 'product', label: 'Product 1', size: 8, color: '#8b5cf6', position: [1, 1, 1] as [number, number, number], connections: 5, importance: 0.6, metadata: {} }
+    ], 
+    edges: [
+      { source: '1', target: '2', strength: 0.7, type: 'purchase', sourcePos: [0, 0, 0] as [number, number, number], targetPos: [1, 1, 1] as [number, number, number] }
+    ] 
+  });
 
-  // Mock data for demonstration - in real app this comes from Enhanced3DGraphVisualizer
+  // Initialize filter types immediately with mock data
   React.useEffect(() => {
-    // This would be replaced by actual data from the visualizer
-    setMockData({
-      nodes: [
-        { id: '1', type: 'customer', label: 'Customer 1', size: 10, color: '#3b82f6', position: [0, 0, 0], connections: 3, importance: 0.8, metadata: {} },
-        { id: '2', type: 'product', label: 'Product 1', size: 8, color: '#8b5cf6', position: [1, 1, 1], connections: 5, importance: 0.6, metadata: {} }
-      ],
-      edges: [
-        { source: '1', target: '2', strength: 0.7, type: 'purchase', sourcePos: [0, 0, 0], targetPos: [1, 1, 1] }
-      ]
-    });
     setFilterTypes(new Set(['customer', 'product']));
   }, []);
 

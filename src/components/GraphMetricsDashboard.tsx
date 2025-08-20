@@ -50,6 +50,20 @@ export function GraphMetricsDashboard({
   );
 
   const metrics = useMemo(() => {
+    // Handle empty arrays gracefully
+    if (visibleNodes.length === 0) {
+      return {
+        totalNodes: 0,
+        totalEdges: 0,
+        density: 0,
+        avgDegree: 0,
+        communities: 0,
+        degreeCentrality: {},
+        topNodes: [],
+        typeDistribution: {}
+      };
+    }
+
     const totalNodes = visibleNodes.length;
     const totalEdges = visibleEdges.length;
     const maxPossibleEdges = (totalNodes * (totalNodes - 1)) / 2;
@@ -66,7 +80,7 @@ export function GraphMetricsDashboard({
 
     // Find most connected nodes
     const topNodes = visibleNodes
-      .sort((a, b) => degreeCentrality[b.id] - degreeCentrality[a.id])
+      .sort((a, b) => (degreeCentrality[b.id] || 0) - (degreeCentrality[a.id] || 0))
       .slice(0, 5);
 
     // Node type distribution
@@ -309,7 +323,7 @@ export function GraphMetricsDashboard({
             
             <div className="flex items-start gap-2">
               <TrendingUp className="h-4 w-4 mt-0.5 text-secondary" />
-              <span>Most connected node type: {Object.entries(metrics.typeDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0]}</span>
+              <span>Most connected node type: {Object.entries(metrics.typeDistribution).length > 0 ? Object.entries(metrics.typeDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0] : 'None'}</span>
             </div>
             
             {metrics.communities > 1 && (
