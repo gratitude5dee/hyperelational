@@ -20,7 +20,7 @@ export function AppLayout({
           <header className="sticky top-0 z-40 glass-nav border-b border-border-light">
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-4">
-                <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-8 w-auto" />
+                <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-8 w-auto" />
               </div>
               <div className="flex items-center gap-4">
                 <div className="ml-auto">
