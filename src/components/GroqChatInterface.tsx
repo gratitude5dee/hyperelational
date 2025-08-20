@@ -109,7 +109,7 @@ export function GroqChatInterface() {
     {
       id: '1',
       role: 'system',
-      content: "🚀 **Enhanced AI Assistant Activated**\n\nI'm powered by Groq's lightning-fast LLMs with advanced reasoning capabilities. I can:\n\n✨ **Generate optimized PQL queries** with confidence scoring\n📊 **Create data narratives** that tell compelling business stories\n🎯 **Provide actionable insights** with next-step recommendations\n🔄 **Stream responses** in real-time for immediate feedback\n\nTry asking me complex questions about your data relationships!",
+      content: "🚀 **Enhanced AI Assistant Activated**\n\nI'm powered by advanced LLMs with exceptional reasoning capabilities. I can:\n\n✨ **Generate optimized PQL queries** with confidence scoring\n📊 **Create data narratives** that tell compelling business stories\n🎯 **Provide actionable insights** with next-step recommendations\n🔄 **Stream responses** in real-time for immediate feedback\n\nTry asking me complex questions about your data relationships!\n\n*hyperelational powered by kumoRFM*",
       timestamp: new Date()
     }
   ]);
@@ -497,7 +497,7 @@ ${message.suggestions?.map(s => `- ${s}`).join('\n')}
                     <span>{message.timestamp.toLocaleTimeString()}</span>
                     {message.role === 'assistant' && (
                       <Badge variant="outline" className="text-xs">
-                        Groq Mixtral
+                        hyperelational
                       </Badge>
                     )}
                   </div>
@@ -623,7 +623,7 @@ ${message.suggestions?.map(s => `- ${s}`).join('\n')}
             <div className="flex items-center gap-2">
               <span>Powered by</span>
               <Badge variant="outline" className="text-xs">
-                Groq Mixtral-8x7B
+                gpt-oss
               </Badge>
             </div>
           </div>

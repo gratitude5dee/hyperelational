@@ -22,7 +22,8 @@ export class GroqChatService {
     // In a real app, this would come from environment variables via Supabase edge functions
     this.groq = new Groq({
       apiKey: 'gsk_demo_key', // This would be handled securely in production
-      dangerouslyAllowBrowser: true // Only for demo purposes
+      dangerouslyAllowBrowser: true, // Only for demo purposes
+      baseURL: 'https://api.openai.com/v1', // Using OpenAI endpoint for gpt-oss
     });
   }
 
@@ -60,7 +61,7 @@ export class GroqChatService {
           ...this.conversationHistory.slice(-10), // Keep last 10 messages for context
           { role: 'user', content: userInput }
         ],
-        model: 'mixtral-8x7b-32768',
+        model: 'gpt-oss',
         temperature: 0.3,
         max_tokens: 1024
       });
@@ -68,7 +69,7 @@ export class GroqChatService {
       return this.parsePQLResponse(response.choices[0].message.content || '');
       */
     } catch (error) {
-      console.error('Groq API error:', error);
+      console.error('API error:', error);
       return this.generateMockPQLResponse(userInput, context);
     }
   }
@@ -92,7 +93,7 @@ export class GroqChatService {
       // Mock response for demo
       return this.generateMockNarrative(data, query, context);
     } catch (error) {
-      console.error('Groq narrative generation error:', error);
+      console.error('Narrative generation error:', error);
       return this.generateMockNarrative(data, query, context);
     }
   }
@@ -100,7 +101,7 @@ export class GroqChatService {
   async streamResponse(userInput: string, context: DataContext, onToken: (token: string) => void): Promise<void> {
     // Simulate streaming response
     const response = await this.generatePQLQuery(userInput, context);
-    const fullResponse = `${response.explanation}\n\nGenerated PQL Query:\n\n\`\`\`sql\n${response.query}\n\`\`\`\n\nConfidence: ${response.confidence}%`;
+    const fullResponse = `${response.explanation}\n\nGenerated PQL Query:\n\n\`\`\`sql\n${response.query}\n\`\`\`\n\nConfidence: ${response.confidence}%\n\n*hyperelational powered by kumoRFM*`;
     
     // Simulate token streaming
     const tokens = fullResponse.split(' ');
@@ -219,7 +220,7 @@ LIMIT 100`,
 - A/B test timing optimization strategies
 - Analyze competitive landscape impact on recent metric changes
 
-*Analysis powered by Groq AI with 87% confidence score*`;
+*Analysis hyperelational powered by kumoRFM with 87% confidence score*`;
   }
 
   updateConversationHistory(role: 'user' | 'assistant', content: string) {
