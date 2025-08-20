@@ -71,7 +71,7 @@ const CloudShader: React.FC = () => {
     vec3 palette(float t) {
       // Use our color variables
       vec3 baseDeep = vec3(0.020, 0.016, 0.039);      // #05040a
-      vec3 accentPrimary = vec3(1.0, 0.42, 0.0);      // #FF6B00
+      vec3 accentPrimary = vec3(0.5, 0.0, 1.0);       // #8000FF
       vec3 highlightInteractive = vec3(0.0, 0.941, 1.0); // #00F0FF
       
       return mix(

@@ -7,8 +7,8 @@
     /* UniversalAI Design System - Core Colors */
     --color-base-deep: 242 95% 3%; /* #05040a */
     --color-base-deep-lighter: 225 54% 20%; /* #141C44 */
-    --color-accent-primary: 24 100% 50%; /* #FF6B00 */
-    --color-accent-primary-lighter: 20 100% 60%; /* #FF8A3D */
+    --color-accent-primary: 270 100% 50%; /* #8000FF */
+    --color-accent-primary-lighter: 270 100% 60%; /* #9933FF */
     --color-highlight-interactive: 187 100% 50%; /* #00F0FF */
     --color-highlight-interactive-lighter: 187 100% 63%; /* #4FF8FF */
     
@@ -22,7 +22,7 @@
 
     --primary: var(--color-accent-primary);
     --primary-light: var(--color-accent-primary-lighter);
-    --primary-dark: 24 100% 40%;
+    --primary-dark: 270 100% 40%;
     --primary-foreground: var(--text-primary);
 
     --secondary: var(--color-base-deep-lighter);
@@ -163,7 +163,7 @@ body {
     text-shadow: 0 0 10px currentColor;
   }
 
-  .text-glow-orange {
+  .text-glow-purple {
     text-shadow: 0 0 20px hsl(var(--color-accent-primary));
   }
 
