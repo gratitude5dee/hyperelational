@@ -102,7 +102,7 @@ const Index = () => {
               <div className="flex items-center gap-2">
                 <img src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" alt="Hyperelational" className="h-6 w-auto" />
                 <span className="text-white/60">×</span>
-                <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-6 w-auto" />
+                <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-6 w-auto" />
               </div>
               <div className="h-4 w-px bg-white/20" />
               <span className="text-sm text-white/80">Powered by Relational AI</span>

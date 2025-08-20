@@ -340,7 +340,7 @@ export default function Integrations() {
             whileHover={{ scale: 1.05 }}
           >
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-5 w-auto" />
+            <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-5 w-auto" />
             <span className="text-sm text-white/80">
               All data unified through relational intelligence
             </span>

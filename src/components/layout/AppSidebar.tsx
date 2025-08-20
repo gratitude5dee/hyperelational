@@ -180,7 +180,7 @@ export function AppSidebar() {
           {!collapsed && (
             <div className="flex items-center justify-between mb-2 animate-fade-in">
               <div className="flex items-center gap-2">
-                <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-4 w-auto" />
+                <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-4 w-auto" />
                 <span className="text-xs text-muted-foreground">Powered by KumoRFM</span>
               </div>
             </div>

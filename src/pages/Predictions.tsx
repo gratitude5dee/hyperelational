@@ -16,7 +16,7 @@ type PredResult = ChurnResult | ForecastResult;
 function KumoLoader() {
   return (
     <div className="flex items-center gap-3">
-      <img src="/kumo-logo-pink.svg" alt="KumoRFM" className="h-6 w-auto animate-pulse" />
+      <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-6 w-auto animate-pulse" />
       <span className="text-sm text-muted-foreground">AI Insights by KumoRFM</span>
     </div>
   );
