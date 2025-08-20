@@ -32,6 +32,8 @@ import { AIInsightsWidget } from '@/components/dashboard/widgets/AIInsightsWidge
 import { AdvancedChartWidget } from '@/components/dashboard/widgets/AdvancedChartWidget';
 import { GoalProgressWidget } from '@/components/dashboard/widgets/GoalProgressWidget';
 import { ActivityHeatmapWidget } from '@/components/dashboard/widgets/ActivityHeatmapWidget';
+import { NetworkVisualizationWidget } from '@/components/dashboard/widgets/NetworkVisualizationWidget';
+import { PerformanceAnalyticsWidget } from '@/components/dashboard/widgets/PerformanceAnalyticsWidget';
 
 // Import existing analytics components
 import { ProductRecommendationEngine } from '@/components/analytics/ProductRecommendationEngine';
@@ -67,13 +69,9 @@ const Dashboard = () => {
       </div>
       
       {/* Second row - Main visualizations */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Graph3DWidget size="full" />
-        </div>
-        <div className="space-y-6">
-          <AdvancedChartWidget size="medium" />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <NetworkVisualizationWidget size="large" />
+        <PerformanceAnalyticsWidget size="large" />
       </div>
       
       {/* Third row - Analytics */}
