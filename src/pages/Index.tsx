@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
+import { useNavigate } from 'react-router-dom';
 import { ChevronDown, BrainCircuit, Sparkles, Network, ShoppingBag, Music, ArrowRight, Users, TrendingUp, Target, Zap, Globe, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +13,7 @@ import { FeatureCard } from '@/components/FeatureCard';
 import { RelationalLoadingAnimation } from '@/components/RelationalLoadingAnimation';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
@@ -115,6 +117,7 @@ const Index = () => {
             >
               <Button 
                 size="lg"
+                onClick={() => navigate('/auth')}
                 className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
               >
                 <span className="relative z-10 flex items-center gap-2">
