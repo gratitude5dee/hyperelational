@@ -16,6 +16,7 @@ import Index from "./pages/Index";
 import { ChatPage } from "./pages/ChatPage";
 import { GraphPage } from "./pages/GraphPage";
 import Integrations from "./pages/Integrations";
+import AgentWorkflows from "./pages/AgentWorkflows";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +85,11 @@ const App = () => (
             <Route path="/predict" element={
               <ProtectedRoute>
                 <Predictions />
+              </ProtectedRoute>
+            } />
+            <Route path="/agents" element={
+              <ProtectedRoute>
+                <AgentWorkflows />
               </ProtectedRoute>
             } />
             <Route path="/settings" element={

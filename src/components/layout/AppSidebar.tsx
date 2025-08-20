@@ -25,7 +25,8 @@ import {
   Menu,
   Plug,
   TrendingUp,
-  Zap
+  Zap,
+  Bot
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -61,6 +62,12 @@ const navigationItems = [
     url: '/predict', 
     icon: Zap,
     description: 'AI Forecasting'
+  },
+  { 
+    title: 'Agent Workflows', 
+    url: '/agents', 
+    icon: Bot,
+    description: 'AI Agent Orchestration'
   },
   { 
     title: 'Data Sources', 
