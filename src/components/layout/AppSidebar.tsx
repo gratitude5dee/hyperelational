@@ -102,26 +102,39 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarHeader className={collapsed ? "p-2" : "p-6 pb-4"}>
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="glass-card p-2 rounded-xl flex-shrink-0">
+        {collapsed ? (
+          <div className="flex flex-col items-center gap-2">
+            <div className="glass-card p-2 rounded-xl">
               <img 
                 src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" 
                 alt="Hyperelational" 
                 className="h-6 w-6 animate-glow" 
               />
             </div>
-            {!collapsed && (
+            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift">
+              <Menu className="h-5 w-5" />
+            </SidebarTrigger>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="glass-card p-2 rounded-xl flex-shrink-0">
+                <img 
+                  src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" 
+                  alt="Hyperelational" 
+                  className="h-6 w-6 animate-glow" 
+                />
+              </div>
               <div className="animate-fade-in">
                 <h1 className="font-bold text-xl gradient-text">Hyperelational</h1>
                 <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
               </div>
-            )}
+            </div>
+            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift flex-shrink-0">
+              <Menu className="h-5 w-5" />
+            </SidebarTrigger>
           </div>
-          <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift flex-shrink-0">
-            <Menu className="h-5 w-5" />
-          </SidebarTrigger>
-        </div>
+        )}
       </SidebarHeader>
 
       <SidebarContent className={collapsed ? "px-2" : "px-4"}>
