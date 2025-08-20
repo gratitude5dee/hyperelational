@@ -126,11 +126,7 @@ export function AppSidebar() {
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="glass-card p-2 rounded-xl flex-shrink-0">
-                <img 
-                  src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" 
-                  alt="Hyperelational" 
-                  className="h-6 w-6 animate-glow" 
-                />
+                <span className="text-xs text-muted-foreground">by 5-Dee Studos</span>
               </div>
               <div className="animate-fade-in">
                 <h1 className="font-bold text-xl gradient-text">hyperelational</h1>
