@@ -23,6 +23,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
+import { DualModeToggle } from '@/components/DualModeToggle';
 
 // Widget imports
 import { AIChatWidget } from '@/components/dashboard/widgets/AIChatWidget';
@@ -58,11 +59,7 @@ const Dashboard = () => {
     return industryMode === 'fashion' ? 'Fashion & E-commerce' : 'Music & Touring';
   };
 
-  const renderExecutiveLayout = () => {
-    console.log('🔧 DEBUG: Rendering Executive Layout');
-    console.log('🔧 DEBUG: Industry Mode:', industryMode);
-    
-    return (
+  const renderExecutiveLayout = () => (
     <div className="space-y-6">
       {/* Top row - Key metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -123,7 +120,6 @@ const Dashboard = () => {
       <ActivityHeatmapWidget size="full" />
     </div>
   );
-};
 
   const renderAnalystLayout = () => (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -227,6 +223,9 @@ const Dashboard = () => {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* Industry Mode Toggle */}
+          <DualModeToggle />
+          
           {/* Layout Presets */}
           <div className="flex items-center gap-2">
             <Button
