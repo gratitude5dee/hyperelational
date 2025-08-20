@@ -17,195 +17,380 @@ export function GraphPage() {
   const [filterTypes, setFilterTypes] = useState<Set<string>>(new Set());
   const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
 
-  // Generate comprehensive mock data for demonstration
+  // Generate comprehensive mock data based on project type
   React.useEffect(() => {
-    const mockData = generateComprehensiveMockData();
+    const mockData = generateComprehensiveMockData(currentProject?.type || 'fashion_ecommerce');
     setGraphData(mockData);
     setFilterTypes(new Set(mockData.nodes.map(n => n.type)));
-  }, []);
+  }, [currentProject?.type]);
 
-  const generateComprehensiveMockData = () => {
+  const generateComprehensiveMockData = (projectType: string) => {
     const nodes: any[] = [];
     const edges: any[] = [];
 
-    // E-commerce scenario with realistic relationships
-    const customerNames = ['Alice Johnson', 'Bob Smith', 'Carol Davis', 'David Wilson', 'Eva Brown', 'Frank Miller', 'Grace Lee', 'Henry Taylor', 'Ivy Chen', 'Jack Wilson'];
-    const productNames = ['Designer Jeans', 'Silk Blouse', 'Leather Jacket', 'Summer Dress', 'Sneakers', 'Handbag', 'Sunglasses', 'Wool Sweater', 'Boots', 'Scarf'];
-    const categories = ['Clothing', 'Accessories', 'Footwear', 'Outerwear'];
+    if (projectType === 'creative_hub') {
+      // Artist/Creative industry scenario
+      const artistNames = ['Taylor Swift', 'Drake', 'Billie Eilish', 'The Weeknd', 'Ariana Grande', 'Ed Sheeran', 'Olivia Rodrigo', 'Harry Styles', 'Dua Lipa', 'Post Malone'];
+      const songNames = ['Midnight Dreams', 'City Lights', 'Ocean Waves', 'Electric Nights', 'Golden Hour', 'Neon Glow', 'Starlight', 'Velvet Sky', 'Crystal Rain', 'Phoenix Rise'];
+      const fanNames = ['Sarah M.', 'Alex K.', 'Jordan P.', 'Casey L.', 'Morgan T.', 'Riley C.', 'Jamie R.', 'Avery S.', 'Quinn D.', 'Blake H.', 'Parker W.', 'Sage F.', 'River G.', 'Phoenix B.', 'Rowan J.'];
+      const venueNames = ['Madison Square Garden', 'Staples Center', 'The Forum', 'Red Rocks', 'Hollywood Bowl', 'First Avenue', 'The Fillmore', 'House of Blues'];
 
-    // Create customers with varying characteristics
-    customerNames.forEach((name, i) => {
-      nodes.push({
-        id: `customer-${i}`,
-        label: name,
-        type: 'customer',
-        size: 15 + Math.random() * 10,
-        color: '#3b82f6',
-        position: [
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15
-        ] as [number, number, number],
-        connections: 0,
-        importance: 0.3 + Math.random() * 0.7,
-        metadata: {
-          age: 20 + Math.floor(Math.random() * 40),
-          lifetimeValue: 100 + Math.random() * 2000,
-          segment: ['VIP', 'Regular', 'New'][Math.floor(Math.random() * 3)],
-          lastPurchase: `${Math.floor(Math.random() * 30)} days ago`
+      // Create artists
+      artistNames.forEach((name, i) => {
+        nodes.push({
+          id: `artist-${i}`,
+          label: name,
+          type: 'artist',
+          size: 20 + Math.random() * 15,
+          color: '#ef4444',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.7 + Math.random() * 0.3,
+          metadata: {
+            monthlyListeners: Math.floor(1000000 + Math.random() * 50000000),
+            genre: ['Pop', 'Hip-Hop', 'Rock', 'Electronic', 'Indie'][Math.floor(Math.random() * 5)],
+            totalStreams: Math.floor(100000000 + Math.random() * 900000000),
+            fanbaseGrowth: `${Math.floor(Math.random() * 50) + 10}% this month`
+          }
+        });
+      });
+
+      // Create songs
+      songNames.forEach((name, i) => {
+        nodes.push({
+          id: `song-${i}`,
+          label: name,
+          type: 'song',
+          size: 12 + Math.random() * 10,
+          color: '#10b981',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.3 + Math.random() * 0.7,
+          metadata: {
+            streams: Math.floor(1000000 + Math.random() * 100000000),
+            duration: `${Math.floor(Math.random() * 3) + 2}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+            rating: 3.5 + Math.random() * 1.5,
+            releaseDate: `${2020 + Math.floor(Math.random() * 4)}-${Math.floor(Math.random() * 12) + 1}-${Math.floor(Math.random() * 28) + 1}`
+          }
+        });
+      });
+
+      // Create fans
+      fanNames.forEach((name, i) => {
+        nodes.push({
+          id: `fan-${i}`,
+          label: name,
+          type: 'fan',
+          size: 8 + Math.random() * 8,
+          color: '#06b6d4',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.1 + Math.random() * 0.6,
+          metadata: {
+            age: 16 + Math.floor(Math.random() * 40),
+            engagementScore: Math.floor(Math.random() * 100),
+            favoriteGenre: ['Pop', 'Hip-Hop', 'Rock', 'Electronic'][Math.floor(Math.random() * 4)],
+            concertsAttended: Math.floor(Math.random() * 20)
+          }
+        });
+      });
+
+      // Create venues
+      venueNames.forEach((name, i) => {
+        nodes.push({
+          id: `venue-${i}`,
+          label: name,
+          type: 'venue',
+          size: 15 + Math.random() * 10,
+          color: '#f59e0b',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.5 + Math.random() * 0.5,
+          metadata: {
+            capacity: Math.floor(5000 + Math.random() * 50000),
+            location: ['New York', 'Los Angeles', 'Chicago', 'Nashville', 'Austin'][Math.floor(Math.random() * 5)],
+            rating: 4.0 + Math.random() * 1.0,
+            eventsPerYear: Math.floor(50 + Math.random() * 200)
+          }
+        });
+      });
+
+      // Create creative industry relationships
+      const artistNodes = nodes.filter(n => n.type === 'artist');
+      const songNodes = nodes.filter(n => n.type === 'song');
+      const fanNodes = nodes.filter(n => n.type === 'fan');
+      const venueNodes = nodes.filter(n => n.type === 'venue');
+
+      // Artist-Song relationships
+      artistNodes.forEach(artist => {
+        const numSongs = 2 + Math.floor(Math.random() * 4);
+        const artistSongs = songNodes.slice(0, numSongs);
+        
+        artistSongs.forEach(song => {
+          edges.push({
+            source: artist.id,
+            target: song.id,
+            strength: 0.8 + Math.random() * 0.2,
+            type: 'created_song',
+            sourcePos: artist.position,
+            targetPos: song.position
+          });
+          artist.connections++;
+          song.connections++;
+        });
+      });
+
+      // Fan-Artist relationships (following/listening)
+      fanNodes.forEach(fan => {
+        const numArtists = 1 + Math.floor(Math.random() * 3);
+        const followedArtists = artistNodes.slice(0, numArtists);
+        
+        followedArtists.forEach(artist => {
+          edges.push({
+            source: fan.id,
+            target: artist.id,
+            strength: 0.4 + Math.random() * 0.6,
+            type: 'follows_artist',
+            sourcePos: fan.position,
+            targetPos: artist.position
+          });
+          fan.connections++;
+          artist.connections++;
+        });
+      });
+
+      // Fan-Song relationships (streaming)
+      fanNodes.forEach(fan => {
+        const numSongs = Math.floor(Math.random() * 5);
+        for (let i = 0; i < numSongs; i++) {
+          const song = songNodes[Math.floor(Math.random() * songNodes.length)];
+          edges.push({
+            source: fan.id,
+            target: song.id,
+            strength: 0.2 + Math.random() * 0.4,
+            type: 'streams_song',
+            sourcePos: fan.position,
+            targetPos: song.position
+          });
+          fan.connections++;
+          song.connections++;
         }
       });
-    });
 
-    // Create products
-    productNames.forEach((name, i) => {
-      nodes.push({
-        id: `product-${i}`,
-        label: name,
-        type: 'product',
-        size: 12 + Math.random() * 8,
-        color: '#8b5cf6',
-        position: [
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15
-        ] as [number, number, number],
-        connections: 0,
-        importance: 0.2 + Math.random() * 0.8,
-        metadata: {
-          price: 50 + Math.random() * 300,
-          rating: 3 + Math.random() * 2,
-          category: categories[Math.floor(Math.random() * categories.length)],
-          sales: Math.floor(Math.random() * 100)
+      // Artist-Venue relationships (concerts)
+      artistNodes.forEach(artist => {
+        const numVenues = Math.floor(Math.random() * 3);
+        for (let i = 0; i < numVenues; i++) {
+          const venue = venueNodes[Math.floor(Math.random() * venueNodes.length)];
+          edges.push({
+            source: artist.id,
+            target: venue.id,
+            strength: 0.6 + Math.random() * 0.4,
+            type: 'performed_at',
+            sourcePos: artist.position,
+            targetPos: venue.position
+          });
+          artist.connections++;
+          venue.connections++;
         }
       });
-    });
 
-    // Create categories
-    categories.forEach((name, i) => {
-      nodes.push({
-        id: `category-${i}`,
-        label: name,
-        type: 'category',
-        size: 20 + Math.random() * 10,
-        color: '#10b981',
-        position: [
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15
-        ] as [number, number, number],
-        connections: 0,
-        importance: 0.6 + Math.random() * 0.4,
-        metadata: {
-          totalProducts: Math.floor(Math.random() * 20),
-          revenue: 1000 + Math.random() * 10000
+    } else {
+      // E-commerce scenario (existing code)
+      const customerNames = ['Alice Johnson', 'Bob Smith', 'Carol Davis', 'David Wilson', 'Eva Brown', 'Frank Miller', 'Grace Lee', 'Henry Taylor', 'Ivy Chen', 'Jack Wilson'];
+      const productNames = ['Designer Jeans', 'Silk Blouse', 'Leather Jacket', 'Summer Dress', 'Sneakers', 'Handbag', 'Sunglasses', 'Wool Sweater', 'Boots', 'Scarf'];
+      const categories = ['Clothing', 'Accessories', 'Footwear', 'Outerwear'];
+
+      // Create customers with varying characteristics
+      customerNames.forEach((name, i) => {
+        nodes.push({
+          id: `customer-${i}`,
+          label: name,
+          type: 'customer',
+          size: 15 + Math.random() * 10,
+          color: '#3b82f6',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.3 + Math.random() * 0.7,
+          metadata: {
+            age: 20 + Math.floor(Math.random() * 40),
+            lifetimeValue: 100 + Math.random() * 2000,
+            segment: ['VIP', 'Regular', 'New'][Math.floor(Math.random() * 3)],
+            lastPurchase: `${Math.floor(Math.random() * 30)} days ago`
+          }
+        });
+      });
+
+      // Create products
+      productNames.forEach((name, i) => {
+        nodes.push({
+          id: `product-${i}`,
+          label: name,
+          type: 'product',
+          size: 12 + Math.random() * 8,
+          color: '#8b5cf6',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.2 + Math.random() * 0.8,
+          metadata: {
+            price: 50 + Math.random() * 300,
+            rating: 3 + Math.random() * 2,
+            category: categories[Math.floor(Math.random() * categories.length)],
+            sales: Math.floor(Math.random() * 100)
+          }
+        });
+      });
+
+      // Create categories
+      categories.forEach((name, i) => {
+        nodes.push({
+          id: `category-${i}`,
+          label: name,
+          type: 'category',
+          size: 20 + Math.random() * 10,
+          color: '#10b981',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.6 + Math.random() * 0.4,
+          metadata: {
+            totalProducts: Math.floor(Math.random() * 20),
+            revenue: 1000 + Math.random() * 10000
+          }
+        });
+      });
+
+      // Create orders
+      for (let i = 0; i < 15; i++) {
+        nodes.push({
+          id: `order-${i}`,
+          label: `Order #${1000 + i}`,
+          type: 'order',
+          size: 8 + Math.random() * 6,
+          color: '#f59e0b',
+          position: [
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15,
+            (Math.random() - 0.5) * 15
+          ] as [number, number, number],
+          connections: 0,
+          importance: 0.1 + Math.random() * 0.5,
+          metadata: {
+            total: 50 + Math.random() * 500,
+            status: ['completed', 'pending', 'shipped'][Math.floor(Math.random() * 3)],
+            date: `2024-${Math.floor(Math.random() * 12) + 1}-${Math.floor(Math.random() * 28) + 1}`
+          }
+        });
+      }
+
+      // Create e-commerce relationships (existing relationship logic)
+      const customerNodes = nodes.filter(n => n.type === 'customer');
+      const productNodes = nodes.filter(n => n.type === 'product');
+      const orderNodes = nodes.filter(n => n.type === 'order');
+      const categoryNodes = nodes.filter(n => n.type === 'category');
+
+      // Customer-Order relationships
+      customerNodes.forEach(customer => {
+        const numOrders = 1 + Math.floor(Math.random() * 3);
+        const customerOrders = orderNodes.slice(0, numOrders);
+        
+        customerOrders.forEach(order => {
+          edges.push({
+            source: customer.id,
+            target: order.id,
+            strength: 0.7 + Math.random() * 0.3,
+            type: 'placed_order',
+            sourcePos: customer.position,
+            targetPos: order.position
+          });
+          customer.connections++;
+          order.connections++;
+        });
+      });
+
+      // Order-Product relationships
+      orderNodes.forEach(order => {
+        const numProducts = 1 + Math.floor(Math.random() * 3);
+        const selectedProducts = [];
+        
+        for (let i = 0; i < numProducts; i++) {
+          const product = productNodes[Math.floor(Math.random() * productNodes.length)];
+          if (!selectedProducts.includes(product)) {
+            selectedProducts.push(product);
+            edges.push({
+              source: order.id,
+              target: product.id,
+              strength: 0.6 + Math.random() * 0.4,
+              type: 'contains_product',
+              sourcePos: order.position,
+              targetPos: product.position
+            });
+            order.connections++;
+            product.connections++;
+          }
         }
       });
-    });
 
-    // Create orders
-    for (let i = 0; i < 15; i++) {
-      nodes.push({
-        id: `order-${i}`,
-        label: `Order #${1000 + i}`,
-        type: 'order',
-        size: 8 + Math.random() * 6,
-        color: '#f59e0b',
-        position: [
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15,
-          (Math.random() - 0.5) * 15
-        ] as [number, number, number],
-        connections: 0,
-        importance: 0.1 + Math.random() * 0.5,
-        metadata: {
-          total: 50 + Math.random() * 500,
-          status: ['completed', 'pending', 'shipped'][Math.floor(Math.random() * 3)],
-          date: `2024-${Math.floor(Math.random() * 12) + 1}-${Math.floor(Math.random() * 28) + 1}`
+      // Product-Category relationships
+      productNodes.forEach(product => {
+        const category = categoryNodes[Math.floor(Math.random() * categoryNodes.length)];
+        edges.push({
+          source: product.id,
+          target: category.id,
+          strength: 0.8 + Math.random() * 0.2,
+          type: 'belongs_to_category',
+          sourcePos: product.position,
+          targetPos: category.position
+        });
+        product.connections++;
+        category.connections++;
+      });
+
+      // Customer-Product direct interests (browsing, wishlist)
+      customerNodes.forEach(customer => {
+        const numInterests = Math.floor(Math.random() * 5);
+        for (let i = 0; i < numInterests; i++) {
+          const product = productNodes[Math.floor(Math.random() * productNodes.length)];
+          edges.push({
+            source: customer.id,
+            target: product.id,
+            strength: 0.2 + Math.random() * 0.3,
+            type: 'interested_in',
+            sourcePos: customer.position,
+            targetPos: product.position
+          });
+          customer.connections++;
+          product.connections++;
         }
       });
     }
-
-    // Create realistic relationships
-    const customerNodes = nodes.filter(n => n.type === 'customer');
-    const productNodes = nodes.filter(n => n.type === 'product');
-    const orderNodes = nodes.filter(n => n.type === 'order');
-    const categoryNodes = nodes.filter(n => n.type === 'category');
-
-    // Customer-Order relationships
-    customerNodes.forEach(customer => {
-      const numOrders = 1 + Math.floor(Math.random() * 3);
-      const customerOrders = orderNodes.slice(0, numOrders);
-      
-      customerOrders.forEach(order => {
-        edges.push({
-          source: customer.id,
-          target: order.id,
-          strength: 0.7 + Math.random() * 0.3,
-          type: 'placed_order',
-          sourcePos: customer.position,
-          targetPos: order.position
-        });
-        customer.connections++;
-        order.connections++;
-      });
-    });
-
-    // Order-Product relationships
-    orderNodes.forEach(order => {
-      const numProducts = 1 + Math.floor(Math.random() * 3);
-      const selectedProducts = [];
-      
-      for (let i = 0; i < numProducts; i++) {
-        const product = productNodes[Math.floor(Math.random() * productNodes.length)];
-        if (!selectedProducts.includes(product)) {
-          selectedProducts.push(product);
-          edges.push({
-            source: order.id,
-            target: product.id,
-            strength: 0.6 + Math.random() * 0.4,
-            type: 'contains_product',
-            sourcePos: order.position,
-            targetPos: product.position
-          });
-          order.connections++;
-          product.connections++;
-        }
-      }
-    });
-
-    // Product-Category relationships
-    productNodes.forEach(product => {
-      const category = categoryNodes[Math.floor(Math.random() * categoryNodes.length)];
-      edges.push({
-        source: product.id,
-        target: category.id,
-        strength: 0.8 + Math.random() * 0.2,
-        type: 'belongs_to_category',
-        sourcePos: product.position,
-        targetPos: category.position
-      });
-      product.connections++;
-      category.connections++;
-    });
-
-    // Customer-Product direct interests (browsing, wishlist)
-    customerNodes.forEach(customer => {
-      const numInterests = Math.floor(Math.random() * 5);
-      for (let i = 0; i < numInterests; i++) {
-        const product = productNodes[Math.floor(Math.random() * productNodes.length)];
-        edges.push({
-          source: customer.id,
-          target: product.id,
-          strength: 0.2 + Math.random() * 0.3,
-          type: 'interested_in',
-          sourcePos: customer.position,
-          targetPos: product.position
-        });
-        customer.connections++;
-        product.connections++;
-      }
-    });
 
     return { nodes, edges };
   };
