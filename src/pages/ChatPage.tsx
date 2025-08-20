@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChatInterface } from '@/components/ChatInterface';
+import { GroqChatInterface } from '@/components/GroqChatInterface';
 import { GlassCard } from '@/components/ui/glass-card';
 import { DualModeToggle } from '@/components/DualModeToggle';
 import { Brain, Sparkles, Code2 } from 'lucide-react';
@@ -59,7 +59,7 @@ export function ChatPage() {
         className="flex-1 min-h-0"
       >
         <GlassCard className="h-full">
-          <ChatInterface />
+          <GroqChatInterface />
         </GlassCard>
       </motion.div>
     </div>
