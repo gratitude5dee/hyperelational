@@ -19,6 +19,17 @@ export default {
 		},
 		extend: {
 			colors: {
+				/* UniversalAI Design System Colors */
+				'base-deep': 'hsl(var(--color-base-deep))',
+				'base-deep-lighter': 'hsl(var(--color-base-deep-lighter))',
+				'accent-primary': 'hsl(var(--color-accent-primary))',
+				'accent-primary-lighter': 'hsl(var(--color-accent-primary-lighter))',
+				'highlight-interactive': 'hsl(var(--color-highlight-interactive))',
+				'highlight-interactive-lighter': 'hsl(var(--color-highlight-interactive-lighter))',
+				'text-primary': 'hsl(var(--text-primary))',
+				'text-secondary': 'hsl(var(--text-secondary))',
+				
+				/* Standard color mappings for compatibility */
 				border: 'hsl(var(--border))',
 				'border-light': 'hsl(var(--border-light))',
 				input: 'hsl(var(--input))',
@@ -80,6 +91,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
+				heading: ['Orbitron', 'Inter', 'system-ui', 'sans-serif'],
 				mono: ['JetBrains Mono', 'monospace']
 			},
 			backgroundImage: {

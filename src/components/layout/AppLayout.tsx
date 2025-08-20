@@ -1,6 +1,7 @@
 import React from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from './AppSidebar';
+import CloudShader from '@/components/CloudShader';
 interface AppLayoutProps {
   children: React.ReactNode;
 }
@@ -8,7 +9,10 @@ export function AppLayout({
   children
 }: AppLayoutProps) {
   return <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-gradient-bg">
+      {/* UniversalAI WebGL Background */}
+      <CloudShader />
+      
+      <div className="flex min-h-screen w-full relative">
         <AppSidebar />
         
         <main className="flex-1 flex flex-col min-w-0">

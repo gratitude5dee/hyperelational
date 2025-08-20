@@ -2,137 +2,122 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hyperelational - Glassmorphism BI Dashboard Design System */
-/* All colors MUST be HSL for proper theme support */
-
 @layer base {
   :root {
-    /* Dark theme glassmorphism colors */
-    --background: 222 44% 4%;
-    --foreground: 210 40% 98%;
+    /* UniversalAI Design System - Core Colors */
+    --color-base-deep: 242 95% 3%; /* #05040a */
+    --color-base-deep-lighter: 225 54% 20%; /* #141C44 */
+    --color-accent-primary: 24 100% 50%; /* #FF6B00 */
+    --color-accent-primary-lighter: 20 100% 60%; /* #FF8A3D */
+    --color-highlight-interactive: 187 100% 50%; /* #00F0FF */
+    --color-highlight-interactive-lighter: 187 100% 63%; /* #4FF8FF */
+    
+    /* Text Colors */
+    --text-primary: 245 15% 94%; /* #f0f0f5 */
+    --text-secondary: 220 15% 70%; /* #A0A8B8 */
+    
+    /* Mapped to standard variables for compatibility */
+    --background: var(--color-base-deep);
+    --foreground: var(--text-primary);
 
-    /* Glass cards with subtle transparency */
-    --card: 222 44% 8%;
-    --card-foreground: 210 40% 95%;
+    --primary: var(--color-accent-primary);
+    --primary-light: var(--color-accent-primary-lighter);
+    --primary-dark: 24 100% 40%;
+    --primary-foreground: var(--text-primary);
 
-    --popover: 222 44% 8%;
-    --popover-foreground: 210 40% 95%;
+    --secondary: var(--color-base-deep-lighter);
+    --secondary-light: 225 54% 30%;
+    --secondary-dark: 225 54% 15%;
+    --secondary-foreground: var(--text-primary);
 
-    /* Primary - Electric Blue gradient */
-    --primary: 217 91% 60%;
-    --primary-light: 217 91% 70%;
-    --primary-dark: 217 91% 50%;
-    --primary-foreground: 210 40% 98%;
+    --accent: var(--color-highlight-interactive);
+    --accent-light: var(--color-highlight-interactive-lighter);
+    --accent-dark: 187 100% 40%;
+    --accent-foreground: var(--color-base-deep);
 
-    /* Secondary - Purple accent */
-    --secondary: 271 81% 56%;
-    --secondary-light: 271 81% 66%;
-    --secondary-dark: 271 81% 46%;
-    --secondary-foreground: 210 40% 98%;
-
-    /* Muted glassmorphism surfaces */
-    --muted: 222 44% 12%;
-    --muted-foreground: 215 20% 65%;
-
-    /* Accent - Teal highlights */
-    --accent: 180 78% 55%;
-    --accent-light: 180 78% 65%;
-    --accent-dark: 180 78% 45%;
-    --accent-foreground: 222 44% 4%;
-
-    /* Status colors */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: var(--text-primary);
 
     --success: 142 76% 36%;
-    --success-foreground: 210 40% 98%;
+    --success-foreground: var(--text-primary);
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 44% 4%;
+    --warning: var(--color-accent-primary);
+    --warning-foreground: var(--text-primary);
 
-    /* Glassmorphism borders and inputs */
-    --border: 222 44% 15%;
-    --border-light: 222 44% 20%;
-    --input: 222 44% 10%;
-    --ring: 217 91% 60%;
+    --border: 240 3.7% 15.9%;
+    --border-light: var(--color-highlight-interactive);
+    --input: var(--color-base-deep-lighter);
+    --ring: var(--color-highlight-interactive);
 
-    --radius: 0.75rem;
+    --muted: var(--color-base-deep-lighter);
+    --muted-foreground: var(--text-secondary);
 
-    /* Glassmorphism specific variables */
-    --glass-bg: 222 44% 8% / 0.7;
-    --glass-border: 210 40% 98% / 0.1;
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --popover: var(--color-base-deep-lighter);
+    --popover-foreground: var(--text-primary);
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(271 81% 56%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(180 78% 55%) 0%, hsl(217 91% 60%) 100%);
-    --gradient-bg: linear-gradient(135deg, hsl(222 44% 4%) 0%, hsl(222 44% 6%) 100%);
+    --card: var(--color-base-deep-lighter);
+    --card-foreground: var(--text-primary);
 
-    /* Fashion Retail Mode Colors */
-    --fashion-primary: 320 85% 65%;
-    --fashion-secondary: 45 93% 47%;
-    --fashion-accent: 315 100% 75%;
-    --fashion-gradient: linear-gradient(135deg, hsl(320 85% 65%) 0%, hsl(315 100% 75%) 50%, hsl(45 93% 47%) 100%);
-    --fashion-card-bg: 320 25% 8% / 0.7;
-    --fashion-text: 315 30% 85%;
-
-    /* Artist Management Mode Colors */
-    --artist-primary: 240 100% 70%;
-    --artist-secondary: 280 90% 65%;
-    --artist-accent: 200 100% 60%;
-    --artist-gradient: linear-gradient(135deg, hsl(240 100% 70%) 0%, hsl(280 90% 65%) 50%, hsl(200 100% 60%) 100%);
-    --artist-card-bg: 240 25% 8% / 0.7;
-    --artist-text: 240 30% 85%;
+    /* Sidebar specific colors */
+    --sidebar-background: var(--color-base-deep);
+    --sidebar-foreground: var(--text-primary);
+    --sidebar-primary: var(--color-accent-primary);
+    --sidebar-primary-foreground: var(--text-primary);
+    --sidebar-accent: var(--color-highlight-interactive);
+    --sidebar-accent-foreground: var(--color-base-deep);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--color-highlight-interactive);
 
     /* Animation variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Sidebar variables */
-    --sidebar-background: 222 44% 6%;
-    --sidebar-foreground: 210 40% 95%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 222 44% 10%;
-    --sidebar-accent-foreground: 210 40% 95%;
-    --sidebar-border: 222 44% 15%;
-    --sidebar-ring: 217 91% 60%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--color-accent-primary)) 0%, hsl(var(--color-accent-primary-lighter)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--color-base-deep-lighter)) 0%, hsl(var(--color-base-deep)) 100%);
+    --gradient-bg: linear-gradient(135deg, hsl(var(--color-base-deep)) 0%, hsl(var(--color-base-deep-lighter)) 100%);
+
+    /* Fashion Retail Mode Colors */
+    --fashion-primary: 14 91% 60%;
+    --fashion-accent: 43 96% 56%;
+    --fashion-secondary: 315 100% 50%;
+
+    /* Artist Management Mode Colors */
+    --artist-primary: 271 91% 65%;
+    --artist-accent: 195 100% 50%;
+    --artist-secondary: 330 100% 50%;
+
+    --radius: 0.75rem;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    background: var(--gradient-bg);
-    min-height: 100vh;
-  }
+body {
+  @apply text-foreground min-h-screen;
+  background: hsl(var(--color-base-deep));
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 @layer components {
-  /* Glassmorphism base class */
+  /* UniversalAI Core Glass Materials */
   .glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--glass-shadow);
+    @apply backdrop-blur-md rounded-xl;
+    background: linear-gradient(135deg, rgba(20, 28, 68, 0.3), rgba(10, 15, 39, 0.4));
+    border: 1px solid rgba(0, 240, 255, 0.15);
   }
 
   .glass-card {
-    @apply glass rounded-2xl p-6;
-    background: hsl(var(--glass-bg));
-    border: 1px solid hsl(var(--glass-border));
+    @apply backdrop-blur-xl rounded-2xl cursor-interactive;
+    background: linear-gradient(135deg, rgba(20, 28, 68, 0.3), rgba(10, 15, 39, 0.4));
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.37),
+      0 0 20px rgba(0, 240, 255, 0.1);
   }
 
   .glass-nav {
-    @apply glass rounded-xl;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    @apply backdrop-blur-lg;
+    background: linear-gradient(180deg, rgba(20, 28, 68, 0.4), rgba(10, 15, 39, 0.2));
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
   }
 
   /* Animated gradient backgrounds */
@@ -168,22 +153,60 @@
     transition: var(--transition-bounce);
   }
 
-  /* Interactive hover effects */
+  /* Typography & Text Effects */
+  .font-heading {
+    font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .text-glow-orange {
+    text-shadow: 0 0 20px hsl(var(--color-accent-primary));
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 20px hsl(var(--color-highlight-interactive));
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .text-shadow-md {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Interactive Effects */
+  .cursor-interactive {
+    cursor: pointer;
+  }
+
   .hover-lift {
-    @apply transition-smooth;
+    @apply transition-all duration-200;
   }
   
   .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px 0 rgba(31, 38, 135, 0.5);
+    transform: translateY(-5px) scale(1.02);
   }
 
   .hover-glow {
-    @apply transition-smooth;
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 
+      0 0 30px rgba(0, 240, 255, 0.3),
+      0 8px 32px 0 rgba(31, 38, 135, 0.5);
   }
 
-  .hover-glow:hover {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+  /* Shadow Effects */
+  .shadow-card-glow {
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.37),
+      0 0 20px rgba(0, 240, 255, 0.1);
   }
 }
 
@@ -215,10 +238,10 @@
 /* Keyframe animations */
 @keyframes glow {
   from {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 20px hsl(var(--color-accent-primary) / 0.3);
   }
   to {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.6);
+    box-shadow: 0 0 30px hsl(var(--color-accent-primary) / 0.6);
   }
 }
 
