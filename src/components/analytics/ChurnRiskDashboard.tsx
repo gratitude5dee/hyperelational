@@ -42,25 +42,49 @@ export function ChurnRiskDashboard() {
   }, [currentProject?.id]);
 
   const fetchChurnPredictions = async () => {
-    if (!currentProject?.id) return;
-
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error: functionError } = await supabase.functions.invoke('retail-predict-churn', {
-        body: {
-          projectId: currentProject.id,
-          limit: 100
-        }
-      });
+      // Try to fetch from Supabase function first
+      if (currentProject?.id && !currentProject.id.includes('temp')) {
+        const { data, error: functionError } = await supabase.functions.invoke('retail-predict-churn', {
+          body: {
+            projectId: currentProject.id,
+            limit: 100
+          }
+        });
 
-      if (functionError) {
-        throw functionError;
+        if (!functionError && data?.predictions) {
+          setPredictions(data.predictions);
+          setMetadata(data.metadata);
+          setLoading(false);
+          return;
+        }
       }
 
-      setPredictions(data.predictions || []);
-      setMetadata(data.metadata || null);
+      // Fallback to mock data
+      const mockDataModule = await import('@/services/MockDataService');
+      const mockCustomers = mockDataModule.MockDataService.generateMockCustomers(50);
+      
+      const mockPredictions: ChurnPrediction[] = mockCustomers.map(customer => ({
+        userId: customer.id,
+        churnProbability: customer.churn_probability,
+        lastSeen: customer.last_seen,
+        ltv: customer.lifetime_value,
+        riskLevel: customer.churn_risk
+      }));
+
+      const mockMetadata: ChurnMetadata = {
+        totalCustomers: mockPredictions.length,
+        highRiskCount: mockPredictions.filter(p => p.riskLevel === 'high').length,
+        mediumRiskCount: mockPredictions.filter(p => p.riskLevel === 'medium').length,
+        lowRiskCount: mockPredictions.filter(p => p.riskLevel === 'low').length,
+        kumoApiConnected: false
+      };
+
+      setPredictions(mockPredictions);
+      setMetadata(mockMetadata);
     } catch (err) {
       console.error('Error fetching churn predictions:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch churn predictions');
@@ -153,55 +177,59 @@ export function ChurnRiskDashboard() {
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Customers</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-foreground">Total Customers</CardTitle>
+            <Users className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metadata?.totalCustomers || 0}</div>
+            <div className="text-2xl font-bold text-foreground">{metadata?.totalCustomers || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">All customers tracked</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">High Risk</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <CardTitle className="text-sm font-medium text-foreground">High Risk</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-red-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-destructive">{metadata?.highRiskCount || 0}</div>
+            <div className="text-2xl font-bold text-red-400">{metadata?.highRiskCount || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Immediate attention needed</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Medium Risk</CardTitle>
-            <TrendingDown className="h-4 w-4 text-warning" />
+            <CardTitle className="text-sm font-medium text-foreground">Medium Risk</CardTitle>
+            <TrendingDown className="h-4 w-4 text-yellow-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">{metadata?.mediumRiskCount || 0}</div>
+            <div className="text-2xl font-bold text-yellow-400">{metadata?.mediumRiskCount || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Monitor closely</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Low Risk</CardTitle>
-            <Target className="h-4 w-4 text-success" />
+            <CardTitle className="text-sm font-medium text-foreground">Low Risk</CardTitle>
+            <Target className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">{metadata?.lowRiskCount || 0}</div>
+            <div className="text-2xl font-bold text-green-400">{metadata?.lowRiskCount || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">Healthy customers</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Churn Predictions Table */}
-      <Card>
+      <Card className="bg-card/50 backdrop-blur border-border/50">
         <CardHeader>
-          <CardTitle>Customer Churn Risk Analysis</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-foreground">Customer Churn Risk Analysis</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Customers sorted by churn probability. Take action on high-risk customers to improve retention.
             {!metadata?.kumoApiConnected && (
-              <span className="text-warning"> (Using simulated predictions - connect KumoRFM for enhanced accuracy)</span>
+              <span className="text-yellow-400"> (Using demo data - connect real data for enhanced accuracy)</span>
             )}
           </CardDescription>
         </CardHeader>
@@ -283,8 +311,10 @@ export function ChurnRiskDashboard() {
           </div>
           
           {predictions.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              No customer data available. Add customers and orders to see churn predictions.
+            <div className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+              <p className="text-foreground font-medium mb-2">No customer data available</p>
+              <p className="text-muted-foreground text-sm">Add customers and orders to see churn predictions.</p>
             </div>
           )}
         </CardContent>

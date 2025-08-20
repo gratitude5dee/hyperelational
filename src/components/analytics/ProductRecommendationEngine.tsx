@@ -46,21 +46,34 @@ export function ProductRecommendationEngine() {
   }, [currentProject?.id, currentProject?.type]);
 
   const fetchCustomers = async () => {
-    if (!currentProject?.id) return;
-
     try {
-      const { data, error } = await supabase
-        .from('customers')
-        .select('id, name, email')
-        .eq('project_id', currentProject.id)
-        .limit(10);
+      // Try to fetch from Supabase first
+      if (currentProject?.id && !currentProject.id.includes('temp')) {
+        const { data, error } = await supabase
+          .from('customers')
+          .select('id, name, email')
+          .eq('project_id', currentProject.id)
+          .limit(10);
 
-      if (error) throw error;
-      setCustomers(data || []);
+        if (!error && data && data.length > 0) {
+          setCustomers(data);
+          if (!customerId) setCustomerId(data[0].id);
+          return;
+        }
+      }
       
-      // Auto-select first customer if available
-      if (data && data.length > 0 && !customerId) {
-        setCustomerId(data[0].id);
+      // Fallback to mock data
+      const mockDataModule = await import('@/services/MockDataService');
+      const mockCustomers = mockDataModule.MockDataService.generateMockCustomers(10);
+      const formattedCustomers = mockCustomers.map(c => ({
+        id: c.id,
+        name: c.name,
+        email: c.email
+      }));
+      
+      setCustomers(formattedCustomers);
+      if (!customerId && formattedCustomers.length > 0) {
+        setCustomerId(formattedCustomers[0].id);
       }
     } catch (err) {
       console.error('Error fetching customers:', err);
@@ -68,30 +81,53 @@ export function ProductRecommendationEngine() {
   };
 
   const fetchRecommendations = async () => {
-    if (!currentProject?.id || !customerId) return;
+    if (!customerId) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const { data, error: functionError } = await supabase.functions.invoke('retail-recommend-products', {
-        body: {
-          projectId: currentProject.id,
-          userId: customerId,
-          count: 8
-        }
-      });
+      // Try to fetch from Supabase function first
+      if (currentProject?.id && !currentProject.id.includes('temp')) {
+        const { data, error: functionError } = await supabase.functions.invoke('retail-recommend-products', {
+          body: {
+            projectId: currentProject.id,
+            userId: customerId,
+            count: 8
+          }
+        });
 
-      if (functionError) {
-        throw functionError;
+        if (!functionError && data?.recommendations) {
+          setRecommendations(data.recommendations);
+          setMetadata(data.metadata);
+          toast({
+            title: "Recommendations Updated",
+            description: `Found ${data.recommendations.length} personalized product recommendations.`,
+          });
+          setLoading(false);
+          return;
+        }
       }
 
-      setRecommendations(data.recommendations || []);
-      setMetadata(data.metadata || null);
+      // Fallback to mock data
+      const mockDataModule = await import('@/services/MockDataService');
+      const mockRecommendations = mockDataModule.MockDataService.generateProductRecommendations(customerId);
+      
+      const mockMetadata: RecommendationMetadata = {
+        customerId: customerId,
+        customerSegment: 'Premium Customer',
+        totalProducts: mockRecommendations.length,
+        purchaseHistory: 12,
+        browsingHistory: 45,
+        kumoApiConnected: false
+      };
+
+      setRecommendations(mockRecommendations);
+      setMetadata(mockMetadata);
 
       toast({
-        title: "Recommendations Updated",
-        description: `Found ${data.recommendations?.length || 0} personalized product recommendations.`,
+        title: "Demo Recommendations Generated",
+        description: `Found ${mockRecommendations.length} personalized product recommendations.`,
       });
     } catch (err) {
       console.error('Error fetching recommendations:', err);
@@ -136,28 +172,28 @@ export function ProductRecommendationEngine() {
   return (
     <div className="space-y-6">
       {/* Customer Selection */}
-      <Card>
+      <Card className="bg-card/50 backdrop-blur border-border/50">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShoppingBag className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <ShoppingBag className="h-5 w-5 text-primary" />
             Product Recommendation Engine
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-muted-foreground">
             Generate personalized product recommendations for individual customers using AI-powered analysis.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
             <div className="flex-1">
-              <label className="text-sm font-medium mb-2 block">Select Customer</label>
+              <label className="text-sm font-medium mb-2 block text-foreground">Select Customer</label>
               <select
                 value={customerId}
                 onChange={(e) => setCustomerId(e.target.value)}
-                className="w-full p-2 border rounded-md bg-background"
+                className="w-full p-2 border border-border rounded-md bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
               >
-                <option value="">Choose a customer...</option>
+                <option value="" className="text-muted-foreground">Choose a customer...</option>
                 {customers.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
+                  <option key={customer.id} value={customer.id} className="text-foreground">
                     {customer.name || customer.email} ({customer.id.slice(0, 8)}...)
                   </option>
                 ))}
@@ -184,39 +220,44 @@ export function ProductRecommendationEngine() {
       {/* Customer Insights */}
       {metadata && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
+          <Card className="bg-card/50 backdrop-blur border-border/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Customer Segment</CardTitle>
+              <CardTitle className="text-sm font-medium text-foreground">Customer Segment</CardTitle>
             </CardHeader>
             <CardContent>
-              <Badge variant="secondary">{metadata.customerSegment || 'General'}</Badge>
+              <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
+                {metadata.customerSegment || 'General'}
+              </Badge>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-card/50 backdrop-blur border-border/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Purchase History</CardTitle>
+              <CardTitle className="text-sm font-medium text-foreground">Purchase History</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metadata.purchaseHistory}</div>
+              <div className="text-2xl font-bold text-foreground">{metadata.purchaseHistory}</div>
+              <p className="text-xs text-muted-foreground">Previous orders</p>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-card/50 backdrop-blur border-border/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Browsing Activity</CardTitle>
+              <CardTitle className="text-sm font-medium text-foreground">Browsing Activity</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metadata.browsingHistory}</div>
+              <div className="text-2xl font-bold text-foreground">{metadata.browsingHistory}</div>
+              <p className="text-xs text-muted-foreground">Page views</p>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-card/50 backdrop-blur border-border/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Catalog Size</CardTitle>
+              <CardTitle className="text-sm font-medium text-foreground">Catalog Size</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metadata.totalProducts}</div>
+              <div className="text-2xl font-bold text-foreground">{metadata.totalProducts}</div>
+              <p className="text-xs text-muted-foreground">Available products</p>
             </CardContent>
           </Card>
         </div>
@@ -254,13 +295,13 @@ export function ProductRecommendationEngine() {
           ))}
         </div>
       ) : recommendations.length > 0 ? (
-        <Card>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
           <CardHeader>
-            <CardTitle>Personalized Recommendations</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-foreground">Personalized Recommendations</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Products ranked by likelihood of purchase for this customer.
               {!metadata?.kumoApiConnected && (
-                <span className="text-warning"> (Using simulated predictions - connect KumoRFM for enhanced accuracy)</span>
+                <span className="text-yellow-400"> (Using demo predictions - connect real data for enhanced accuracy)</span>
               )}
             </CardDescription>
           </CardHeader>
@@ -287,21 +328,21 @@ export function ProductRecommendationEngine() {
                   </div>
                   
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-2">
+                    <h3 className="font-semibold text-sm mb-1 line-clamp-2 text-foreground">
                       {rec.productName}
                     </h3>
                     
                     <div className="flex items-center justify-between mb-2">
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs border-border text-muted-foreground">
                         {rec.category}
                       </Badge>
-                      <span className="font-bold text-lg">
+                      <span className="font-bold text-lg text-foreground">
                         {formatCurrency(rec.price)}
                       </span>
                     </div>
                     
                     <div className="flex items-center gap-2 mb-2">
-                      <div className={`flex items-center gap-1 ${getScoreColor(rec.score)}`}>
+                      <div className="flex items-center gap-1 text-green-400">
                         {getScoreIcon(rec.score)}
                         <span className="text-sm font-medium">
                           {Math.round(rec.score * 100)}% match
@@ -319,11 +360,11 @@ export function ProductRecommendationEngine() {
           </CardContent>
         </Card>
       ) : customerId && !loading ? (
-        <Card>
-          <CardContent className="text-center py-8 text-muted-foreground">
-            <ShoppingBag className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>No recommendations available for this customer.</p>
-            <p className="text-sm">Add products and customer activity data to generate recommendations.</p>
+        <Card className="bg-card/50 backdrop-blur border-border/50">
+          <CardContent className="text-center py-8">
+            <ShoppingBag className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+            <p className="text-foreground font-medium mb-2">No recommendations available for this customer.</p>
+            <p className="text-sm text-muted-foreground">Add products and customer activity data to generate recommendations.</p>
           </CardContent>
         </Card>
       ) : null}
