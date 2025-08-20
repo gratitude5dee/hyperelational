@@ -519,6 +519,26 @@ export function GraphPage() {
             </div>
           </motion.div>
 
+          {/* AI Insights Panel - Center Column */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="glass-card rounded-xl p-6"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <Brain className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold">AI Insights</h3>
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
+            </div>
+            
+            <AIInsightsPanel
+              nodes={graphData.nodes}
+              edges={graphData.edges}
+              selectedNode={selectedNode}
+              projectType={currentProject?.type || 'fashion_ecommerce'}
+            />
+          </motion.div>
         </div>
 
         {/* Right Metrics Panel */}
@@ -535,22 +555,6 @@ export function GraphPage() {
             selectedNode={selectedNode}
             filterTypes={filterTypes}
           />
-          
-          {/* AI Insights Panel */}
-          <div className="glass-card rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <Brain className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">AI Insights</h3>
-              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-            </div>
-            
-            <AIInsightsPanel
-              nodes={graphData.nodes}
-              edges={graphData.edges}
-              selectedNode={selectedNode}
-              projectType={currentProject?.type || 'fashion_ecommerce'}
-            />
-          </div>
         </motion.div>
       </div>
     </div>
