@@ -48,7 +48,7 @@ export function DualModeToggle() {
       <motion.div
         className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-md pointer-events-none"
         animate={{
-          x: isEcommerce ? 4 : 'calc(50% + 4px)',
+          x: isEcommerce ? 4 : 'calc(50%)',
           width: 'calc(50% - 8px)'
         }}
         transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
