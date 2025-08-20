@@ -347,8 +347,21 @@ export default function Integrations() {
           </motion.div>
         </motion.div>
         
+        {/* Data Flow Visualization */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 p-8 glass rounded-2xl border border-white/10"
+        >
+          <h3 className="text-2xl font-bold text-white mb-8 text-center">
+            Unified Data Intelligence Flow
+          </h3>
+          <DataFlowDiagram />
+        </motion.div>
+        
         {/* Integration Tabs */}
-        <Tabs defaultValue="ecommerce" className="w-full max-w-7xl mx-auto">
+        <Tabs defaultValue="ecommerce" className="w-full max-w-7xl mx-auto mt-16">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 glass">
             <TabsTrigger value="ecommerce" className="flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
@@ -384,19 +397,6 @@ export default function Integrations() {
             </motion.div>
           </TabsContent>
         </Tabs>
-        
-        {/* Data Flow Visualization */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-16 p-8 glass rounded-2xl border border-white/10"
-        >
-          <h3 className="text-2xl font-bold text-white mb-8 text-center">
-            Unified Data Intelligence Flow
-          </h3>
-          <DataFlowDiagram />
-        </motion.div>
         
         {/* CTA Section */}
         <motion.div 
