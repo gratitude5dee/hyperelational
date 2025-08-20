@@ -334,41 +334,25 @@ export function GraphPage() {
             </div>
           </motion.div>
 
-          {/* AI Insights Row - Horizontal Layout */}
+          {/* AI Insights Panel - Center Column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="grid grid-cols-1 gap-4"
+            className="glass-card rounded-xl p-6"
           >
-            {/* Ask AI Component */}
-            <div className="glass-card rounded-xl p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="h-5 w-5 text-secondary" />
-                <h3 className="font-semibold">Ask AI</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="text-sm text-muted-foreground">
-                  Ask questions about your graph data and get AI-powered insights.
-                </div>
-                
-                <div className="space-y-2">
-                  <input 
-                    type="text" 
-                    placeholder="Ask about patterns, trends, or insights..." 
-                    className="w-full px-3 py-2 bg-background/50 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  />
-                  <button className="w-full px-4 py-2 bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-200">
-                    Analyze Graph
-                  </button>
-                </div>
-                
-                <div className="text-xs text-muted-foreground">
-                  Example: "Which customers have the highest potential value?" or "Show me unusual patterns in the data"
-                </div>
-              </div>
+            <div className="flex items-center gap-2 mb-4">
+              <Brain className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold">AI Insights</h3>
+              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
             </div>
+            
+            <AIInsightsPanel
+              nodes={graphData.nodes}
+              edges={graphData.edges}
+              selectedNode={selectedNode}
+              projectType={currentProject?.type || 'fashion_ecommerce'}
+            />
           </motion.div>
         </div>
 
@@ -386,22 +370,6 @@ export function GraphPage() {
             selectedNode={selectedNode}
             filterTypes={filterTypes}
           />
-          
-          {/* AI Insights Panel */}
-          <div className="glass-card rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <Brain className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">AI Insights</h3>
-              <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-            </div>
-            
-            <AIInsightsPanel
-              nodes={graphData.nodes}
-              edges={graphData.edges}
-              selectedNode={selectedNode}
-              projectType={currentProject?.type || 'fashion_ecommerce'}
-            />
-          </div>
         </motion.div>
       </div>
     </div>
