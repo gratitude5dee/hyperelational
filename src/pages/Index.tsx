@@ -117,14 +117,24 @@ const Index = () => {
             >
               <Button 
                 size="lg"
-                onClick={() => navigate('/auth')}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Button clicked, navigating to /auth');
+                  try {
+                    navigate('/auth');
+                  } catch (error) {
+                    console.error('Navigation error:', error);
+                    window.location.href = '/auth';
+                  }
+                }}
+                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-20"
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <span className="relative z-30 flex items-center gap-2 pointer-events-none">
                   Start Free Trial
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left pointer-events-none" />
               </Button>
               
               <Button 
