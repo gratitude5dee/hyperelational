@@ -133,7 +133,7 @@ export function AppSidebar() {
                 />
               </div>
               <div className="animate-fade-in">
-                <h1 className="font-bold text-xl gradient-text">Hyperelational</h1>
+                <h1 className="font-bold text-xl gradient-text">hyperelational</h1>
                 <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
               </div>
             </div>
