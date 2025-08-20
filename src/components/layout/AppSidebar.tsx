@@ -63,7 +63,7 @@ const navigationItems = [
   },
   { 
     title: 'Predictions', 
-    url: '/predictions', 
+    url: '/predict', 
     icon: TrendingUp,
     description: 'AI Forecasting'
   },
