@@ -11,6 +11,10 @@ import NotFound from "./pages/NotFound";
 import DataSources from "./pages/DataSources";
 import Predictions from "./pages/Predictions";
 import Settings from "./pages/Settings";
+import Index from "./pages/Index";
+import { ChatPage } from "./pages/ChatPage";
+import { GraphPage } from "./pages/GraphPage";
+import Integrations from "./pages/Integrations";
 
 const queryClient = new QueryClient();
 
@@ -41,10 +45,29 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/" element={
+            
+            {/* Protected routes */}
+            <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/graph" element={
+              <ProtectedRoute>
+                <GraphPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/integrations" element={
+              <ProtectedRoute>
+                <Integrations />
               </ProtectedRoute>
             } />
             <Route path="/sources" element={
@@ -62,6 +85,7 @@ const App = () => (
                 <Settings />
               </ProtectedRoute>
             } />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
