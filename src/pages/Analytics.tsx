@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +9,8 @@ import { ChurnRiskDashboard } from '@/components/analytics/ChurnRiskDashboard';
 import { ProductRecommendationEngine } from '@/components/analytics/ProductRecommendationEngine';
 import { TourHotspotMap } from '@/components/analytics/TourHotspotMap';
 import { DynamicAudienceBuilder } from '@/components/analytics/DynamicAudienceBuilder';
+import { FanAnalyticsDashboard } from '@/components/analytics/FanAnalyticsDashboard';
+import { MerchInsightsDashboard } from '@/components/analytics/MerchInsightsDashboard';
 import { SampleDataGenerator } from '@/components/analytics/SampleDataGenerator';
 import { DualModeToggle } from '@/components/DualModeToggle';
 
@@ -47,13 +50,13 @@ export default function Analytics() {
       icon: <Users className="h-5 w-5" />,
       title: "Fan Engagement Analytics",
       description: "Identify superfans and predict fan churn to improve retention strategies.",
-      status: "Coming Soon"
+      status: "Active"
     },
     {
       icon: <ShoppingBag className="h-5 w-5" />,
       title: "Merch Recommendations", 
       description: "Predict which merchandise items fans are most likely to purchase.",
-      status: "Coming Soon"
+      status: "Active"
     }
   ];
 
@@ -130,11 +133,11 @@ export default function Analytics() {
                 <TrendingUp className="h-4 w-4" />
                 Tour Hotspots
               </TabsTrigger>
-              <TabsTrigger value="fans" className="flex items-center gap-2" disabled>
+              <TabsTrigger value="fans" className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 Fan Analytics
               </TabsTrigger>
-              <TabsTrigger value="merch" className="flex items-center gap-2" disabled>
+              <TabsTrigger value="merch" className="flex items-center gap-2">
                 <ShoppingBag className="h-4 w-4" />
                 Merch Insights
               </TabsTrigger>
@@ -161,34 +164,11 @@ export default function Analytics() {
         </TabsContent>
         
         <TabsContent value="fans" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Fan Engagement Analytics</CardTitle>
-              <CardDescription>Coming Soon</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Identify "superfans" and those at risk of becoming disengaged. 
-                Segment fans into tiers (Superfan, Active, At-Risk) and target each segment 
-                with personalized campaigns.
-              </p>
-            </CardContent>
-          </Card>
+          <FanAnalyticsDashboard />
         </TabsContent>
         
         <TabsContent value="merch" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Merchandise Recommendations</CardTitle>
-              <CardDescription>Coming Soon</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                Predict which specific merch items a fan is most likely to buy at a concert or online.
-                Get recommendations for merchandise table staff at specific venues.
-              </p>
-            </CardContent>
-          </Card>
+          <MerchInsightsDashboard />
         </TabsContent>
       </Tabs>
     </div>
