@@ -72,10 +72,11 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--color-accent-primary)) 0%, hsl(var(--color-accent-primary-lighter)) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--color-base-deep-lighter)) 0%, hsl(var(--color-base-deep)) 100%);
-    --gradient-bg: linear-gradient(135deg, hsl(var(--color-base-deep)) 0%, hsl(var(--color-base-deep-lighter)) 100%);
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(var(--color-accent-primary)) 0%, hsl(var(--color-accent-primary-lighter)) 100%);
+  --gradient-secondary: linear-gradient(135deg, hsl(var(--color-base-deep-lighter)) 0%, hsl(var(--color-base-deep)) 100%);
+  --gradient-bg: linear-gradient(135deg, hsl(var(--color-base-deep)) 0%, hsl(var(--color-base-deep-lighter)) 100%);
+  --gradient-radial: radial-gradient(circle at center, var(--tw-gradient-stops));
 
     /* Fashion Retail Mode Colors */
     --fashion-primary: 14 91% 60%;

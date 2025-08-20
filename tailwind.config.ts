@@ -95,9 +95,10 @@ export default {
 				mono: ['JetBrains Mono', 'monospace']
 			},
 			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-secondary': 'var(--gradient-secondary)',
-				'gradient-bg': 'var(--gradient-bg)'
+    'gradient-primary': 'var(--gradient-primary)',
+    'gradient-secondary': 'var(--gradient-secondary)',
+    'gradient-bg': 'var(--gradient-bg)',
+    'gradient-radial': 'var(--gradient-radial)'
 			},
 			backdropBlur: {
 				xs: '2px',

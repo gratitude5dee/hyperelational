@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RelationalUniverse } from '@/components/RelationalUniverse';
 import { TypewriterText } from '@/components/TypewriterText';
 import { FeatureCard } from '@/components/FeatureCard';
-import { RelationalLoadingAnimation } from '@/components/RelationalLoadingAnimation';
+import { KumoRFMIntroAnimation } from '@/components/KumoRFMIntroAnimation';
 const Index = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -28,17 +28,22 @@ const Index = () => {
       setShowContent(true);
     }
   }, []);
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-    setTimeout(() => setShowContent(true), 300);
-  };
 
   // Show loading during mount to avoid hydration mismatch
   if (!mounted) {
     return <div className="min-h-screen bg-black" />;
   }
   if (isLoading) {
-    return <RelationalLoadingAnimation onComplete={handleLoadingComplete} />;
+    return (
+      <AnimatePresence>
+        <KumoRFMIntroAnimation 
+          onComplete={() => {
+            setIsLoading(false);
+            setTimeout(() => setShowContent(true), 300);
+          }}
+        />
+      </AnimatePresence>
+    );
   }
   return <motion.div initial={{
     opacity: 0
