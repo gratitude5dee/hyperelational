@@ -104,21 +104,21 @@ export function AppSidebar() {
 
   return (
     <Sidebar 
-      className="glass-nav border-r border-border-light transition-all duration-300" 
+      className="glass-nav-sidebar transition-all duration-500 ease-out" 
       style={{ width: collapsed ? '4rem' : '16rem', minWidth: collapsed ? '4rem' : '16rem' }}
       collapsible="icon"
     >
       <SidebarHeader className={collapsed ? "p-2" : "p-6 pb-4"}>
         {collapsed ? (
           <div className="flex flex-col items-center gap-2">
-            <div className="glass-card p-2 rounded-xl">
+            <div className="glass-card p-2 rounded-xl liquid-border">
               <img 
                 src="/lovable-uploads/d35c1ea8-0548-4b9b-a567-8c365d98d96e.png" 
                 alt="Hyperelational" 
                 className="h-6 w-6 animate-glow" 
               />
             </div>
-            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift">
+            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift liquid-border">
               <Menu className="h-5 w-5" />
             </SidebarTrigger>
           </div>
@@ -130,7 +130,7 @@ export function AppSidebar() {
                 <p className="text-xs text-muted-foreground">by 5-Dee Studos</p>
               </div>
             </div>
-            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift flex-shrink-0">
+            <SidebarTrigger className="glass-card p-2 rounded-lg hover-lift flex-shrink-0 liquid-border">
               <Menu className="h-5 w-5" />
             </SidebarTrigger>
           </div>
@@ -151,9 +151,9 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                      <NavLink 
                       to={item.url} 
-                      className={`${getNavClassName(item.url)} border transition-all duration-200 rounded-lg ${
+                      className={`${getNavClassName(item.url)} border transition-all duration-300 rounded-xl liquid-border ${
                         collapsed ? 'px-2 py-2.5 justify-center min-w-[2.5rem] min-h-[2.5rem]' : 'px-3 py-2.5'
-                      } flex items-center gap-3 w-full group relative`}
+                      } flex items-center gap-3 w-full group relative hover-lift`}
                       title={collapsed ? item.title : undefined}
                     >
                       <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -179,7 +179,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className={collapsed ? "p-2 pt-2" : "p-4 pt-2"}>
-        <GlassCard className={collapsed ? "p-2" : "p-3"}>
+        <GlassCard className={`${collapsed ? "p-2" : "p-3"} liquid-border`}>
           <div className={`flex items-center gap-3 ${collapsed ? 'justify-center' : 'mb-3'} group relative`}>
             <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
               <User className="h-4 w-4 text-white" />

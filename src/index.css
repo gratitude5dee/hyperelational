@@ -115,9 +115,108 @@ body {
   }
 
   .glass-nav {
-    @apply backdrop-blur-lg;
-    background: linear-gradient(180deg, rgba(20, 28, 68, 0.4), rgba(10, 15, 39, 0.2));
-    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+    @apply backdrop-blur-xl;
+    background: linear-gradient(145deg, 
+      rgba(20, 28, 68, 0.6) 0%, 
+      rgba(15, 23, 58, 0.4) 35%,
+      rgba(10, 15, 39, 0.3) 70%,
+      rgba(5, 4, 10, 0.2) 100%
+    );
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 8px 32px rgba(31, 38, 135, 0.15),
+      0 0 20px rgba(0, 240, 255, 0.08);
+  }
+
+  .glass-nav-sidebar {
+    @apply backdrop-blur-xl;
+    background: linear-gradient(135deg, 
+      rgba(20, 28, 68, 0.7) 0%, 
+      rgba(15, 23, 58, 0.5) 30%,
+      rgba(10, 15, 39, 0.4) 60%,
+      rgba(5, 4, 10, 0.3) 100%
+    );
+    border-right: 1px solid rgba(0, 240, 255, 0.25);
+    box-shadow: 
+      inset -1px 0 0 rgba(255, 255, 255, 0.03),
+      8px 0 32px rgba(31, 38, 135, 0.2),
+      0 0 20px rgba(0, 240, 255, 0.1);
+  }
+
+  .glass-nav-header {
+    @apply backdrop-blur-xl;
+    background: linear-gradient(90deg, 
+      rgba(20, 28, 68, 0.6) 0%, 
+      rgba(15, 23, 58, 0.4) 50%,
+      rgba(10, 15, 39, 0.3) 100%
+    );
+    border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 8px 32px rgba(31, 38, 135, 0.15),
+      0 0 20px rgba(0, 240, 255, 0.08);
+  }
+
+  .liquid-border {
+    border-radius: 24px 8px 24px 8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .liquid-border:hover {
+    border-radius: 8px 24px 8px 24px;
+    transform: scale(1.02);
+  }
+
+  /* Enhanced liquid glass effects */
+  .glass-morph {
+    backdrop-filter: blur(20px) saturate(180%);
+    background: linear-gradient(135deg, 
+      rgba(20, 28, 68, 0.8) 0%, 
+      rgba(15, 23, 58, 0.6) 30%,
+      rgba(10, 15, 39, 0.5) 60%,
+      rgba(5, 4, 10, 0.4) 100%
+    );
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 16px 64px rgba(31, 38, 135, 0.3),
+      0 0 30px rgba(0, 240, 255, 0.15);
+  }
+
+  .liquid-glow {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      rgba(0, 240, 255, 0.3) 0%,
+      rgba(128, 0, 255, 0.3) 25%,
+      rgba(0, 240, 255, 0.3) 50%,
+      rgba(128, 0, 255, 0.3) 75%,
+      rgba(0, 240, 255, 0.3) 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .liquid-glow:hover::before {
+    opacity: 1;
+    animation: liquid-flow 2s ease-in-out infinite;
+  }
+
+  @keyframes liquid-flow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
   /* Animated gradient backgrounds */

@@ -17,7 +17,7 @@ export function AppLayout({
         
         <main className="flex-1 flex flex-col min-w-0">
           {/* Header */}
-          <header className="sticky top-0 z-40 glass-nav border-b border-border-light">
+          <header className="sticky top-0 z-40 glass-nav-header">
             <div className="flex items-center justify-between p-4">
               <div className="flex items-center gap-4">
                 <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-8 w-auto" />
