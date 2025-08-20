@@ -164,9 +164,11 @@ export const RevolutionaryLoadingAnimation: React.FC<LoadingAnimationProps> = ({
       .call(() => {
         // Animate particles to form network structure
         const positionAttribute = particles.geometry.attributes.position;
+        const currentPositions = positionAttribute.array as Float32Array;
+        
+        // Create target positions for spherical distribution with clusters
         const targetPositions = new Float32Array(particleCount * 3);
         
-        // Create spherical distribution with clusters
         for (let i = 0; i < particleCount; i++) {
           const cluster = Math.floor(i / (particleCount / 5));
           const angle = (cluster / 5) * Math.PI * 2;
@@ -177,17 +179,29 @@ export const RevolutionaryLoadingAnimation: React.FC<LoadingAnimationProps> = ({
           targetPositions[i * 3 + 2] = (Math.random() - 0.5) * 1;
         }
 
-        gsap.to(positionAttribute.array, {
-          duration: 2,
-          ease: "power2.inOut",
-          motionPath: {
-            path: targetPositions,
-            autoRotate: false
-          },
-          onUpdate: () => {
-            positionAttribute.needsUpdate = true;
-          }
-        });
+        // Animate each particle individually to target position
+        for (let i = 0; i < particleCount; i++) {
+          const startX = currentPositions[i * 3];
+          const startY = currentPositions[i * 3 + 1];
+          const startZ = currentPositions[i * 3 + 2];
+          
+          const targetX = targetPositions[i * 3];
+          const targetY = targetPositions[i * 3 + 1];
+          const targetZ = targetPositions[i * 3 + 2];
+          
+          gsap.to({}, {
+            duration: 2,
+            ease: "power2.inOut",
+            delay: i * 0.002, // Stagger effect
+            onUpdate: function() {
+              const progress = this.progress();
+              currentPositions[i * 3] = startX + (targetX - startX) * progress;
+              currentPositions[i * 3 + 1] = startY + (targetY - startY) * progress;
+              currentPositions[i * 3 + 2] = startZ + (targetZ - startZ) * progress;
+              positionAttribute.needsUpdate = true;
+            }
+          });
+        }
       }, [], 0.5)
 
       // Phase 2: Data Stream Visualization (30-70%)
