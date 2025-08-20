@@ -31,19 +31,25 @@ const navigationItems = [
     title: 'Dashboard', 
     url: '/', 
     icon: LayoutDashboard,
-    description: 'Overview & Analytics'
+    description: 'AI Analytics Hub'
+  },
+  { 
+    title: 'Chat Assistant', 
+    url: '/chat', 
+    icon: Brain,
+    description: 'PQL Query Interface'
+  },
+  { 
+    title: 'Graph Explorer', 
+    url: '/graph', 
+    icon: Sparkles,
+    description: 'Relationship Networks'
   },
   { 
     title: 'Data Sources', 
     url: '/sources', 
     icon: Database,
     description: 'Connect Platforms'
-  },
-  { 
-    title: 'Predictions', 
-    url: '/predict', 
-    icon: Brain,
-    description: 'AI Insights'
   },
   { 
     title: 'Settings', 
@@ -78,12 +84,16 @@ export function AppSidebar() {
       <SidebarHeader className="p-6 pb-4">
         <div className="flex items-center gap-3">
           <div className="glass-card p-2 rounded-xl">
-            <Sparkles className="h-6 w-6 text-primary animate-glow" />
+            <img 
+              src="/lovable-uploads/d854b317-ff5a-43b4-8eb6-ac8078baae77.png" 
+              alt="Hyperelational" 
+              className="h-6 w-6 animate-glow" 
+            />
           </div>
           {!collapsed && (
             <div>
               <h1 className="font-bold text-xl gradient-text">Hyperelational</h1>
-              <p className="text-xs text-muted-foreground">AI-Powered BI</p>
+              <p className="text-xs text-muted-foreground">AI-Powered Analytics</p>
             </div>
           )}
         </div>
