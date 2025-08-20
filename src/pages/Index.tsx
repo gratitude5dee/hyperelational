@@ -104,7 +104,7 @@ const Index = () => {
                 <img src="/lovable-uploads/69ad29f0-f8c0-4412-96b7-1081781f745b.png" alt="KumoRFM" className="h-6 w-auto" />
               </div>
               <div className="h-4 w-px bg-white/20" />
-              <span className="text-sm text-white/80">Powered by Relational AI</span>
+              <span className="text-sm text-white/80">Powered by KumoRFM Relational AI</span>
               <div className="animate-pulse w-2 h-2 bg-green-400 rounded-full" />
             </motion.div>
             
