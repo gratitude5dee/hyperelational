@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { GlassCard } from '@/components/ui/glass-card';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
+import CloudShader from '@/components/CloudShader';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -104,7 +105,8 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-bg">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      <CloudShader />
       <div className="w-full max-w-md space-y-8">
         {/* Header */}
         <div className="text-center">
