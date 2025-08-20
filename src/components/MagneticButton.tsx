@@ -59,7 +59,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
       
       gsap.to(button, {
         scale: 1.05,
-        boxShadow: `0 10px 40px hsl(var(--primary) / ${glowIntensity})`,
+        boxShadow: `0 10px 40px hsla(259, 100%, 65%, ${glowIntensity})`,
         duration: 0.3,
         ease: "power2.out"
       });
@@ -76,7 +76,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
         y: 0,
         rotation: 0,
         scale: 1,
-        boxShadow: '0 4px 20px hsl(var(--primary) / 0.2)',
+        boxShadow: '0 4px 20px hsla(259, 100%, 65%, 0.2)',
         duration: 0.5,
         ease: "elastic.out(1, 0.3)"
       });
@@ -97,7 +97,8 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
       // Burst effect
       for (let i = 0; i < 12; i++) {
         const particle = document.createElement('div');
-        particle.className = 'absolute w-1 h-1 bg-primary rounded-full pointer-events-none';
+        particle.className = 'absolute w-1 h-1 rounded-full pointer-events-none';
+        particle.style.backgroundColor = 'hsl(259, 100%, 65%)';
         particle.style.left = '50%';
         particle.style.top = '50%';
         button.appendChild(particle);

@@ -300,16 +300,16 @@ export const RevolutionaryLoadingAnimation: React.FC<LoadingAnimationProps> = ({
       const mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       const mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
       
-      // Create ripple effect
-      const ripple = new THREE.RingGeometry(0, 0.1, 32);
-      const rippleMaterial = new THREE.MeshBasicMaterial({
-        color: 0x6366f1,
-        transparent: true,
-        opacity: 0.5
-      });
-      const rippleMesh = new THREE.Mesh(ripple, rippleMaterial);
-      rippleMesh.position.set(mouseX * 3, mouseY * 3, 0);
-      scene.add(rippleMesh);
+          // Create ripple effect
+          const ripple = new THREE.RingGeometry(0, 0.1, 32);
+          const rippleMaterial = new THREE.MeshBasicMaterial({
+            color: new THREE.Color().setHSL(0.72, 1, 0.6), // Electric Purple
+            transparent: true,
+            opacity: 0.5
+          });
+          const rippleMesh = new THREE.Mesh(ripple, rippleMaterial);
+          rippleMesh.position.set(mouseX * 3, mouseY * 3, 0);
+          scene.add(rippleMesh);
       
       gsap.to(ripple.parameters, {
         outerRadius: 2,

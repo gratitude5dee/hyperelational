@@ -65,13 +65,13 @@ export const LiquidTypography: React.FC<LiquidTypographyProps> = ({
           glitchBefore.style.position = 'absolute';
           glitchBefore.style.top = '0';
           glitchBefore.style.left = '0';
-          glitchBefore.style.color = 'hsl(var(--accent))';
+          glitchBefore.style.color = 'hsl(338, 100%, 65%)'; // Plasma Pink
           glitchBefore.style.zIndex = '-1';
           
           glitchAfter.style.position = 'absolute';
           glitchAfter.style.top = '0';
           glitchAfter.style.left = '0';
-          glitchAfter.style.color = 'hsl(var(--secondary))';
+          glitchAfter.style.color = 'hsl(221, 100%, 60%)'; // Quantum Blue
           glitchAfter.style.zIndex = '-2';
           
           element.appendChild(glitchBefore);
@@ -140,11 +140,11 @@ export const LiquidTypography: React.FC<LiquidTypographyProps> = ({
         // Holographic effect with prismatic colors
         chars.forEach((char) => {
           const element = char as HTMLElement;
-          element.style.background = 'var(--gradient-primary)';
+          element.style.background = 'linear-gradient(135deg, hsl(259, 100%, 65%) 0%, hsl(221, 100%, 60%) 50%, hsl(338, 100%, 65%) 100%)';
           element.style.backgroundClip = 'text';
           element.style.webkitBackgroundClip = 'text';
           element.style.webkitTextFillColor = 'transparent';
-          element.style.filter = 'drop-shadow(0 0 10px hsl(var(--primary) / 0.5))';
+          element.style.filter = 'drop-shadow(0 0 10px hsla(259, 100%, 65%, 0.5))';
         });
 
         gsap.fromTo(chars,
