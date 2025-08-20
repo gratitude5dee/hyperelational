@@ -1,102 +1,51 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ShoppingBag, Music } from 'lucide-react';
+import { Palette, Music } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
 
 export function DualModeToggle() {
-  const { currentProject, setCurrentProject } = useAppStore();
-  
-  const toggleMode = () => {
-    console.log('Toggle clicked, current project:', currentProject);
-    
-    if (currentProject) {
-      const newType: 'fashion_ecommerce' | 'creative_hub' = currentProject.type === 'fashion_ecommerce' ? 'creative_hub' : 'fashion_ecommerce';
-      console.log('Switching from', currentProject.type, 'to', newType);
-      
-      const updatedProject = {
-        ...currentProject,
-        type: newType
-      };
-      
-      setCurrentProject(updatedProject);
-      console.log('Project updated to:', updatedProject);
-    } else {
-      // Create a real project in the database if none exists
-      console.log('No current project, need to create a real project with the backend...');
-      
-      // For now, set a temporary state but we need a real project
-      const defaultProject = {
-        id: 'demo-project-' + Date.now(),
-        workspace_id: 'demo-workspace',
-        name: 'Demo Project',
-        type: 'fashion_ecommerce' as const,
-        created_at: new Date().toISOString()
-      };
-      setCurrentProject(defaultProject);
-      console.log('Created demo project (needs real backend integration):', defaultProject);
-    }
-  };
-
-  const isEcommerce = currentProject?.type === 'fashion_ecommerce';
-  
-  console.log('DualModeToggle render - isEcommerce:', isEcommerce, 'project type:', currentProject?.type);
+  const { industryMode, setIndustryMode } = useAppStore();
 
   return (
-    <div className="relative inline-flex items-center p-1 rounded-xl bg-muted/30 backdrop-blur-sm border border-border/50 shadow-lg">
-      {/* Animated background indicator - only shows behind active button */}
+    <div className="relative flex items-center gap-1 p-1 glass rounded-2xl border border-white/10">
+      {/* Background slider */}
       <motion.div
-        className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-md pointer-events-none"
-        animate={{
-          x: isEcommerce ? 4 : 'calc(50% - 4px)',
-          width: 'calc(50% - 8px)'
+        className="absolute top-1 left-1 w-32 h-10 rounded-xl"
+        style={{
+          background: industryMode === 'fashion' 
+            ? 'var(--fashion-gradient)' 
+            : 'var(--artist-gradient)'
         }}
-        transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-        style={{ zIndex: 1 }}
+        animate={{
+          x: industryMode === 'fashion' ? 0 : 128
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
       />
       
-      {/* E-commerce Button */}
+      {/* Fashion Mode Button */}
       <button
-        onClick={toggleMode}
-        className={`
-          relative z-20 flex items-center gap-2 px-4 py-2 rounded-lg
-          font-medium text-sm transition-all duration-300 ease-out
-          cursor-pointer select-none outline-none min-w-[120px] justify-center
-          focus:ring-2 focus:ring-primary/50 focus:ring-offset-1
-          active:scale-95 transform
-          ${isEcommerce 
-            ? 'text-primary-foreground' 
-            : 'text-muted-foreground hover:text-foreground'
-          }
-        `}
-        aria-pressed={isEcommerce}
-        role="switch"
-        type="button"
+        onClick={() => setIndustryMode('fashion')}
+        className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+          industryMode === 'fashion' 
+            ? 'text-white font-semibold' 
+            : 'text-white/60 hover:text-white/80'
+        }`}
       >
-        <ShoppingBag className="h-4 w-4 flex-shrink-0" />
-        <span className="whitespace-nowrap">E-commerce</span>
+        <Palette className="w-4 h-4" />
+        <span className="text-sm">Fashion Retail</span>
       </button>
       
-      {/* Artist Analytics Button */}
+      {/* Artist Mode Button */}
       <button
-        onClick={toggleMode}
-        className={`
-          relative z-20 flex items-center gap-2 px-4 py-2 rounded-lg
-          font-medium text-sm transition-all duration-300 ease-out
-          cursor-pointer select-none outline-none min-w-[120px] justify-center
-          focus:ring-2 focus:ring-primary/50 focus:ring-offset-1
-          active:scale-95 transform
-          ${!isEcommerce 
-            ? 'text-primary-foreground' 
-            : 'text-muted-foreground hover:text-foreground'
-          }
-        `}
-        aria-pressed={!isEcommerce}
-        role="switch"
-        type="button"
+        onClick={() => setIndustryMode('artist')}
+        className={`relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+          industryMode === 'artist' 
+            ? 'text-white font-semibold' 
+            : 'text-white/60 hover:text-white/80'
+        }`}
       >
-        <Music className="h-4 w-4 flex-shrink-0" />
-        <span className="whitespace-nowrap">Artist Analytics</span>
+        <Music className="w-4 h-4" />
+        <span className="text-sm">Artist Management</span>
       </button>
     </div>
   );

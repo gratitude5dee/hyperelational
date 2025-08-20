@@ -15,6 +15,8 @@ interface Project {
   created_at: string;
 }
 
+type IndustryMode = 'fashion' | 'artist';
+
 interface AppState {
   // Current workspace and project
   currentWorkspace: Workspace | null;
@@ -22,19 +24,23 @@ interface AppState {
   
   // UI state
   sidebarCollapsed: boolean;
+  industryMode: IndustryMode;
   
   // Actions
   setCurrentWorkspace: (workspace: Workspace | null) => void;
   setCurrentProject: (project: Project | null) => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
+  setIndustryMode: (mode: IndustryMode) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
   currentWorkspace: null,
   currentProject: null,
   sidebarCollapsed: false,
+  industryMode: 'fashion',
   
   setCurrentWorkspace: (workspace) => set({ currentWorkspace: workspace }),
   setCurrentProject: (project) => set({ currentProject: project }),
   setSidebarCollapsed: (collapsed) => set({ sidebarCollapsed: collapsed }),
+  setIndustryMode: (mode) => set({ industryMode: mode }),
 }));

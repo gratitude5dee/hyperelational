@@ -68,6 +68,22 @@
     --gradient-secondary: linear-gradient(135deg, hsl(180 78% 55%) 0%, hsl(217 91% 60%) 100%);
     --gradient-bg: linear-gradient(135deg, hsl(222 44% 4%) 0%, hsl(222 44% 6%) 100%);
 
+    /* Fashion Retail Mode Colors */
+    --fashion-primary: 320 85% 65%;
+    --fashion-secondary: 45 93% 47%;
+    --fashion-accent: 315 100% 75%;
+    --fashion-gradient: linear-gradient(135deg, hsl(320 85% 65%) 0%, hsl(315 100% 75%) 50%, hsl(45 93% 47%) 100%);
+    --fashion-card-bg: 320 25% 8% / 0.7;
+    --fashion-text: 315 30% 85%;
+
+    /* Artist Management Mode Colors */
+    --artist-primary: 240 100% 70%;
+    --artist-secondary: 280 90% 65%;
+    --artist-accent: 200 100% 60%;
+    --artist-gradient: linear-gradient(135deg, hsl(240 100% 70%) 0%, hsl(280 90% 65%) 50%, hsl(200 100% 60%) 100%);
+    --artist-card-bg: 240 25% 8% / 0.7;
+    --artist-text: 240 30% 85%;
+
     /* Animation variables */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
