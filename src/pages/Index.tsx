@@ -10,11 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RelationalUniverse } from '@/components/RelationalUniverse';
 import { TypewriterText } from '@/components/TypewriterText';
 import { FeatureCard } from '@/components/FeatureCard';
-import { RevolutionaryLoadingAnimation } from '@/components/RevolutionaryLoadingAnimation';
-import { InteractiveRelationalUniverse } from '@/components/InteractiveRelationalUniverse';
-import { LiquidTypography } from '@/components/LiquidTypography';
-import { ScrollDrivenParallax, ParallaxLayer } from '@/components/ScrollDrivenParallax';
-import { MagneticButton } from '@/components/MagneticButton';
+import { RelationalLoadingAnimation } from '@/components/RelationalLoadingAnimation';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -46,18 +42,16 @@ const Index = () => {
   }
 
   if (isLoading) {
-    return <RevolutionaryLoadingAnimation onComplete={handleLoadingComplete} />;
+    return <RelationalLoadingAnimation onComplete={handleLoadingComplete} />;
   }
 
   return (
-    <ScrollDrivenParallax className="min-h-screen overflow-x-hidden">
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showContent ? 1 : 0 }}
-        transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        className="min-h-screen bg-background"
-        style={{ background: 'var(--gradient-atmospheric)' }}
-      >
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: showContent ? 1 : 0 }}
+      transition={{ duration: 0.8 }}
+      className="min-h-screen bg-black overflow-x-hidden"
+    >
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -77,36 +71,19 @@ const Index = () => {
 
       {/* Hero Section - Living Data Universe */}
       <section className="relative h-screen overflow-hidden">
-        {/* Revolutionary Three.js Background */}
-        <ParallaxLayer speed={-0.5} className="absolute inset-0">
-          <Suspense fallback={<div className="absolute inset-0 bg-gradient-neural opacity-30" />}>
-            <Canvas 
-              camera={{ position: [0, 0, 5], fov: 75 }}
-              gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
-            >
-              <InteractiveRelationalUniverse />
-              <Stars radius={500} depth={80} count={2000} factor={10} saturation={0} fade />
-              <OrbitControls 
-                enableZoom={false} 
-                enablePan={false} 
-                autoRotate 
-                autoRotateSpeed={0.2}
-                enableDamping
-                dampingFactor={0.05}
-              />
-              {/* Atmospheric lighting */}
-              <ambientLight intensity={0.2} color="#6366f1" />
-              <pointLight position={[10, 10, 10]} intensity={0.5} color="#ec4899" />
-              <pointLight position={[-10, -10, -10]} intensity={0.3} color="#06b6d4" />
+        {/* Three.js Background */}
+        <div className="absolute inset-0">
+          <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20" />}>
+            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+              <RelationalUniverse />
+              <Stars radius={300} depth={60} count={1000} factor={7} saturation={0} />
+              <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
             </Canvas>
           </Suspense>
-        </ParallaxLayer>
+        </div>
         
-        {/* Atmospheric gradient overlay */}
-        <ParallaxLayer speed={-0.2} className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background/90" />
-          <div className="absolute inset-0 bg-gradient-neural opacity-20" />
-        </ParallaxLayer>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
         
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full px-6">
@@ -132,15 +109,17 @@ const Index = () => {
               <div className="animate-pulse w-2 h-2 bg-green-400 rounded-full" />
             </motion.div>
             
-            {/* Revolutionary Main Heading */}
-            <ParallaxLayer speed={0.3}>
-              <LiquidTypography
-                text="Hyperelational"
-                className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight text-center"
-                variant="hologram"
-                delay={0.8}
-              />
-            </ParallaxLayer>
+            {/* Main Heading */}
+            <motion.h1 
+              className="text-6xl md:text-8xl lg:text-9xl font-bold leading-tight"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+            >
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-gradient-x">
+                Hyperelational
+              </span>
+            </motion.h1>
             
             {/* Subtitle with Typewriter */}
             <TypewriterText 
@@ -153,65 +132,47 @@ const Index = () => {
               className="text-xl md:text-2xl text-white/80 font-light"
             />
             
-            {/* Revolutionary CTA Buttons */}
-            <ParallaxLayer speed={0.1}>
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-6 justify-center mt-8"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.4, ease: [0.23, 1, 0.32, 1] }}
+            {/* CTA Buttons */}
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+            >
+              <Button 
+                size="lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigate('/auth');
+                }}
+                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg z-10"
               >
-                <MagneticButton 
-                  size="lg"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate('/auth');
-                  }}
-                  className="breathing-bg text-white px-10 py-5 text-lg font-semibold border-0 shadow-elegant"
-                  magneticStrength={0.4}
-                  glowIntensity={0.8}
-                >
-                  <span className="flex items-center gap-3">
-                    Start Free Trial
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
-                  </span>
-                </MagneticButton>
-                
-                <MagneticButton 
-                  variant="outline" 
-                  size="lg"
-                  className="glass-intense text-foreground hover:text-primary px-10 py-5 text-lg font-medium border-glass-border backdrop-blur-xl"
-                  magneticStrength={0.2}
-                  glowIntensity={0.4}
-                >
-                  Watch Demo
-                </MagneticButton>
-              </motion.div>
-            </ParallaxLayer>
+                <span className="relative flex items-center gap-2">
+                  Start Free Trial
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-white/20 text-white hover:bg-white/10 backdrop-blur px-8 py-4 text-lg"
+              >
+                Watch Demo
+              </Button>
+            </motion.div>
           </motion.div>
           
-          {/* Enhanced Scroll Indicator */}
-          <ParallaxLayer speed={0.2}>
-            <motion.div 
-              className="absolute bottom-8 left-1/2 -translate-x-1/2"
-              animate={{ 
-                y: [0, 15, 0],
-                scale: [1, 1.1, 1],
-                opacity: [0.4, 0.8, 0.4]
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 3, 
-                ease: "easeInOut"
-              }}
-            >
-              <div className="relative">
-                <ChevronDown className="w-8 h-8 text-primary animate-neural-pulse" />
-                <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg scale-150" />
-              </div>
-            </motion.div>
-          </ParallaxLayer>
+          {/* Scroll Indicator */}
+          <motion.div 
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <ChevronDown className="w-6 h-6 text-white/40" />
+          </motion.div>
         </div>
       </section>
 
@@ -228,14 +189,9 @@ const Index = () => {
             <Badge className="mb-4 bg-indigo-500/20 text-indigo-400 border-indigo-500/30">
               Exclusive Partnership
             </Badge>
-            <ParallaxLayer speed={0.2}>
-              <LiquidTypography
-                text="Built on KumoRFM's Foundation Model"
-                className="text-4xl md:text-5xl font-bold text-center mb-6"
-                variant="magnetic"
-                delay={0.2}
-              />
-            </ParallaxLayer>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Built on <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">KumoRFM's</span> Foundation Model
+            </h2>
             <p className="text-xl text-white/60 max-w-3xl mx-auto">
               The first and only relational foundation model for structured data, bringing unprecedented intelligence to your analytics
             </p>
@@ -282,14 +238,12 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <ParallaxLayer speed={0.3}>
-              <LiquidTypography
-                text="Experience the power of relational intelligence"
-                className="text-4xl md:text-5xl font-bold text-center mb-6"
-                variant="glitch"
-                delay={0.1}
-              />
-            </ParallaxLayer>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Experience the power of{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                relational intelligence
+              </span>
+            </h2>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
               See how Hyperelational transforms complex data relationships into actionable insights
             </p>
@@ -413,45 +367,32 @@ const Index = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <ParallaxLayer speed={0.1}>
-              <LiquidTypography
-                text="Ready to see your data's hidden relationships?"
-                className="text-4xl md:text-5xl font-bold text-center mb-6"
-                variant="liquid"
-                delay={0}
-              />
-            </ParallaxLayer>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Ready to see your data's hidden relationships?
+            </h2>
             <p className="text-xl text-white/80 mb-8">
               Join the relational intelligence revolution and transform how you understand your business
             </p>
             
-            <ParallaxLayer speed={-0.1}>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <MagneticButton 
-                  size="lg"
-                  className="bg-foreground text-background hover:bg-foreground/90 px-10 py-5 text-lg font-semibold shadow-glow"
-                  magneticStrength={0.5}
-                  glowIntensity={1}
-                  particleCount={12}
-                >
-                  Start Your Free Trial
-                </MagneticButton>
-                <MagneticButton 
-                  variant="outline" 
-                  size="lg"
-                  className="glass-intense border-foreground/30 text-foreground hover:bg-foreground/10 px-10 py-5 text-lg font-medium backdrop-blur-xl"
-                  magneticStrength={0.3}
-                  glowIntensity={0.6}
-                >
-                  Book a Demo
-                </MagneticButton>
-              </div>
-            </ParallaxLayer>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg"
+                className="bg-white text-black hover:bg-white/90 px-8 py-4 text-lg font-medium"
+              >
+                Start Your Free Trial
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg"
+              >
+                Book a Demo
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
-      </motion.div>
-    </ScrollDrivenParallax>
+    </motion.div>
   );
 };
 
