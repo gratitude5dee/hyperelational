@@ -8,6 +8,7 @@ import { ChurnRiskDashboard } from '@/components/analytics/ChurnRiskDashboard';
 import { ProductRecommendationEngine } from '@/components/analytics/ProductRecommendationEngine';
 import { TourHotspotMap } from '@/components/analytics/TourHotspotMap';
 import { DynamicAudienceBuilder } from '@/components/analytics/DynamicAudienceBuilder';
+import { SampleDataGenerator } from '@/components/analytics/SampleDataGenerator';
 import { DualModeToggle } from '@/components/DualModeToggle';
 
 export default function Analytics() {
@@ -60,6 +61,9 @@ export default function Analytics() {
 
   return (
     <div className="space-y-6">
+      {/* Sample Data Generator */}
+      <SampleDataGenerator />
+      
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

@@ -22,17 +22,19 @@ export function DualModeToggle() {
       setCurrentProject(updatedProject);
       console.log('Project updated to:', updatedProject);
     } else {
-      // Create a default project if none exists
-      console.log('No current project, creating default...');
+      // Create a real project in the database if none exists
+      console.log('No current project, need to create a real project with the backend...');
+      
+      // For now, set a temporary state but we need a real project
       const defaultProject = {
-        id: 'temp-project',
-        workspace_id: 'temp-workspace',
+        id: 'demo-project-' + Date.now(),
+        workspace_id: 'demo-workspace',
         name: 'Demo Project',
         type: 'fashion_ecommerce' as const,
         created_at: new Date().toISOString()
       };
       setCurrentProject(defaultProject);
-      console.log('Created default project:', defaultProject);
+      console.log('Created demo project (needs real backend integration):', defaultProject);
     }
   };
 
@@ -42,19 +44,14 @@ export function DualModeToggle() {
 
   return (
     <div className="relative inline-flex items-center p-1 rounded-xl bg-muted/30 backdrop-blur-sm border border-border/50 shadow-lg">
-      {/* Debug info (remove in production) */}
-      <div className="absolute -top-8 left-0 text-xs text-muted-foreground">
-        Mode: {currentProject?.type || 'none'} | Project: {currentProject?.id ? 'exists' : 'missing'}
-      </div>
-      
-      {/* Animated background indicator - non-interactive */}
+      {/* Animated background indicator - only shows behind active button */}
       <motion.div
-        className="absolute inset-y-1 bg-primary rounded-lg shadow-md pointer-events-none"
+        className="absolute top-1 bottom-1 bg-primary rounded-lg shadow-md pointer-events-none"
         animate={{
-          x: isEcommerce ? 2 : 'calc(50% + 2px)',
-          width: 'calc(50% - 4px)'
+          x: isEcommerce ? 4 : '50%',
+          width: 'calc(50% - 8px)'
         }}
-        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+        transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
         style={{ zIndex: 1 }}
       />
       
@@ -64,12 +61,12 @@ export function DualModeToggle() {
         className={`
           relative z-20 flex items-center gap-2 px-4 py-2 rounded-lg
           font-medium text-sm transition-all duration-300 ease-out
-          cursor-pointer select-none outline-none
+          cursor-pointer select-none outline-none min-w-[120px] justify-center
           focus:ring-2 focus:ring-primary/50 focus:ring-offset-1
           active:scale-95 transform
           ${isEcommerce 
-            ? 'text-primary-foreground shadow-sm' 
-            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+            ? 'text-primary-foreground' 
+            : 'text-muted-foreground hover:text-foreground'
           }
         `}
         aria-pressed={isEcommerce}
@@ -86,12 +83,12 @@ export function DualModeToggle() {
         className={`
           relative z-20 flex items-center gap-2 px-4 py-2 rounded-lg
           font-medium text-sm transition-all duration-300 ease-out
-          cursor-pointer select-none outline-none
+          cursor-pointer select-none outline-none min-w-[120px] justify-center
           focus:ring-2 focus:ring-primary/50 focus:ring-offset-1
           active:scale-95 transform
           ${!isEcommerce 
-            ? 'text-primary-foreground shadow-sm' 
-            : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+            ? 'text-primary-foreground' 
+            : 'text-muted-foreground hover:text-foreground'
           }
         `}
         aria-pressed={!isEcommerce}
