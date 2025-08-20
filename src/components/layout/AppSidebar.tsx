@@ -51,18 +51,6 @@ const navigationItems = [
     description: 'Relationship Networks'
   },
   { 
-    title: 'Data Sources', 
-    url: '/sources', 
-    icon: Database,
-    description: 'Connect Platforms'
-  },
-  { 
-    title: 'Integrations', 
-    url: '/integrations', 
-    icon: Plug,
-    description: 'Platform Connectors'
-  },
-  { 
     title: 'Analytics', 
     url: '/analytics', 
     icon: TrendingUp,
@@ -73,6 +61,18 @@ const navigationItems = [
     url: '/predict', 
     icon: Zap,
     description: 'AI Forecasting'
+  },
+  { 
+    title: 'Data Sources', 
+    url: '/sources', 
+    icon: Database,
+    description: 'Connect Platforms'
+  },
+  { 
+    title: 'Integrations', 
+    url: '/integrations', 
+    icon: Plug,
+    description: 'Platform Connectors'
   },
   { 
     title: 'Settings', 
