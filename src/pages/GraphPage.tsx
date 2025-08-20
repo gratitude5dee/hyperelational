@@ -297,7 +297,7 @@ export function GraphPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="col-span-6 glass-card rounded-2xl overflow-hidden relative h-96"
+          className="col-span-6 glass-card rounded-2xl overflow-hidden relative h-[48rem]"
         >
           <div className="absolute top-4 left-4 z-10">
             <div className="glass-card px-3 py-2 rounded-lg">
