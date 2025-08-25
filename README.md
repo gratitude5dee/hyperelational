@@ -1,6 +1,4 @@
 Hyperelational AI
-<div align="center">
-<img src="https://lovable.dev/opengraph-image-p98pqg.png" alt="Hyperelational AI Logo" width="150"/>
 <br/>
 <br/>
 <p>
