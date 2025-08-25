@@ -1,4 +1,4 @@
-# Hyperelational AI
+# hyperelational 
 
 <div align="center">
 
